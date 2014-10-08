@@ -24,13 +24,25 @@
 #' @return 
 #' @author Julien Duvanel
 #' @export
-get_estimate_GCTA <- function(P, V, phi, dcov = F) {
+get_estimate_GCTA <- function(V, phi) {
 
-  if(dcov == TRUE) {
-    h <- estimate_heritability_dcov(V, phi)
-  } else {
     h <- estimate_heritability(V, phi)
-  }
-  list(h = h$heritability)
+
+    list(h = h$heritability)
   
+}
+
+#' 
+#'
+#' @title 
+#' @param 
+#' @return 
+#' @author Julien Duvanel
+#' @export
+get_estimate_GCTA_dcov <- function(V, phi) {
+    
+    h <- estimate_heritability_dcov(V, phi)
+
+    list(h = h$heritability)
+    
 }

@@ -23,12 +23,12 @@
 #' @return estimate h
 #' @author Julien Duvanel
 #' @export
-DoEstimation <- function(get_estimate, P, V, phi, dcov = F) {
+DoEstimation <- function(get_estimate, V, phi) {
   
     # Get the beta's
     tryCatch({
 
-        res <- get_estimate(P, V, phi, dcov)
+        res <- get_estimate(V, phi)
         
         # We need to store the auc of all simulation
         # to be able to find the quantile (0.1 and 0.9 for example)
@@ -115,21 +115,22 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
           # Since we have to filter data first, we expect V to have dimension 1
           expect_that(ncol(V), equals(1))
         
-          res <- DoEstimation(get_estimate=match.fun(paste0("get_estimate_", 
-                                                            param.list[[k]]$method.to.test[j])),
-                                                     P = P,
-                                                     V = V, 
-                                                     phi = as.vector(data.filtered$phi.matrix.filtered),
-                              dcov = FALSE)
-
-          res_dcov <- DoEstimation(get_estimate=match.fun(paste0("get_estimate_", 
-                                                          param.list[[k]]$method.to.test[j])),
-                                    P = P,
-                                    V = V, 
-                                    phi = data.filtered$phi.matrix.filtered,
-                                    dcov = TRUE)
+          res <- c()
+          for(m in 1:length(param.list[[k]]$model.to.test)) {
+              cat(paste("m:", m))
+              est <- 0
+              est <- DoEstimation(get_estimate=match.fun(paste0("get_estimate_", 
+                                                                param.list[[k]]$method.to.test[j],
+                                                                param.list[[k]]$model.to.test[m])),
+                                  V = V, 
+                                  phi = as.vector(data.filtered$phi.matrix.filtered))$h
+              
+              res <- cbind(res, est)
+         
+            cat(paste("est:", est))
+          }
         
-        data.res <- rbind(data.res, cbind(colnames(P)[2], res$h, res_dcov$h))
+        data.res <- rbind(data.res, cbind(colnames(P)[2], res))
         
         cat("   -> processed !\n")
         
