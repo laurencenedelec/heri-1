@@ -26,7 +26,7 @@ registerDoMC(1)
 rm(list = ls())
 
 #setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
-setwd("/home/duvanel/PackageCH/")
+setwd("/home/duvanel/git/PackageCH/")
 
 # Main R file
 with_debug(load_all(pkg = "PackageCH"))
@@ -51,12 +51,16 @@ Project <- SetupProject()
 # List of parameters
 param.list <- list()
 param.list[[1]] <- list(method.to.test = c(
-                                           "GCTA",
-                                           "TheoKin",
-                                           "IBS",
-                                           "IBD"
+                                           "GCTA"#,
+                                           #"TheoKin",
+                                           #"IBS",
+                                           #"IBD"
                                            ),
-                        phenotypes.id = c(4:170)
+                        model.to.test = c(
+                                            "",
+                                            "_dcov"
+                                        ),
+                        phenotypes.id = c(4)
                        )
 
 try(DoBatchEstimation(param.list = param.list))

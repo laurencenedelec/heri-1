@@ -58,7 +58,6 @@ estimate_heritability <- function(V, phi) {
 estimate_heritability_dcov <- function(V, phi) {
     
     # Get data for the specific phenotype
-    
     Y.distance.carre <- matrix(rep(V^2,nrow(V)),
                                ncol = nrow(V)) + 
         t(matrix(rep(V^2,nrow(V)),
