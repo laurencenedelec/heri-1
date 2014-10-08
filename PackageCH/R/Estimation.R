@@ -145,7 +145,7 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
       ###############################
       #         final_precise <- proc.time() - ptm_precise
       #         cat("Time for ", k, "/", length(param.list), " : ", final_precise, "\n\n")
-      cat("== ending with method ", param.list[[k]]$method.to.test[j], "\n")
+      cat("\n== ending with method ", param.list[[k]]$method.to.test[j], "\n")
       
     }
     
