@@ -39,7 +39,7 @@ load_data_GCTA <- function() {
   # Give the correct col/row names (this information is used later on to filter data)
   colnames(varphi) <- paste(data_GCTA$id$V1, data_GCTA$id$V2)
   rownames(varphi) <- paste(data_GCTA$id$V1, data_GCTA$id$V2)
-    
+  
   list(phi = varphi)
                           
 }

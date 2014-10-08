@@ -126,13 +126,12 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
                                                           param.list[[k]]$method.to.test[j])),
                                     P = P,
                                     V = V, 
-                                    phi = as.vector(data.filtered$phi.matrix.filtered),
+                                    phi = data.filtered$phi.matrix.filtered,
                                     dcov = TRUE)
         
         data.res <- rbind(data.res, cbind(colnames(P)[2], res$h, res_dcov$h))
         
-        print(data.res)
-          cat("   -> processed !\n")
+        cat("   -> processed !\n")
         
         # Required to avoid error in estimation of BFRM (because there are too many opened streams)
         closeAllConnections()

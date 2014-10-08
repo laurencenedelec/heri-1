@@ -6,7 +6,6 @@
 #' @import gridBase
 #' @import ggplot2
 #' @import foreach
-#' @import rmv
 #' @import zoo
 #' @import colorspace
 #' @import doMC
