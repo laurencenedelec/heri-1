@@ -47,11 +47,12 @@ Project <- SetupProject()
 
 # List of parameters
 param.list <- list()
-param.list[[1]] <- list(method.to.test = c("GCTA"#,
-                                           #"TheoKin",
+param.list[[1]] <- list(method.to.test = c(#"GCTA",
+                                           "TheoKin"#,
                                            #"IBS",
-                                           #"IBD"),
-                        phenotypes.id = c(4:5)
+                                           #"IBD"
+                                           ),
+                        phenotypes.id = c(4)
                        )
 
 try(DoBatchEstimation(param.list = param.list))
