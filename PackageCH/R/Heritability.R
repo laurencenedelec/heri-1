@@ -74,3 +74,31 @@ estimate_heritability_dcov <- function(V, phi) {
     list(heritability = heritability)
     
 }
+
+#' Estimate heritability with dcov / LN version
+#'
+#' @title Estimate heritability with dcov / LN version
+#' @param V matrix built from P,K
+#' @param phi 2*Kinship
+#' @return heritability + p.value obtained from lm
+#' @author Julien Duvanel
+#' @export
+estimate_heritability_dcov_LN <- function(V, phi) {
+    
+    # Get data for the specific phenotype   
+    Y.distance.carre <- matrix(rep(V^2,nrow(V)),
+                               ncol = nrow(V)) + 
+        t(matrix(rep(V^2,nrow(V)),
+                 ncol = nrow(V))) - 
+        2 * V %*%t(V)
+    
+    Y.distance <- sqrt(Y.distance.carre)
+    
+    phi.matrix <- sqrt(N*(2-2*phi))
+    
+    heritability <- dcov(Y.distance, phi.matrix) / (sqrt(dcov(phi.matrix, phi.matrix)) * sqrt(dcov(Y.distance, Y.distance)))
+    
+    # Return
+    list(heritability = heritability)
+    
+}

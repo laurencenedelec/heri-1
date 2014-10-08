@@ -35,7 +35,7 @@ DoEstimation <- function(get_estimate, V, phi) {
         # For each simulation, get the ROC Curves' points (as well as the MSPE's points)
         list(h = res$h)
       
-      }, error = function(e) NULL)
+      }, error = function(e) print(e))
   
 }
 
@@ -117,20 +117,19 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
         
           res <- c()
           for(m in 1:length(param.list[[k]]$model.to.test)) {
-              cat(paste("m:", m))
-              est <- 0
+
               est <- DoEstimation(get_estimate=match.fun(paste0("get_estimate_", 
                                                                 param.list[[k]]$method.to.test[j],
                                                                 param.list[[k]]$model.to.test[m])),
                                   V = V, 
-                                  phi = as.vector(data.filtered$phi.matrix.filtered))$h
+                                  phi = data.filtered$phi.matrix.filtered)$h
               
               res <- cbind(res, est)
          
-            cat(paste("est:", est))
           }
         
         data.res <- rbind(data.res, cbind(colnames(P)[2], res))
+        colnames(data.res) <- c("Phenotypes", param.list[[k]]$model.to.test)
         
         cat("   -> processed !\n")
         
