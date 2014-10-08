@@ -1,4 +1,3 @@
-PackageCH
-=========
+# Comparison of heritability estimation
 
-PackageCH
+TODO
