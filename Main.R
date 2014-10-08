@@ -1,3 +1,4 @@
+
 ####**********************************************************************
 ####  Written and Developed by: 
 ####**********************************************************************
@@ -14,6 +15,7 @@
 ####
 ####**********************************************************************
 
+
 suppressPackageStartupMessages(library(devtools))
 
 # Parallel computing
@@ -23,7 +25,8 @@ registerDoMC(1)
 ### Clean workspace, set directory and load functions
 rm(list = ls())
 
-setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
+#setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
+setwd("/home/duvanel/PackageCH/")
 
 # Main R file
 with_debug(load_all(pkg = "PackageCH"))
@@ -47,12 +50,13 @@ Project <- SetupProject()
 
 # List of parameters
 param.list <- list()
-param.list[[1]] <- list(method.to.test = c(#"GCTA",
-                                           "TheoKin"#,
-                                           #"IBS",
-                                           #"IBD"
+param.list[[1]] <- list(method.to.test = c(
+                                           "GCTA",
+                                           "TheoKin",
+                                           "IBS",
+                                           "IBD"
                                            ),
-                        phenotypes.id = c(4)
+                        phenotypes.id = c(4:170)
                        )
 
 try(DoBatchEstimation(param.list = param.list))

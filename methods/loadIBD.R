@@ -15,7 +15,6 @@
 ####**********************************************************************
 
 # library used in this R script
-library()
 
 #' 
 #'
@@ -33,11 +32,12 @@ load_data_IBD <- function() {
 }
 
 build_phi_matrix_once <- function() {
+    
   phi.matrix <- read.table("data/IBD/plink.genome", header = TRUE)
   phi.matrix$full_ID1 <- paste(phi.matrix$FID1, phi.matrix$IID1)
   phi.matrix$full_ID2 <- paste(phi.matrix$FID2, phi.matrix$IID2)
   
-  phi.temp <- phi.matrix[, c("full_ID1", "full_ID2", "EZ")]
+  phi.temp <- phi.matrix[, c("full_ID1", "full_ID2", "PI_HAT")]
   colnames(phi.temp) <- c("full_ID1", "full_ID2", "value")
   
   phi.matrix <- 0.5 * build_matrix_K(K = phi.temp)$K.matrix

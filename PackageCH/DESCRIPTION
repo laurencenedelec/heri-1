@@ -6,8 +6,7 @@ Description: Heritability estimation through linear regression
 Depends:
     R (>= 3.0.1),
     ggplot2,
-    doMC,
-    randomForest
+    doMC
 License: GPL (>= 3)
 LazyData: true
 Imports:
