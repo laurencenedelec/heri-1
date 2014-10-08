@@ -14,7 +14,6 @@
 ####
 ####**********************************************************************
 
-
 suppressPackageStartupMessages(library(devtools))
 
 # Parallel computing
@@ -48,10 +47,10 @@ Project <- SetupProject()
 
 # List of parameters
 param.list <- list()
-param.list[[1]] <- list(method.to.test = c("GCTA",
-                                           "TheoKin",
-                                           "IBS",
-                                           "IBD"),
+param.list[[1]] <- list(method.to.test = c("GCTA"#,
+                                           #"TheoKin",
+                                           #"IBS",
+                                           #"IBD"),
                         phenotypes.id = c(4:5)
                        )
 
