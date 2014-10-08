@@ -15,7 +15,7 @@
 ####**********************************************************************
 
 # library used in this R script
-#library()
+library(energy)
 
 #' Estimate heritability
 #'
