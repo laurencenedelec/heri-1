@@ -14,8 +14,20 @@
 ####
 ####**********************************************************************
 
-# library used in this R script
-#library()
+#' 
+#'
+#' @title 
+#' @param 
+#' @return 
+#' @author Julien Duvanel
+#' @export
+get_estimate_IBD <- function(V, phi) {
+
+  h <- estimate_heritability(V, as.vector(phi))
+  
+  list(h = h$heritability)
+  
+}
 
 #' 
 #'
@@ -24,13 +36,25 @@
 #' @return 
 #' @author Julien Duvanel
 #' @export
-get_estimate_IBD <- function(P, V, phi, dcov = F) {
-
-  if(dcov == TRUE) {
+get_estimate_IBD_dcov <- function(V, phi) {
+    
     h <- estimate_heritability_dcov(V, phi)
-  } else {
-    h <- estimate_heritability(V, phi)
-  }
-  list(h = h$heritability)
-  
+
+    list(h = h$heritability)
+    
+}
+
+#' 
+#'
+#' @title 
+#' @param 
+#' @return 
+#' @author Julien Duvanel
+#' @export
+get_estimate_IBD_dcov_LN <- function(V, phi) {
+    
+    h <- estimate_heritability_dcov_LN(V, phi)
+    
+    list(h = h$heritability)
+    
 }
