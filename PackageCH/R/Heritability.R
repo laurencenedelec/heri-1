@@ -64,9 +64,9 @@ estimate_heritability_dcov <- function(V, phi) {
                  ncol = nrow(V))) - 
         2 * V %*%t(V)
     
-    Y.distance <- Y.distance.carre^(1/2)
+    Y.distance <- Y.distance.carre
     
-    phi.matrix <- (2 * phi)^(1/2)
+    phi.matrix <- (2 * phi)
 
     heritability <- dcov(Y.distance, phi.matrix) / dcov(phi.matrix, phi.matrix)
     
