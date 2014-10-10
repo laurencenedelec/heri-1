@@ -15,7 +15,7 @@
 ####**********************************************************************
 
 # library used in this R script
-library()
+#library()
 
 #' 
 #'
@@ -27,6 +27,9 @@ library()
 load_data_TheoKin <- function() {
 
   load("data/TheoKin/K.matrix.RData")
+  
+  # reorder column
+  phi.matrix <- phi.matrix[sort(rownames(phi.matrix)), sort(rownames(phi.matrix))]  
   
   list(phi = phi.matrix)
                           
