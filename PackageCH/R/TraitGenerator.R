@@ -16,7 +16,12 @@
 ####**********************************************************************
 
 # bim file
-files <- "/Users/julien/Dropbox/Ecole/EPFL/5eme annee/ma4 - pdm/PackageCH/data/MendelAnalysis3"
+#files <- "/Users/julien/Dropbox/Ecole/EPFL/5eme annee/ma4 - pdm/PackageCH/data/MendelAnalysis3"
+files <- "/home/duvanel/BP/Data/GenoData1M/MendelAnalysis3"
+
+export.path <- "/home/duvanel/git/PackageCH/data/"
+
+datetime.stamp <- format(Sys.time(), "%d%m%Y_%H%M%S")
 
 # Load data
 bim.data <- read.table(file = paste0(files, ".bim"))
@@ -67,12 +72,13 @@ cat("#!/bin/bash
     #task to run per node; each node has 16 cores
     #SBATCH --ntasks-per-node=16
     
-    module load R
-    plink --bfile", files," --snps ", character.snps)
+    module load plink
+    plink --bfile", files," --snps ", character.snps, " --recodeA --out ", paste0(export.path, "SNPs_", datetime.stamp)
+    ,"\n")
 sink()
 
 # Give chmod +x
 system(paste0("chmod +x ", sbatch.file))
 
 # Execute using cluster
-#system(paste0("sbatch ", sbatch.file))
+system(paste0("sbatch ", sbatch.file))
