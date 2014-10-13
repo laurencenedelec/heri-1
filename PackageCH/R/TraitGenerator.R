@@ -89,6 +89,7 @@ Phenotypes <- Phenotypes[complete.cases(Phenotypes), ]
 colnames(Phenotypes) <- c("famid", "id")
 
 snps <- Phenotypes[, (ncol(Phenotypes)-N+1):ncol(Phenotypes)]
-alpha <- t(runif(N, -5, 5))
+alpha <- runif(N, -5, 5)
 
-Phenotypes <- cbind(Phenotypes[, 1:2], as.matrix(snps)* alpha, rnorm(n = nrow(Phenotypes), 0, 1))
+P.raw <- cbind(Phenotypes[, 1:2], as.matrix(snps) %*% alpha, rnorm(n = nrow(Phenotypes), 0, 1))
+save(list = "P.raw", file = "Phenotype_Simulated.RData")
