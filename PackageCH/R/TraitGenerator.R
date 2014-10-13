@@ -84,7 +84,9 @@ system(paste0("chmod +x ", sbatch.file))
 # Execute using cluster
 system(paste0("sbatch ", sbatch.file))
 
-Phenotypes <- read.table(file = paste0(export.path, "SNPs_", datetime.stamp), header = TRUE)
+Sys.sleep(10)
+
+Phenotypes <- read.table(file = paste0(export.path, "SNPs_", datetime.stamp, ".raw"), header = TRUE)
 Phenotypes <- Phenotypes[complete.cases(Phenotypes), ]
 colnames(Phenotypes) <- c("famid", "id")
 
