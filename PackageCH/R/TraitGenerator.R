@@ -15,6 +15,7 @@
 ####
 ####**********************************************************************
 
+TraitGenerator <- function() {
 # bim file
 #files <- "/Users/julien/Dropbox/Ecole/EPFL/5eme annee/ma4 - pdm/PackageCH/data/MendelAnalysis3"
 files <- "/home/duvanel/BP/Data/GenoData1M/MendelAnalysis3"
@@ -95,3 +96,5 @@ alpha <- runif(N, -5, 5)
 
 P.raw <- cbind(Phenotypes[, 1:2], as.matrix(snps) %*% alpha, rnorm(n = nrow(Phenotypes), 0, 1))
 save(list = "P.raw", file = "Phenotype_Simulated.RData")
+
+}
