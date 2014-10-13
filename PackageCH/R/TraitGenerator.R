@@ -27,8 +27,9 @@ datetime.stamp <- format(Sys.time(), "%d%m%Y_%H%M%S")
 bim.data <- read.table(file = paste0(files, ".bim"))
 nbr.snps <- nrow(bim.data)
 
-# Get randomly 5 SNPs
-id.snps <- sample(x=seq(1, nbr.snps), size=5)
+# Get randomly N SNPs
+N <- 5
+id.snps <- sample(x=seq(1, nbr.snps), size=N)
 
 name.snps <- bim.data$V2[id.snps]
 
@@ -82,3 +83,12 @@ system(paste0("chmod +x ", sbatch.file))
 
 # Execute using cluster
 system(paste0("sbatch ", sbatch.file))
+
+Phenotypes <- read.table(file = paste0(export.path, "SNPs_", datetime.stamp), header = TRUE)
+Phenotypes <- Phenotypes[complete.cases(Phenotypes), ]
+colnames(Phenotypes) <- c("famid", "id")
+
+snps <- Phenotypes[, (ncol(Phenotypes)-N+1):ncol(Phenotypes)]
+alpha <- t(runif(N, -5, 5))
+
+Phenotypes <- cbind(Phenotypes[, 1:2], as.matrix(snps)* alpha, rnorm(n = nrow(Phenotypes), 0, 1))
