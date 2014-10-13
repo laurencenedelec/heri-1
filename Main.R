@@ -57,8 +57,8 @@ param.list[[1]] <- list(method.to.test = c(
                                            "IBD"
                                            ),
                         model.to.test = c(
-                                            "",
-                                            "_dcov",
+#                                            "",
+#                                            "_dcov",
                                             "_dcov_LN"
                                         ),
                         phenotypes.id = c(4:170)

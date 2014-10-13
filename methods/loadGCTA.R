@@ -29,6 +29,7 @@ load_data_GCTA <- function() {
   data_GCTA_id <- read.table("data/GCTA/plink.rel.id")
   
   colnames(data_GCTA) <- paste(data_GCTA_id$V1, data_GCTA_id$V2)
+  rownames(data_GCTA) <- paste(data_GCTA_id$V1, data_GCTA_id$V2)
 
   # Data are stored in the data/METHODNAME directory
   #data_GCTA <- ReadGRMBin(prefix = paste0("data/GCTA/BP.GRM"))
