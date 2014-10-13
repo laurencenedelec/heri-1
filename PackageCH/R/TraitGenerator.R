@@ -75,4 +75,4 @@ sink()
 system(paste0("chmod +x ", sbatch.file))
 
 # Execute using cluster
-#system(paste0("sbatch ", sbatch.file))
+system(paste0("sbatch ", sbatch.file))
