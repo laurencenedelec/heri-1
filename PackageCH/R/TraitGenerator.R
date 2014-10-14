@@ -68,7 +68,7 @@ TraitGenerator <- function(plink.file, export.path, N = 5, sbatch.file = "Extrac
     # We create two traits. One is fully heritable and the other one not at all.
     P.raw <- cbind(Phenotypes[, 1:2], 
                    fake.trait, 
-                   fake.trait + rnorm(n = nrow(Phenotypes), mean = 0, sd = 1)
+                   fake.trait + rnorm(n = nrow(Phenotypes), mean = 0, sd = 1),
                    rnorm(n = nrow(Phenotypes), mean = 0, sd = 1))
     
     # Save as P.raw (name is important)
