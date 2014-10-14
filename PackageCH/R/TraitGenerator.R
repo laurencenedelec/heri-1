@@ -20,7 +20,6 @@
 #                N = 5,
 #                sbatch.file = "/home/duvanel/ClusterScript/ExtractSNPS.sbatch")
 
-
 #' Extract randomly a few SNPs from genome and then generate fake traits
 #' 
 #' @title Generate fake traits
@@ -62,10 +61,15 @@ TraitGenerator <- function(plink.file, export.path, N = 5, sbatch.file = "Extrac
     snps <- Phenotypes[, (ncol(Phenotypes)-N+1):ncol(Phenotypes)]
     # Simulate alpha_i. The goal is to have
     # \sum_i alpha_i snps_i for i = 1,\dots,n
-    alpha <- runif(N, -5, 5)
+    alpha <- runif(N, -1, 1)
+    
+    fake.trait <- as.matrix(snps) %*% alpha
     
     # We create two traits. One is fully heritable and the other one not at all.
-    P.raw <- cbind(Phenotypes[, 1:2], as.matrix(snps) %*% alpha, rnorm(n = nrow(Phenotypes), 0, 1))
+    P.raw <- cbind(Phenotypes[, 1:2], 
+                   fake.trait, 
+                   fake.trait + rnorm(n = nrow(Phenotypes), mean = 0, sd = 1)
+                   rnorm(n = nrow(Phenotypes), mean = 0, sd = 1))
     
     # Save as P.raw (name is important)
     save(list = "P.raw", file = paste0("data/Phenotype_Simulated_", datetime.stamp ,".RData"))
