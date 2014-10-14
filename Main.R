@@ -1,4 +1,3 @@
-
 ####**********************************************************************
 ####  Written and Developed by: 
 ####**********************************************************************
@@ -14,7 +13,6 @@
 ####  Main file
 ####
 ####**********************************************************************
-
 
 suppressPackageStartupMessages(library(devtools))
 
@@ -42,7 +40,7 @@ source("methods/IBS.R")
 source("methods/loadIBS.R")
 
 source("methods/IBD.R")
-source("methods/loadIBD.R")
+source("methods/loadIBD.R")e
 
 # Load phenotypes
 # The format is strict:
@@ -67,7 +65,7 @@ param.list[[1]] <- list(method.to.test = c(
                                             "_dcov",
                                             "_dcov_LN"
                                         ),
-                        phenotypes.id = c(3:4)
+                        phenotypes.id = c(3:5)
                        )
 
 try(DoBatchEstimation(param.list = param.list))

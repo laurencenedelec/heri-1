@@ -3,7 +3,9 @@ library(testthat)
 ### Load Phenotypes
 ##########################
 P.raw <- read.csv(file = "data/PhenoData.csv")
-load("data/Phenotype_Simulated.RData")
+#load("data/Phenotype_Simulated.RData")
+#load("data/Phenotype_Simulated_14102014_104636.RData")
+load("data/Phenotype_Simulated_14102014_145630.RData")
 
 P.raw$full_id <- paste(P.raw$famid, P.raw$id)
 rownames(P.raw) <- P.raw$full_id
