@@ -44,6 +44,12 @@ source("methods/loadIBS.R")
 source("methods/IBD.R")
 source("methods/loadIBD.R")
 
+# Load phenotypes
+# The format is strict:
+# two first columns must be: famid, id
+# then phenotypes (and we give phenotypes id corresponding to the column below)
+source("methods/loadPhenotypes.R")
+
 ### Settings
 options(digits.secs=10)
 Project <- SetupProject()

@@ -68,10 +68,7 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
     cat("========================================================\n")
     cat("== Running parameters ", k, "/", length(param.list), "\n")
     cat("========================================================\n")
-    
-    # Load phenotypes
-    source("methods/loadPhenotypes.R")
-    
+        
     full.res <- list()
     
     for(j in 1:length(param.list[[k]]$method.to.test)) {
