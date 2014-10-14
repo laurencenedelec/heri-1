@@ -42,17 +42,18 @@ source("methods/loadIBS.R")
 source("methods/IBD.R")
 source("methods/loadIBD.R")e
 
+### Settings
+options(digits.secs=10)
+Project <- SetupProject()
+
+### List of parameters
+
 # Load phenotypes
 # The format is strict:
 # two first columns must be: famid, id
 # then phenotypes (and we give phenotypes id corresponding to the column below)
 source("methods/loadPhenotypes.R")
 
-### Settings
-options(digits.secs=10)
-Project <- SetupProject()
-
-# List of parameters
 param.list <- list()
 param.list[[1]] <- list(method.to.test = c(
                                            "GCTA",
@@ -66,6 +67,26 @@ param.list[[1]] <- list(method.to.test = c(
                                             "_dcov_LN"
                                         ),
                         phenotypes.id = c(3:5)
+                       )
+
+try(DoBatchEstimation(param.list = param.list))
+
+# Deuxieme estimation (avec les vrais traits)
+source("methods/loadPhenotypes_real.R")
+
+param.list <- list()
+param.list[[1]] <- list(method.to.test = c(
+                                           "GCTA",
+                                           "TheoKin",
+                                           "IBS",
+                                           "IBD"
+                                           ),
+                        model.to.test = c(
+                                            "",
+                                            "_dcov",
+                                            "_dcov_LN"
+                                        ),
+                        phenotypes.id = c(4:170)
                        )
 
 try(DoBatchEstimation(param.list = param.list))
