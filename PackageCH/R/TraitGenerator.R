@@ -15,14 +15,24 @@
 ####
 ####**********************************************************************
 
+# TraitGenerator(plink.file = "/home/duvanel/BP/Data/GenoData1M/MendelAnalysis3",
+#                export.path = "/home/duvanel/git/PackageCH/data/",
+#                N = 5,
+#                sbatch.file = "/home/duvanel/ClusterScript/ExtractSNPS.sbatch")
+
+
+#' Extract randomly a few SNPs from genome and then generate fake traits
+#' 
+#' @title Generate fake traits
+#' @param plink.file where are stored plink files
+#' @param export.path where to export RData fake traits
+#' @param N number of SNPs to extract from genome
+#' @param sbatch.file where the sbatch file will be saved
+#' @return nothing
+#' @author Julien Duvanel 
+#' @export
 TraitGenerator <- function(plink.file, export.path, N = 5, sbatch.file = "ExtractSNPs.sbatch") {
     
-    # bim file
-    #files <- "/Users/julien/Dropbox/Ecole/EPFL/5eme annee/ma4 - pdm/PackageCH/data/MendelAnalysis3"
-    #files <- "/home/duvanel/BP/Data/GenoData1M/MendelAnalysis3"
-    #sbatch.file <- "/home/duvanel/ClusterScript/ExtractSNPS.sbatch"
-    #export.path <- "/home/duvanel/git/PackageCH/data/"
-
     # datetime stamp (to save files)
     datetime.stamp <- format(Sys.time(), 
                              "%d%m%Y_%H%M%S")
@@ -57,10 +67,22 @@ TraitGenerator <- function(plink.file, export.path, N = 5, sbatch.file = "Extrac
     # We create two traits. One is fully heritable and the other one not at all.
     P.raw <- cbind(Phenotypes[, 1:2], as.matrix(snps) %*% alpha, rnorm(n = nrow(Phenotypes), 0, 1))
     
+    # Save as P.raw (name is important)
     save(list = "P.raw", file = paste0("data/Phenotype_Simulated_", datetime.stamp ,".RData"))
     
 }
 
+#' Write SBATCH
+#'
+#' @title Write SBATCH
+#' @param plink.file where are stored plink files
+#' @param sbatch.file where the sbatch file will be saved
+#' @param character.snps list of SNPS (character separated with coma)
+#' @param export.path where to export RData fake traits
+#' @param datetime.stamp time stamp
+#' @return nothing
+#' @author Julien Duvanel
+#' @export
 WriteSBATCH <- function(plink.file, sbatch.file, character.snps, export.path, datetime.stamp) {
     
     # Write into a sbatch file
@@ -106,6 +128,13 @@ WriteSBATCH <- function(plink.file, sbatch.file, character.snps, export.path, da
     sink()
 }
 
+#' Execute SBATCH
+#'
+#' @title Execute SBATCH
+#' @param sbatch.file where the sbatch file is stored
+#' @return nothing
+#' @author Julien Duvanel
+#' @export
 ExecuteSBATCH <- function (sbatch.file) {
     
     # Give chmod +x
