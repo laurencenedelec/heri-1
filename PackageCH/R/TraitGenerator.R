@@ -30,7 +30,7 @@
 #' @return nothing
 #' @author Julien Duvanel 
 #' @export
-TraitGenerator <- function(plink.file, export.path, N = 10, sbatch.file = "ExtractSNPs.sbatch") {
+TraitGenerator <- function(plink.file, export.path, N = 5, sbatch.file = "ExtractSNPs.sbatch") {
     
     # datetime stamp (to save files)
     datetime.stamp <- format(Sys.time(), 
