@@ -40,7 +40,7 @@ source("methods/IBS.R")
 source("methods/loadIBS.R")
 
 source("methods/IBD.R")
-source("methods/loadIBD.R")e
+source("methods/loadIBD.R")
 
 ### Settings
 options(digits.secs=10)
