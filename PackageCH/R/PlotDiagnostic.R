@@ -17,7 +17,7 @@
 #' Plot the heatmap of X's correlation matrix
 #'
 #' @param X original matrix
-#' @param sparsity choosen groups
+#' @param correlation choosen groups
 #' @return Plot the heatmap
 #' @author Julien Duvanel
 #' @export
