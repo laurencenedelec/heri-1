@@ -38,14 +38,14 @@ GetLegendFromGgplot2 <- function(a.gplot) {
 GetCustomGgplotTheme <- function() {
   theme_bw() + 
   theme(title = element_text(size = rel(1)),
-        axis.text = element_text(size = 25),
+        axis.text = element_text(size = 20),
         axis.title = element_text(size = 30, face = "bold"),
         plot.margin = grid::unit(c(1,1,1,1.09), "cm"),
         legend.justification = c(1,0), 
-        legend.position = "bottom",
+        #legend.position = "bottom",
         legend.title = element_blank(),
         legend.key = element_blank(),
-        legend.text = element_text(size = 26),
+        legend.text = element_text(size = 12),
         legend.background = element_rect(fill = "transparent"),
         legend.key.height = grid::unit(1.8,"line"),
         legend.key.size = grid::unit(2, "line"))
