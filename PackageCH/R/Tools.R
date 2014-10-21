@@ -204,9 +204,7 @@ ReadGRMBin <- function(prefix, AllN = F, size = 4) {
 #' @return return a matrix of size n \times n
 #' @author Julien Duvanel
 build_matrix_G <- function(snps) {
-    
-    euc.dist <- function(x1, x2) sqrt(sum((x1 - x2) ^ 2))
-    
+        
     G <- matrix(0, 
                 ncol = nrow(snps),
                 nrow = nrow(snps))
