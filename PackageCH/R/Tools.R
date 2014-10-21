@@ -195,3 +195,32 @@ ReadGRMBin <- function(prefix, AllN = F, size = 4) {
   return(list(diag=grm[i], off=grm[-i], id=id, N=N))
   
 }
+
+
+#' Build G matrix 
+#' 
+#' @title G matrix construction
+#' @param snps a matrix containing n rows and p snps
+#' @return return a matrix of size n \times n
+#' @author Julien Duvanel
+build_matrix_G <- function(snps) {
+    
+    euc.dist <- function(x1, x2) sqrt(sum((x1 - x2) ^ 2))
+    
+    G <- matrix(0, 
+                ncol = nrow(snps),
+                nrow = nrow(snps))
+    
+    for(i in 1:nrow(snps)) {
+        for(j in 1:nrow(snps)) {
+            if(j %% 10 == 0) {
+                cat("i = ", i, "/", nrow(snps), " and j = ", j, "/", nrow(snps), "\n")
+            }
+            G[i,j] <- sqrt(sum((snps[i,] - snps[j,]) ^ 2))
+        }
+    }
+    
+    G
+}
+
+    
