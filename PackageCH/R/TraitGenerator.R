@@ -18,7 +18,7 @@
 # TraitGenerator(plink.file = "/home/duvanel/BP/Data/GenoData1M/MendelAnalysis3",
 #                export.path = "/home/duvanel/git/PackageCH/data/",
 #                N = 5,
-#                sbatch.file = "/home/duvanel/ClusterScript/ExtractSNPS.sbatch")
+#                sbatch.file = "/home/duvanel/git/ClusterScript/ExtractSNPS.sbatch")
 
 #' Extract randomly a few SNPs from genome and then generate fake traits
 #' 
@@ -72,7 +72,7 @@ TraitGenerator <- function(plink.file, export.path, N = 20, sbatch.file = "Extra
                    rnorm(n = nrow(Phenotypes), mean = 0, sd = 1))
     
     # Save as P.raw (name is important)
-    save(list = "P.raw", file = paste0("data/Phenotype_Simulated_", datetime.stamp ,".RData"))
+    save(list = c("P.raw", "alpha"), file = paste0("data/Phenotype_Simulated_", datetime.stamp ,".RData"))
     
 }
 
@@ -104,7 +104,7 @@ WriteSBATCH <- function(plink.file, sbatch.file, character.snps, export.path, da
         
         #time you think you need; default is one hour
         #in minutes in this case
-        #SBATCH --time=600:00
+        #SBATCH --time=120:00
         
         #quality of service; think of it as job priority
         #SBATCH --qos=normal
