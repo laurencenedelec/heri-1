@@ -33,5 +33,16 @@ with_debug(load_all(pkg = "PackageCH"))
 options(digits.secs=10)
 Project <- SetupProject()
 
-h <- HeritabilityEstimation()
-save(list = "h", file = "h.RData")
+# Used to change name when we save file
+datetime.stamp <- format(Sys.time(), "%d%m%Y_%H%M%S")
+
+# Load matrix G
+G <- build_matrix_G_manually()
+
+# Load matrix P
+load("data/Phenotype_Simulated_14102014_145630.RData")
+
+# Estimate heritability
+h <- HeritabilityEstimation(G, P.raw$fake.trait)
+
+save(list = c("G", "h"), file = paste0("results.", datetime.stamp, ".RData"))
