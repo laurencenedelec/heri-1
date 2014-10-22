@@ -1,10 +1,10 @@
 library(doMC)
 library(foreach)
-registerDoMC(16)
+registerDoMC(4)
 
 setwd("/home/duvanel/git/PackageCH/")
 
-build_matrix_G <- function(path.snps = "data/SNPs_14102014_145630.raw") {
+build_matrix_G_manually <- function(path.snps = "data/SNPs_14102014_145630.raw") {
     
     N <- 20
     
@@ -22,7 +22,7 @@ build_matrix_G <- function(path.snps = "data/SNPs_14102014_145630.raw") {
                 ncol = nrow(snps),
                 nrow = nrow(snps))
     
-    r <- foreach(i=1:nrow(snps)) %dopar% {
+    foreach(i=1:nrow(snps)) %dopar% {
         for(j in 1:nrow(snps)) {
             
             if(j %% 10 == 0) cat("i = ", i, "/", nrow(snps), " and j = ", j, "/", nrow(snps), "\n")
@@ -35,7 +35,7 @@ build_matrix_G <- function(path.snps = "data/SNPs_14102014_145630.raw") {
 
 HeritabilityEstimation <- function() {
     
-    G <- build_matrix_G(snps)
+    G <- build_matrix_G_manually()
     load("data/Phenotype_Simulated_14102014_145630.RData")
     
     P <- as.matrix(P.raw$fake.trait)
@@ -60,6 +60,6 @@ HeritabilityEstimation <- function() {
     
     Y.distance <- sqrt(Y.distance.carre)
     
-    heritability <- dcov(Y.distance, G) / (sqrt(dcov(G, G)) * sqrt(dcov(Y.distance, Y.distance)))
+    dcov(Y.distance, G) / (sqrt(dcov(G, G)) * sqrt(dcov(Y.distance, Y.distance)))
     
 }
