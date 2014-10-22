@@ -1,8 +1,5 @@
 library(doMC)
 library(foreach)
-registerDoMC(4)
-
-setwd("/home/duvanel/git/PackageCH/")
 
 build_matrix_G_manually <- function(path.snps = "data/SNPs_14102014_145630.raw") {
     
@@ -24,21 +21,16 @@ build_matrix_G_manually <- function(path.snps = "data/SNPs_14102014_145630.raw")
     
     foreach(i=1:nrow(snps)) %dopar% {
         for(j in 1:nrow(snps)) {
-            
-            if(j %% 10 == 0) cat("i = ", i, "/", nrow(snps), " and j = ", j, "/", nrow(snps), "\n")
-            
             G[i,j] <- sqrt(sum((snps[i,] - snps[j,]) ^ 2))
         }
+        if(i %% 10 == 0) cat("i = ", i, "/", nrow(snps), "\n")
     }
     G
 } 
 
-HeritabilityEstimation <- function() {
+HeritabilityEstimation <- function(P, G) {
     
-    G <- build_matrix_G_manually()
-    load("data/Phenotype_Simulated_14102014_145630.RData")
-    
-    P <- as.matrix(P.raw$fake.trait)
+    P <- as.matrix(P)
     
     ### We keep one phenotype and normalize its
     V <- matrix(P, 
