@@ -16,6 +16,7 @@
 
 # library used in this R script
 library(energy)
+library(ggplot2)
 
 #' Estimate heritability
 #'
@@ -105,3 +106,36 @@ estimate_heritability_dcov_LN <- function(V, phi) {
     list(heritability = heritability)
     
 }
+
+#' Estimate heritability with dcov / LN version
+#'
+#' @title Estimate heritability with dcov / LN version
+#' @param V matrix built from P,K
+#' @param phi 2*Kinship
+#' @return heritability + p.value obtained from lm
+#' @author Julien Duvanel
+#' @export
+estimate_heritability_PlotSimilarity <- function(V, phi) {
+    
+    # datetime stamp (to save files)
+    datetime.stamp <- format(Sys.time(), 
+                             "%d%m%Y_%H%M%S")
+    
+    df <- data.frame(phenotype.similarity = as.vector(V %*%t(V)),
+                     genotype.similarity = as.vector(phi))
+    
+    p <- ggplot(data = df[sample(1:nrow(df), 0.01 * nrow(df), replace=FALSE),],
+                aes(x = phenotype.similarity, 
+                    y = genotype.similarity)) + # Use hollow circles
+         geom_point() +
+         ggtitle(paste0("Phenotype vs genotype similarity: ", colnames(V)))
+    
+    
+    ggsave(filename = paste0("results/plots/", colnames(V), "_", datetime.stamp, ".pdf"), 
+           plot = p, width = 17, height = 7)
+    
+    # Return
+    list(heritability = 0)
+    
+}
+
