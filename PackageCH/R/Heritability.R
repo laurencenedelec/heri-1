@@ -1,4 +1,4 @@
-####**********************************************************************
+    ####**********************************************************************
 ####  Written and Developed by: 
 ####**********************************************************************
 ####
@@ -121,14 +121,26 @@ estimate_heritability_PlotSimilarity <- function(V, phi) {
     datetime.stamp <- format(Sys.time(), 
                              "%d%m%Y_%H%M%S")
     
-    df <- data.frame(phenotype.similarity = as.vector(V %*%t(V)),
+    # Get data for the specific phenotype
+    Y <- V
+    Y.square <- Y %*% t(Y)
+    
+    # We need this as a vector
+    Y.square.vec <- as.vector(Y.square)
+
+    # heri
+    lm.heritability <- lm(Y.square.vec ~ as.vector(phi))
+    heritability <- summary(lm.heritability)$coef[2,1]
+    
+    df <- data.frame(phenotype.similarity = Y.square.vec,
                      genotype.similarity = as.vector(phi))
     
-    p <- ggplot(data = df[sample(1:nrow(df), 0.01 * nrow(df), replace=FALSE),],
-                aes(x = phenotype.similarity, 
-                    y = genotype.similarity)) + # Use hollow circles
+    p <- ggplot(data = df[sample(1:nrow(df), 0.05 * nrow(df), replace=FALSE),],
+                aes(y = phenotype.similarity, 
+                    x = genotype.similarity)) + # Use hollow circles
          geom_point() +
-         ggtitle(paste0("Phenotype vs genotype similarity: ", colnames(V)))
+         geom_smooth(method = lm) +
+         ggtitle(paste0("Phenotype vs genotype similarity: ", colnames(V), ", heri:", heritability))
     
     
     ggsave(filename = paste0("results/plots/", colnames(V), "_", datetime.stamp, ".pdf"), 
