@@ -109,6 +109,8 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
           data.filtered <- filter_data(P, method_data()$phi)
           
           V <- build_matrix_V(data.filtered$P.filtered)
+          colnames(V) <- colnames(P.raw)[phenotypes.id[l]]
+        
           # Since we have to filter data first, we expect V to have dimension 1
           expect_that(ncol(V), equals(1))
         

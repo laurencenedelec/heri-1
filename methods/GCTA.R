@@ -61,3 +61,19 @@ get_estimate_GCTA_dcov_LN <- function(V, phi) {
     list(h = h$heritability)
     
 }
+
+
+#' 
+#'
+#' @title 
+#' @param 
+#' @return 
+#' @author Julien Duvanel
+#' @export
+get_estimate_GCTA_PlotSimilarity <- function(V, phi) {
+    
+    h <- estimate_heritability_PlotSimilarity(V, phi)
+    
+    list(h = h$heritability)
+    
+}
