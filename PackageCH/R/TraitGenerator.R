@@ -173,6 +173,6 @@ ExecuteSBATCH <- function (sbatch.file) {
     system(paste0("sbatch ", sbatch.file))
     
     # We wait until it's finished (we hope so it is, in 10 sec)
-    Sys.sleep(10)
+    Sys.sleep(30)
     
 }
