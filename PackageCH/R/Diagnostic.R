@@ -148,11 +148,6 @@ PlotScatterDcovPlus <- function(full.res, editplotname.file, pdf.path = "") {
     PlotNames <- data.frame(FieldName = as.character(EDITED_PLOT_NAMES$FieldName), 
                             PlotGroup = as.character(EDITED_PLOT_NAMES$PlotGroup))
     
-    # Required to have the correct "data format"
-    for(i in 1:length(full.res)) {
-        full.res[[i]] <- full.res[[i]][as.vector(index), ]
-    }
-    
     # Now we have 2 datasets with the same number of rows
     
     # For each methods stored in full.res

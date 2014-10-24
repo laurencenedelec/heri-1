@@ -63,12 +63,37 @@ TraitGenerator <- function(plink.file, export.path, N = 20, sbatch.file = "Extra
     # \sum_i alpha_i snps_i for i = 1,\dots,n
     alpha <- runif(N, -1, 1)
     
-    fake.trait <- as.matrix(snps) %*% alpha
+    # We create an alpha for the dominant effect
+    alpha_d <- matrix(0, nrow = 3, ncol = N)
+    alpha_d[1, ] <- runif(N, -1, 1)
+    alpha_d[2, ] <- runif(N,  3, 4)
+    alpha_d[3, ] <- runif(N,  15,20)
+    
+    nonlinear.matprod <- function(mat, alpha) {
+        # Usually, as.matrix(mat) %*% alpha does the job
+        # but here, the multiplication differs if mat[i,j] has 
+        # a specific value.
+        
+        # For every row, we do the "special product"
+        res <- apply(mat, 1, function(x) {
+            ret <- 0
+            for(i in 1:length(x)) {
+                ret <- ret + x[i]*alpha[x[i]+1, i]
+            }
+            ret
+        })
+        
+        as.matrix(res)
+    }
+    
+    fake.add.trait <- as.matrix(snps) %*% alpha
+    fake.dom.trait <- nonlinear.matprod(snps, alpha_d)
     
     # We create two traits. One is fully heritable and the other one not at all.
     P.raw <- cbind(Phenotypes[, 1:2], 
-                   fake.trait, 
-                   fake.trait + rnorm(n = nrow(Phenotypes), mean = 0, sd = 1),
+                   fake.add.trait, 
+                   fake.add.trait + rnorm(n = nrow(Phenotypes), mean = 0, sd = 1),
+                   fake.dom.trait,
                    rnorm(n = nrow(Phenotypes), mean = 0, sd = 1))
     
     # Save as P.raw (name is important)

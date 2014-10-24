@@ -15,17 +15,8 @@ build_matrix_G_manually <- function(path.snps = "data/SNPs_14102014_145630.raw")
     # Value of SNPs are stored in the last N columns
     snps <- Phenotypes[, (ncol(Phenotypes)-N+1):ncol(Phenotypes)]
     
-    G <- matrix(0, 
-                ncol = nrow(snps),
-                nrow = nrow(snps))
-    
-    foreach(i=1:nrow(snps)) %dopar% {
-        for(j in 1:nrow(snps)) {
-            G[i,j] <- sqrt(sum((snps[i,] - snps[j,]) ^ 2))
-        }
-        if(i %% 10 == 0) cat("i = ", i, "/", nrow(snps), "\n")
-    }
-    G
+    # Way (!) faster than doing two for loop
+    G <- dist(snps)
 } 
 
 HeritabilityEstimation <- function(P, G) {
