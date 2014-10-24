@@ -11,7 +11,7 @@
         
         #time you think you need; default is one hour
         #in minutes in this case
-        #SBATCH --time=600:00
+        #SBATCH --time=120:00
         
         #quality of service; think of it as job priority
         #SBATCH --qos=normal
@@ -32,4 +32,4 @@
         #SBATCH --ntasks-per-node=16
         
         module load plink
-        plink --bfile /home/duvanel/BP/Data/GenoData1M/MendelAnalysis3  --snps  kgp22815272,rs7816543,rs2838128,kgp11032426,rs701089  --recodeA --out  /home/duvanel/git/PackageCH/data/SNPs_14102014_104636 
+        plink --bfile /home/duvanel/BP/Data/GenoData1M/MendelAnalysis3  --snps  kgp22815272,rs7816543,rs2838128,kgp11032426,rs701089,rs6932810,kgp8006041,rs10925760,rs4244148,rs9960675,kgp1981376,kgp3679329,rs17654772,rs1340665,rs12874885,kgp3486689,rs10880606,kgp22729749,kgp1355615,rs6541961  --recodeA --out  /home/duvanel/git/PackageCH/data/SNPs_22102014_121850 
