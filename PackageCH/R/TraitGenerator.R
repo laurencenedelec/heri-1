@@ -94,6 +94,7 @@ TraitGenerator <- function(plink.file, export.path, N = 20, sbatch.file = "Extra
                    fake.add.trait, 
                    fake.add.trait + rnorm(n = nrow(Phenotypes), mean = 0, sd = 1),
                    fake.dom.trait,
+                   fake.add.trait + fake.dom.trait,
                    rnorm(n = nrow(Phenotypes), mean = 0, sd = 1))
     
     # Save as P.raw (name is important)
