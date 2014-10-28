@@ -125,15 +125,33 @@ estimate_heritability_PlotSimilarity <- function(V, phi) {
     Y <- V
     Y.square <- Y %*% t(Y)
     
+    # Remove diagonal of Y.square and phi
+    diag(Y.square) <- NA
+    diag(phi) <- NA
+    
+    # Recast matrix to have the correct form
+    Y.square <- t(matrix(which(!is.na(Y.square)),
+                         nrow = (nrow(Y.square)-1),
+                         ncol = ncol(Y.square)))
+    phi <- t(matrix(which(!is.na(phi)),
+                    nrow = (nrow(phi)-1),
+                    ncol = ncol(phi)))
+    
     # We need this as a vector
     Y.square.vec <- as.vector(Y.square)
-
+    phi <- as.vector(phi)
+    
+    # We decide to filter data and remove data below 0.15
+    index <- which(phi >= 0.15)
+    phi <- phi[index]
+    Y.square.vec <- Y.square.vec[index]
+    
     # heri
-    lm.heritability <- lm(Y.square.vec ~ as.vector(phi))
+    lm.heritability <- lm(Y.square.vec ~ phi)
     heritability <- summary(lm.heritability)$coef[2,1]
     
     df <- data.frame(phenotype.similarity = Y.square.vec,
-                     genotype.similarity = as.vector(phi))
+                     genotype.similarity = phi)
     
     p <- ggplot(data = df[sample(1:nrow(df), 0.05 * nrow(df), replace=FALSE),],
                 aes(y = phenotype.similarity, 
@@ -142,8 +160,7 @@ estimate_heritability_PlotSimilarity <- function(V, phi) {
          geom_smooth(method = lm) +
          ggtitle(paste0("Phenotype vs genotype similarity: ", colnames(V), ", heri:", heritability))
     
-    
-    ggsave(filename = paste0("results/plots/", colnames(V), "_", datetime.stamp, ".pdf"), 
+    ggsave(filename = paste0("results/plots/filtered_", colnames(V), "_", datetime.stamp, ".pdf"), 
            plot = p, width = 17, height = 7)
     
     # Return
