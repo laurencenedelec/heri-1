@@ -130,38 +130,60 @@ estimate_heritability_PlotSimilarity <- function(V, phi) {
     diag(phi) <- NA
     
     # Recast matrix to have the correct form
-    Y.square <- t(matrix(which(!is.na(Y.square)),
+    Y.square <- t(matrix(Y.square[which(!is.na(Y.square))],
                          nrow = (nrow(Y.square)-1),
                          ncol = ncol(Y.square)))
-    phi <- t(matrix(which(!is.na(phi)),
+    phi <- t(matrix(phi[which(!is.na(phi))],
                     nrow = (nrow(phi)-1),
-                    ncol = ncol(phi)))
+                    ncol = ncol(phi)))    
     
     # We need this as a vector
     Y.square.vec <- as.vector(Y.square)
     phi <- as.vector(phi)
     
-    # We decide to filter data and remove data below 0.15
-    index <- which(phi >= 0.15)
-    phi <- phi[index]
-    Y.square.vec <- Y.square.vec[index]
-    
-    # heri
-    lm.heritability <- lm(Y.square.vec ~ phi)
-    heritability <- summary(lm.heritability)$coef[2,1]
+    # We are creating three plots
+    # 1) all data
+    # 2) only "independent individuals" (< 0.15 genotype similarity)
+    # 3) only "dependent individuals" (> 0.15 genotype similarity)
+    create_ggplot <- function(df, V, percentage_points_shown = 0.05) {
+        ggplot(data = df[sample(1:nrow(df), percentage_points_shown * nrow(df), replace=FALSE),],
+                    aes(y = phenotype.similarity, 
+                        x = genotype.similarity)) + # Use hollow circles
+            geom_point() +
+            geom_smooth(method = lm) +
+            ggtitle(paste0("Phenotype vs genotype similarity: ", colnames(V), ", 
+                        heri:", summary(lm(df$phenotype.similarity ~ df$genotype.similarity))$coef[2,1]))
+    }
     
     df <- data.frame(phenotype.similarity = Y.square.vec,
                      genotype.similarity = phi)
+    p <- create_ggplot(df, V)
+
+    threshold <- 0.15
+    df <- data.frame(phenotype.similarity = Y.square.vec[which(phi >= threshold)],
+                     genotype.similarity = phi[which(phi >= threshold)])
+    q <- create_ggplot(df, V, percentage_points_shown = 0.5)
     
-    p <- ggplot(data = df[sample(1:nrow(df), 0.05 * nrow(df), replace=FALSE),],
-                aes(y = phenotype.similarity, 
-                    x = genotype.similarity)) + # Use hollow circles
-         geom_point() +
-         geom_smooth(method = lm) +
-         ggtitle(paste0("Phenotype vs genotype similarity: ", colnames(V), ", heri:", heritability))
+    df <- data.frame(phenotype.similarity = Y.square.vec[which(phi < threshold)],
+                     genotype.similarity = phi[which(phi < threshold)])
+    r <- create_ggplot(df, V, percentage_points_shown = 0.025)
     
-    ggsave(filename = paste0("results/plots/filtered_", colnames(V), "_", datetime.stamp, ".pdf"), 
-           plot = p, width = 17, height = 7)
+    # Plot results, 3 columns (= 3 methods)
+    pdf(file = paste0("results/plots/filtered_", colnames(V), "_", datetime.stamp, ".pdf"), 
+        width = 17, 
+        height = 7)
+    
+        # Create a grid with 2 rows, length(p) columns
+        grid.newpage()
+        pushViewport(viewport(layout = grid.layout(1, 3)))   
+
+            print(p, vp = vplayout(1,1))
+            print(q, vp = vplayout(1,2))        
+            print(r, vp = vplayout(1,3))
+    
+        upViewport(0)
+    
+    dev.off()
     
     # Return
     list(heritability = 0)
