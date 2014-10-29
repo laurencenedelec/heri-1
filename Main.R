@@ -87,7 +87,7 @@ param.list[[1]] <- list(method.to.test = c(
                                             #"_dcov_LN"
                                             "_PlotSimilarity"
                                         ),
-                        phenotypes.id = c(4:170)
+                        phenotypes.id = c(4:14)
                        )
 
 try(DoBatchEstimation(param.list = param.list))
