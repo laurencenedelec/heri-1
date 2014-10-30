@@ -1,13 +1,35 @@
 library(energy)
 library(matrixStats)
 
+#' Build a random SNps matrix
+#'
+#' @title GBuild a random SNps matrix
+#' @param N sample size
+#' @param N_SNPs number of SNPS
+#' @param snps_value value that SNPs can take
+#' @return a random SNPs matrix
+#' @author Julien Duvanel
+#' @export
 build_SNPs_matrix <- function(N, N_SNPs, snps_value = c(0,1,2)) {
-    
+
+    # build a completly random matrix
     M <- matrix(sample(snps_value, size = N * N_SNPS, replace = T), 
                 nrow = N)
     
 }
 
+#' Compare DCOR with different kind of settings
+#'
+#' @title GBuild a random SNps matrix
+#' @param N sample size
+#' @param N_SNPs number of SNPS
+#' @param N_real_coeff number of SNPs that really explain the phenotype
+#' @param get_snps_matrix function that gives a SNPs matrix
+#' @param b X = G * runif(, -b, b)
+#' @param variable the variable that vary
+#' @return export a pdf file
+#' @author Julien Duvanel
+#' @export
 compare_dcor <- function(N, 
                          N_SNPS, 
                          N_real_coeff, 
@@ -15,9 +37,11 @@ compare_dcor <- function(N,
                          b,
                          variable = "") {
     
+    # We have to check that dimensions agree
     if(length(N) != length(N_SNPS) | length(N) != length(N_real_coeff)) stop("Problem, length of N has to be the same as N_SNPS.")    
     if(length(b) != 2) stop("b has to be a vector of length 2 because we use it as runif(..., b[1], b[2]) !")
     
+    # We loop through length(N) (but they all have same length at this point)
     res <- c()
     for(i in 1:length(N)) {
         
@@ -28,31 +52,26 @@ compare_dcor <- function(N,
         # Build fake trait X
         X <- M %*% alpha
         
+        # Do dcor estimation
         res <- rbind(res, 
-                     c(get(variable)[i], dcor(X, M)))
+                     c(get(variable[1])[i], dcor(X, M)))
         
-        cat("i = ", i, "\n")
+        cat("-> i = ", i, "/", length(N), "\n")
     }
     
+    # Export a pdf file
     pdf(file = paste0("results/plots/ExperimentalDcor_", format(Sys.time(), "%d%m%Y_%H%M%S") ,".pdf"), width = 17, height = 7)
     
-    plot(res, 
-         xlab = paste0("Value of ", variable), 
-         ylab = "dcor(X,G)",
-         main = paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
-                       ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
-                       " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
+        plot(res, 
+             xlab = paste0("Value of ", paste(variable, collapse=", ")), 
+             ylab = "dcor(X,G)",
+             main = paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
+                           ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
+                           " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
     
     dev.off()
     
 }
-
-N <- c(100, 1000)
-N_SNPS <- c(100, 100)
-N_real_coeff <- c(20, 20)
-b <- c(2,2)
-
-compare_dcor(N, N_SNPS,N_real_coeff, build_SNPs_matrix, b, "N")
 
 
 
