@@ -1,0 +1,11 @@
+"dataFile","pas","chr","pheno","outFile"
+ "toto",0,1,5,"/home/nedelec/NFG/ler/sh19-10.out"
+ "toto",5,1,5,"/home/nedelec/NFG/ler/sh19-6.out"
+ "toto",10,1,5,"/home/nedelec/NFG/ler/sh19-5.out"
+ "toto",0,4,5,"/home/nedelec/NFG/ler/sh19-10.out"
+ "toto",5,4,5,"/home/nedelec/NFG/ler/sh19-6.out"
+ "toto",10,4,6,"/home/nedelec/NFG/ler/sh19-5.out"
+ "toto",0,19,5,"/home/nedelec/NFG/ler/sh19-10.out"
+ "toto",5,19,3,"/home/nedelec/NFG/ler/sh19-6.out"
+ "toto",10,19,6,"/home/nedelec/NFG/ler/sh19-5.out"
+
