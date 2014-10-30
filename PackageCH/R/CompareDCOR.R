@@ -10,7 +10,7 @@ library(matrixStats)
 #' @return a random SNPs matrix
 #' @author Julien Duvanel
 #' @export
-build_SNPs_matrix <- function(N, N_SNPs, snps_value = c(0,1,2)) {
+build_SNPs_matrix <- function(N, N_SNPS, snps_value = c(0,1,2)) {
 
     # build a completly random matrix
     M <- matrix(sample(snps_value, size = N * N_SNPS, replace = T), 
@@ -70,6 +70,8 @@ compare_dcor <- function(N,
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
     
     dev.off()
+    
+    list( res = res)
     
 }
 
