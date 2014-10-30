@@ -1,0 +1,20 @@
+
+m<-c(1,2,0,0,10,3,0,0,0,0,3,5,0,0,13,6)
+m<-matrix(m,ncol=4)
+
+meanc=function(X) {
+X<-t((t(X)-colMeans(X)))-rowMeans(X)+mean(X)
+return(X)}
+
+
+dcov_m=function(X,Y) {
+X<-t((t(X)-colMeans(X)))-rowMeans(X)+mean(X)
+Y<-t(t(Y)-colMeans(Y))-rowMeans(Y)+mean(Y)
+dcov2<- mean(X*Y)
+if (dcov2<0) {dcov<- -sqrt(-dcov2)} else {dcov<-sqrt(dcov2)}
+return(dcov)}
+
+covn=function(X,Y){
+return(sqrt( mean(c(X)*c(Y)
+meanc(X)
+dcov_m(X,X)
