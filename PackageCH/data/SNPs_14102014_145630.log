@@ -1,0 +1,22 @@
+PLINK v1.90b1b 64-bit (20 May 2014)
+8 arguments: --bfile /home/duvanel/BP/Data/GenoData1M/MendelAnalysis3 --out /home/duvanel/git/PackageCH/data/SNPs_14102014_145630 --recode A --snps kgp5378311,rs17098075,rs586199,kgp1759448,kgp7244369,kgp7839886,rs4356648,rs3785902,kgp8340090,rs10171494,rs11154825,rs13327361,kgp10464567,rs9517337,kgp8035827,rs2365685,kgp849572,kgp11694135,kgp6986909,kgp22765214
+Hostname: sh-1-2.local
+Working directory: /home/duvanel/git/PackageCH
+Start time: Tue Oct 14 14:56:47 2014
+
+Random number seed: 1413323807
+64380 MB RAM detected; reserving 32190 MB for main workspace.
+Allocated 3222 MB successfully, after larger attempt(s) failed.
+20 variants loaded from .bim file.
+838 people (371 males, 467 females) loaded from .fam.
+206 phenotype values loaded from .fam.
+Using 1 thread (no multithreaded calculations invoked).
+Calculating allele frequencies... done.
+Total genotyping rate is 0.996122.
+20 variants and 838 people pass filters and QC.
+Among remaining phenotypes, 206 are cases and 0 are controls.  (632 phenotypes
+are missing.)
+--recode A to /home/duvanel/git/PackageCH/data/SNPs_14102014_145630.raw ...
+done.
+
+End time: Tue Oct 14 14:56:48 2014
