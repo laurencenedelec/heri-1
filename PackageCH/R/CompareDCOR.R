@@ -27,6 +27,7 @@ build_SNPs_matrix <- function(N, N_SNPS, snps_value = c(0,1,2)) {
 #' @param get_snps_matrix function that gives a SNPs matrix
 #' @param b X = G * runif(, -b, b)
 #' @param variable the variable that vary
+#' @param AddNoise if T it adds noise to X = G * alpha + epsilon with N(0,1)
 #' @return export a pdf file
 #' @author Julien Duvanel
 #' @export
@@ -35,7 +36,8 @@ compare_dcor <- function(N,
                          N_real_coeff, 
                          get_snps_matrix,
                          b,
-                         variable = "") {
+                         variable = "",
+                         AddNoise = FALSE) {
     
     # We have to check that dimensions agree
     if(length(N) != length(N_SNPS) | length(N) != length(N_real_coeff)) stop("Problem, length of N has to be the same as N_SNPS.")    
@@ -52,6 +54,10 @@ compare_dcor <- function(N,
         # Build fake trait X
         X <- M %*% alpha
         
+        if(AddNoise == TRUE) {
+            X <- X + rnorm(N[i], mean = 0, sd = 0)
+        }
+        
         # Do dcor estimation
         res <- rbind(res, 
                      c(get(variable[1])[i], dcor(X, M)))
@@ -62,10 +68,13 @@ compare_dcor <- function(N,
     # Export a pdf file
     pdf(file = paste0("results/plots/ExperimentalDcor_", format(Sys.time(), "%d%m%Y_%H%M%S") ,".pdf"), width = 17, height = 7)
     
+        txtNoise <- ""
+        if(AddNoise == TRUE) txtNoise <- " + N(0,1)"
+        
         plot(res, 
              xlab = paste0("Value of ", paste(variable, collapse=", ")), 
              ylab = "dcor(X,G)",
-             main = paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
+             main = paste0("X = G * vec of runif(", b[1], ",", b[2],  ")", txtNoise, ", N in ", min(N), ":", max(N),
                            ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
     
