@@ -1,0 +1,81 @@
+load_K <- function() {
+
+tfam<-read.table("~/NFG/raw/NFBC_transpose.tfam")
+## pourcentage of allele share between two indiv IBS  square matrix
+Kdis1= read.table('~/NFG/ler/plink.mibs', sep='')
+Kdis<-2*(1-Kdis1)
+##Other K ibd compute from IBS there is one more individu ??
+pt=read.table("~/NFG/raw/NFGredibsibd.genome" ,header=TRUE, sep='')
+kdisibs<- matrix( 0, nrow = nrow(tfam)+1,ncol = nrow(tfam)+1)
+kdisibd<- matrix(data = 0, nrow = nrow(tfam)+1,ncol = nrow(tfam)+1)
+for (j in 1:nrow(pt))
+{kdisibs[pt$IID1[j],pt$IID2[j]]<-pt$PI_HAT[j]
+kdisibd[pt$IID1[j],pt$IID2[j]]<-pt$DST[j]
+kdisibs[pt$IID2[j],pt$IID1[j]]<-pt$PI_HAT[j]
+kdisibd[pt$IID2[j],pt$IID1[j]]<-pt$DST[j]
+}
+for (j in 1:(nrow(tfam)+1))
+{kdisibs[j,j]<-0
+kdisibd[j,j]<-1}
+kdisibs<- 2*(1-kdisibs)
+kdisibd<2*kdisibd
+kdisibs<-kdisibs[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
+kdisibd<-kdisibd[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
+write.table(kdisibd,file="~/NFG/raw/kdisibd")
+write.table(kdisibs,file="~/NFG/raw/kdisibs")
+#kdisibs<-read.table("~/NFG/raw/kdisibs")
+#kdisibd<-read.table("~/NFG/raw/kdisibd")
+
+
+
+##same as Kdis1
+#Kdis2<-read.table("~/NFG/result/plinkdis.mdist")
+
+##GCTA K normalize
+ReadGRMBin=function(prefix, AllN=F, size=4){
+  sum_i=function(i){
+    return(sum(1:i))
+  }
+  BinFileName=paste(prefix,".grm.bin",sep="")
+  NFileName=paste(prefix,".grm.N.bin",sep="")
+  IDFileName=paste(prefix,".grm.id",sep="")
+  id = read.table(IDFileName)
+  n=dim(id)[1]
+  BinFile=file(BinFileName, "rb");
+  grm=readBin(BinFile, n=n*(n+1)/2, what=numeric(0), size=size)
+  NFile=file(NFileName, "rb");
+  if(AllN==T){
+    N=readBin(NFile, n=n*(n+1)/2, what=numeric(0), size=size)
+  }
+  else N=readBin(NFile, n=1, what=numeric(0), size=size)
+  i=sapply(1:n, sum_i)
+  return(list(diag=grm[i], off=grm[-i], id=id, N=N))
+}
+
+
+
+
+
+ # Data are stored in the data/raw directory
+ K_GCTA <- ReadGRMBin(prefix = paste0("~/NFG/raw/Kcgta"))
+
+  # Create the matrix Ki_GCTA from the data
+  # Data come as a lower triangular matrix
+  Ki_GCTA<- diag(nrow(K_GCTA$id))
+  diag(Ki_GCTA) <- K_GCTA$diag
+  Ki_GCTA[lower.tri(Ki_GCTA, diag = F)] <- K_GCTA$off
+  Ki_GCTA <- Ki_GCTA + t(Ki_GCTA) - diag(diag(Ki_GCTA))
+
+  # Give the correct col/row names (this information is used later on to filter data)
+  colnames(Ki_GCTA) <- paste(K_GCTA$id$V1)
+  rownames(Ki_GCTA) <- paste(K_GCTA$id$V1)
+
+
+write.table(Ki_GCTA,file="~/NFG/raw/kcgta")
+
+#identical(K_GCTA$id$V1,tfam$SUBJID)
+
+##all together
+K.divers<-list(K_ibs=kdisibs,K_ibd=kdisibd,K_plink=Kdis1,K_gcta=Ki_GCTA)
+return(K.divers)
+}

@@ -1,0 +1,38 @@
+*******************************************************************
+* Genome-wide Complex Trait Analysis (GCTA)
+* version 1.24.2
+* (C) 2010-2013 Jian Yang, Hong Lee, Michael Goddard and Peter Visscher
+* The University of Queensland
+* MIT License
+*******************************************************************
+Analysis started: Mon Sep 29 14:01:45 2014
+
+Options:
+--bfile /home/nedelec/NFG/raw/NFBC/Mat/NFBC_dbGaP_20091127
+--autosome
+--maf 0.01
+--make-grm
+--out /home/nedelec/NFG/raw/Kcgta
+--thread-num 10
+
+Note: the program will be running on 10 threads.
+
+Reading PLINK FAM file from [/home/nedelec/NFG/raw/NFBC/Mat/NFBC_dbGaP_20091127.fam].
+5402 individuals to be included from [/home/nedelec/NFG/raw/NFBC/Mat/NFBC_dbGaP_20091127.fam].
+Reading PLINK BIM file from [/home/nedelec/NFG/raw/NFBC/Mat/NFBC_dbGaP_20091127.bim].
+364590 SNPs to be included from [/home/nedelec/NFG/raw/NFBC/Mat/NFBC_dbGaP_20091127.bim].
+352506 SNPs from chromosome 1 to chromosome 22 are included in the analysis.
+Reading PLINK BED file from [/home/nedelec/NFG/raw/NFBC/Mat/NFBC_dbGaP_20091127.bed] in SNP-major format ...
+Genotype data for 5402 individuals and 352506 SNPs to be included from [/home/nedelec/NFG/raw/NFBC/Mat/NFBC_dbGaP_20091127.bed].
+Calculating allele frequencies ...
+Pruning SNPs with MAF > 0.01 ...
+After pruning SNPs with MAF > 0.01, there are 327749 SNPs (24757 SNPs with MAF < 0.01).
+Recoding genotypes (individual major mode) ...
+
+Calculating the genetic relationship matrix (GRM) ... (Note: default speed-optimized mode, may use huge RAM)
+GRM of 5402 individuals has been saved in the file [/home/nedelec/NFG/raw/Kcgta.grm.bin] (in binary format).
+Number of SNPs to calcuate the genetic relationship between each pair of individuals has been saved in the file [/home/nedelec/NFG/raw/Kcgta.grm.N.bin] (in binary format).
+IDs for the GRM file [/home/nedelec/NFG/raw/Kcgta.grm.bin] have been saved in the file [/home/nedelec/NFG/raw/Kcgta.grm.id].
+
+Analysis finished: Mon Sep 29 14:03:41 2014
+Computational time: 0:1:56

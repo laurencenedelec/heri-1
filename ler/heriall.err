@@ -1,0 +1,4 @@
+matrixStats v0.10.0 (2014-06-07) successfully loaded. See ?matrixStats for help.
+Error: could not find function "ReadGRMBin"
+Execution halted
+srun: error: sh-5-31: task 0: Exited with exit code 1

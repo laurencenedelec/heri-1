@@ -1,0 +1,1351 @@
+ls()#
+test_fi<-merge(test_pheno,test_ped, by.x=c("SUBJID"),by.y=c("IID"))#
+test_fi<-merge(test_pheno,test_ped, by.x=c("SUBJID"),by.y=c("IID"))#
+#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test <- pheno$SUBJID),by.y=c(test_ped$IID))#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID))#
+#
+test_fi<-merge(test_pheno,test_ped, by.x=test_pheno$SUBJID,by.y=test_ped$IID )#
+#
+#
+testpheno<-test_pheno#
+testped<-test_ped#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID) )#
+#
+#
+#
+head(testpheno)#
+head(testped)#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID) )#
+#
+#
+#
+test_ped = read.table('~/Documents/data/test6', header=T,sep='')#
+test_pheno= read.table('~/Documents/data/joue/pheno2', header=T, sep='')#
+attach (test_pheno)#
+attach(test_ped)#
+testfi<-merge(testpheno,testped, by.x=c(testpheno$SUBJID),by.y=c(testped$IID))#
+testfi<-merge(test_pheno,test_ped, by.x=c(testpheno$SUBJID),by.y=c(testped$IID))#
+testfi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID))#
+#
+testfi<-merge(test_pheno,test_ped, by.x=c('SUBJID'),by.y=c('IID')#
+#
+#
+)#
+testfi#
+detach(test_ped)#
+detach(test_pheno)#
+attach(test_fi)#
+library(energy)#
+library(MASS)#
+library(energy)#
+testfn<-testfi#
+for (j in 2:2278)#
+is.na(testfn[,j]) <- testfn[,j]=="X"#
+#
+}#
+}#
+)#
+}#
+)#
+#
+}#
+)#
+#
+#
+testfn<-testfi#
+for (j in 2:2278)#
+{is.na(testfn[,j]) <- testfn[,j]=="X"}#
+#
+#
+head(testfn)#
+testfn[,]=='X'#
+#
+#
+#
+for (j in 2:35)#
+{is.na(testfn[,j]) <- testfn[,j]=="X"}#
+#
+#
+#
+testfnr<-testfn[,c(-15,-17,-18)]#
+testfrm<-na.omit(testfnr)#
+nrow(testfrm)#
+testfnr2<-testfn[,c(-15,-17,-18,-19)]#
+#
+testfrm2<-na.omit(testfnr2)#
+#
+nrow(testfrm2)#
+testfn{1:30,1:30]#
+testfn[1:30,1:30]#
+#
+testfnr2<-testfn[,c(-15,-17,-18,-21)]#
+#
+#
+testfrm2<-na.omit(testfnr2)#
+#
+#
+nrow(testfrm2)#
+#
+testfnr2<-testfn[,c(-15,-17,-18,-22)]#
+#
+#
+#
+testfrm2<-na.omit(testfnr2)#
+#
+#
+#
+nrow(testfrm2)#
+#
+#
+testfn{1:60,1:30]#
+#
+testfn[1:60,1:30]#
+#
+#
+testfn[1:4000,1:30]#
+#
+#
+#
+testfnr2<-testfn[,c(-15,-17,-18,-23)]#
+#
+#
+#
+#
+testfrm2<-na.omit(testfnr2)#
+#
+#
+#
+#
+nrow(testfrm2)#
+#
+#
+#
+testfnr<-testfn[,c(-15,-17,-18)]#
+testfnr[1,]#
+testfnr[1,1:30]#
+#
+testfnrm<-na.omit[testfnr]#
+testfrm<-na.omit(testfnr)#
+#
+#
+#
+#
+#
+dcor(testfrm[,1],testfrm[,27:2272],1)}#
+#
+#
+#
+dcor(testfrm[,1],testfrm[,27:2272],1)#
+#
+#
+#
+#
+testfrm[1,1:30]#
+testfrm[1,1:28]#
+#
+testfrm<-testfrm[,-28]#
+#
+#
+testfrm[1,1:28]#
+#
+#
+dcor(testfrm[,7],testfrm[,29:2272],1)#
+#
+#
+#
+#
+dcor(testfrm[,8],testfrm[,29:2272],1)#
+#
+#
+#
+#
+#
+dcor(testfrm[,9],testfrm[,29:2272],1)#
+#
+#
+#
+#
+#
+#
+dcor(testfrm[,10],testfrm[,29:2272],1)#
+#
+#
+dcor(testfrm[,11],testfrm[,29:2272],1)#
+#
+dcor(testfrm[,12],testfrm[,29:2272],1)#
+#
+#
+dcor(testfrm[,13],testfrm[,29:2272],1)#
+#
+#
+#
+dcor(testfrm[,16],testfrm[,29:2272],1)#
+#
+#
+#
+#
+dcor(testfrm[,17],testfrm[,29:2272],1)#
+#
+#
+#
+#
+#
+dcor(testfrm[,21],testfrm[,29:2272],1)#
+#
+#
+#
+#
+#
+#
+dcor(testfrm[,22],testfrm[,29:2272],1)#
+#
+#
+#
+#
+#
+#
+#
+testfin[,1:30]#
+ls()#
+testfn[,1:30]#
+#
+testfn[,1:21]#
+#
+#
+#
+#
+#
+ls()#
+rm testfnr2#
+rm (testfnr2)#
+#
+rm(testfrm2)#
+testfrm[,1:21]#
+testfrm[,22:27]#
+#
+head(testfn)#
+#
+#
+testfn[1,1:30]#
+#
+#
+#
+testfn[1,1:33]#
+#
+#
+#
+#
+for (Var in names(testfn)) {#
+    missing <- sum(is.na(testfn[,Var]))#
+    if (missing > 0) {#
+        print(c(Var,missing))#
+    }#
+}#
+testfn-2<-testfn[,c(-18,-17)]#
+testfn2<-testfn[,c(-18,-17)]#
+#
+testfn2[1,1:33]#
+testfrm<-na.omit(testfn2)#
+nrow(testfrm)#
+for (Var in names(testfn2)) {#
+    missing <- sum(is.na(testfn2[,Var]))#
+    if (missing > 0) {#
+        print(c(Var,missing))#
+    }#
+}#
+#
+testfn2<-testfn2[,c(-15)]#
+#
+#
+testfrm<-na.omit(testfn2)#
+#
+nrow(testfrm)#
+for (Var in names(testfn2)) {#
+    missing <- sum(is.na(testfn2[,Var]))#
+    if (missing > 0) {#
+        print(c(Var,missing))#
+    }#
+}#
+#
+#
+testfn2[1,1:30]#
+testfn2<-testfn2[,c(-28)]#
+#
+testfn2[1,1:30]#
+#
+testfrm<-testfn2#
+testfrm<-na.omit(testfn2)#
+#
+nrow(testfrm)#
+testfrm[1,1:28]#
+#
+testfn[1:40,1:28]#
+#
+#
+sum(testfn[,15])==1)#
+sum(testfn[,15]==1)#
+#
+sum(!testfn[,15]==1)#
+#
+#
+sum(testfn[,15]==1)#
+#
+#
+#
+testfn[,15]==1#
+#
+#
+#
+#
+sum(na.omit(testfn[,15]==1))#
+#
+#
+#
+#
+#
+ncol(testfrm)#
+for (i in 7:26) {dc[1,i]<-dcor(testfrm[,j],testfrm[,27:2272],1)}#
+#
+dcor()#
+ls()#
+test_fi<-merge(test_pheno,test_ped, by.x=c("SUBJID"),by.y=c("IID"))#
+test_fi<-merge(test_pheno,test_ped, by.x=c("SUBJID"),by.y=c("IID"))#
+#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test <- pheno$SUBJID),by.y=c(test_ped$IID))#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID))#
+#
+test_fi<-merge(test_pheno,test_ped, by.x=test_pheno$SUBJID,by.y=test_ped$IID )#
+#
+#
+testpheno<-test_pheno#
+testped<-test_ped#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID) )#
+#
+#
+#
+head(testpheno)#
+head(testped)#
+test_fi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID) )#
+#
+#
+#
+test_ped = read.table('~/Documents/data/test6', header=T,sep='')#
+test_pheno= read.table('~/Documents/data/joue/pheno2', header=T, sep='')#
+attach (test_pheno)#
+attach(test_ped)#
+testfi<-merge(testpheno,testped, by.x=c(testpheno$SUBJID),by.y=c(testped$IID))#
+testfi<-merge(test_pheno,test_ped, by.x=c(testpheno$SUBJID),by.y=c(testped$IID))#
+testfi<-merge(test_pheno,test_ped, by.x=c(test_pheno$SUBJID),by.y=c(test_ped$IID))#
+#
+testfi<-merge(test_pheno,test_ped, by.x=c('SUBJID'),by.y=c('IID')#
+#
+#
+)#
+testfi#
+detach(test_ped)#
+detach(test_pheno)#
+attach(test_fi)#
+library(energy)#
+library(MASS)#
+library(energy)#
+testfn<-testfi#
+for (j in 2:2278)#
+is.na(testfn[,j]) <- testfn[,j]=="X"#
+#
+}#
+}#
+)#
+}#
+)#
+#
+}#
+)#
+#
+#
+testfn<-testfi#
+for (j in 2:2278)#
+{is.na(testfn[,j]) <- testfn[,j]=="X"}#
+#
+#
+head(testfn)#
+testfn[,]=='X'#
+#
+#
+#
+for (j in 2:35)#
+{is.na(testfn[,j]) <- testfn[,j]=="X"}#
+#
+#
+#
+testfnr<-testfn[,c(-15,-17,-18)]#
+testfrm<-na.omit(testfnr)#
+nrow(testfrm)#
+testfnr2<-testfn[,c(-15,-17,-18,-19)]#
+#
+testfrm2<-na.omit(testfnr2)#
+#
+nrow(testfrm2)#
+testfn{1:30,1:30]#
+testfn[1:30,1:30]#
+#
+testfnr2<-testfn[,c(-15,-17,-18,-21)]#
+#
+#
+testfrm2<-na.omit(testfnr2)#
+#
+#
+nrow(testfrm2)#
+#
+testfnr2<-testfn[,c(-15,-17,-18,-22)]#
+#
+#
+#
+testfrm2<-na.omit(testfnr2)#
+#
+#
+#
+nrow(testfrm2)#
+#
+#
+testfn{1:60,1:30]#
+#
+testfn[1:60,1:30]#
+#
+#
+testfn[1:4000,1:30]#
+#
+#
+#
+testfnr2<-testfn#
+#
+q#
+q#
+q#
+#
+}#
+}#
+q#
+dcor()#
+?dcor#
+ls()#
+colSums(is.na(testfn))#
+count<-0#
+> for (i in 1:nrow(testfnr))#
+>       {#
+>       for (j in 1:ncol(testfnr)) {if (is.na(testfnr[i,j])) count<-count+1}#
+>       Result[i,1]<-((count/(ncol(Matrix)))*100);#
+>       count<-0#
+>       }#
+> Result#
+count<-0#
+ for (i in 1:nrow(testfnr))#
+       {#
+       for (j in 1:ncol(testfnr)) {if (is.na(testfnr[i,j])) count<-count+1}#
+       Result[i,1]<-((count/(ncol(Matrix)))*100);#
+       count<-0#
+       }#
+ Result#
+#
+count<-0#
+ for (i in 1:nrow(testfnr))#
+       {#
+       for (j in 1:ncol(testfnr)) {if (is.na(testfnr[i,j])) count<-count+1}#
+       Result[i,1]<-((count/(ncol(testfnr)))*100);#
+       count<-0#
+       }#
+ Result#
+#
+#
+Result<-testfnr[,1]#
+count<-0#
+ for (i in 1:nrow(testfnr))#
+       {#
+       for (j in 1:ncol(testfnr)) {if (is.na(testfnr[i,j])) count<-count+1}#
+       Result[i,1]<-((count/(ncol(testfnr)))*100);#
+       count<-0#
+       }#
+ Result#
+#
+#
+#
+dc<-cbind(rep(0,220),rep(0,220),rep(0,220),rep(0,220),rep(0,220),rep(0,220),rep(0,220),rep(0,220),rep(0,220))#
+dc#
+dc<-cbind(rep(0,210),rep(0,210),rep(0,210),rep(0,210),rep(0,210),rep(0,210),rep(0,210),rep(0,210),rep(0,210))#
+dc#
+i<-0#
+for (k in c(5,7,8,10,11,12,22,23,24))#
+ {d<-30#
+ i<-i+1#
+ f<-130#
+     for (j in 1:210){ dc[j,i]<-f#
+         d<-d+100#
+         f<-f+100}#
+ }#
+cd#
+dc#
+fin = read.table('~/Documents/data/finrun.o530421',sep='')#
+fin = read.table('~/Documents/data/finrun.o530421',sep='')#
+#
+fin = read.table('~/Documents/data/finrun.o530421',skip=1,sep='')#
+#
+#
+fin = read.table('~/Documents/data/finrun.o530421',skip=1,sep='')#
+#
+#
+#
+fin#
+m<-testfnr$SUBJID#
+mean_ma = function(ma) (for j in 2:ncol(ma)){ m[j]<-0  k<-0  for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } #
+ m[j]<-m[j]/k) }#
+mean_ma(testfnr) #
+rm_na = function(ma) { for (i in 30:nrow(ma)) {#
+for (j in 1:ncol(ma)) {  if (is.na(ma[i,j])==TRUE ) {  ma[i,j]<-ma[i]   } } }  }#
+ rm_na(testfnr)#
+#
+m<-testfnr$SUBJID#
+mean_ma = function(ma) (for j in 2:ncol(ma){ m[j]<-0  k<-0  for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } #
+ m[j]<-m[j]/k) }#
+mean_ma(testfnr) #
+rm_na = function(ma) { for (i in 30:nrow(ma)) {#
+for (j in 1:ncol(ma)) {  if (is.na(ma[i,j])==TRUE ) {  ma[i,j]<-ma[i]   } } }  }#
+ rm_na(testfnr)#
+#
+#
+m<-testfnr$SUBJID#
+mean_ma = function(ma) (for j in 2:ncol(ma){ m[j]<-0  k<-0  for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } #
+ m[j]<-m[j]/k) }#
+mean_ma(testfnr) #
+rm_na = function(ma) { for (i in 30:nrow(ma)) {#
+for (j in 1:ncol(ma)) {  if (is.na(ma[i,j])==TRUE ) {  ma[i,j]<-ma[i]   } } }  }#
+ rm_na(testfnr)#
+#
+#
+#
+m<-testfnr$SUBJID#
+mean_ma = function(ma) (for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } #
+ m[j]<-m[j]/k) }#
+mean_ma = function(ma){ (for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k) }}#
+mean_ma = function(ma){ (for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-(m[j])/k) }}#
+#
+mean_ma = function(ma){ for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-(m[j])/k) }}#
+#
+#
+mean_ma = function(ma){ for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-(m[j])/k }}#
+#
+#
+#
+mean_ma = function(ma){ for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+mean_ma = function(ma){ for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }#
+#
+#
+#
+#
+#
+mean_ma = function(ma){ for j in 2:ncol(ma)){ m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k #
+#
+#
+#
+#
+#
+#
+mean_ma = function(ma){ for j in 2:ncol(ma){ m[j]<-0  k<-0 #
+ for i in 1:nrow(ma) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+#
+#
+#
+m[1,2]#
+testfnr[1,3]#
+is.na(testfnr[1,3])#
+is.na(testfnr[1,3])==true#
+#
+is.na(testfnr[1,3])=="TRUE"#
+#
+is.na(testfnr[1,3])=="FALSE"#
+#
+#
+mean_ma = function(ma){ for (j in 2:ncol(ma)) { m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+#
+#
+#
+#
+mean_ma = function(ma) {for (j in 2:ncol(ma)) { m[j]<-0  k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+mean_ma = function(ma) {for (j in 2:ncol(ma))   { m[j]<-0  k<-0 for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+mean_ma = function(ma) {for (j in 2:ncol(ma))   { m[j]<-0  k<-0 for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== FALSE) {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+mean_ma = function(ma) {for (j in 2:ncol(ma))   { m[j]<-0  k<-0 for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== "FALSE") {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+mean_ma = function(ma) {for (j in 2:ncol(ma))   { m[j]<-0  k<-0 for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== "FALSE") {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1   } }#
+ m[j]<-m[j]/k }}#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+mean_ma = function(ma){ #
+for (j in 2:ncol(ma)){#
+ m[j]<-0 #
+ k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== "FALSE") {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1 } #
+}#
+ m[j]<-(m[j])/k) }#
+}#
+mean_ma = function(ma){ #
+for (j in 2:ncol(ma)){#
+ m[j]<-0 #
+ k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== "FALSE") {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1 } #
+}#
+ m[j]<-(m[j])/k) }#
+}#
+#
+mean_ma = function(ma){ #
+for (j in 2:ncol(ma)){#
+ m[j]<-0 #
+ k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== "FALSE") {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1 } #
+}#
+ m[j]<-m[j]/k) }#
+}#
+#
+#
+mean_ma = function(ma){ #
+for (j in 2:ncol(ma)){#
+ m[j]<-0 #
+ k<-0 #
+ for (i in 1:nrow(ma)) {            #
+ if (is.na(ma[i,j])== "FALSE") {#
+ m[j]=m[j]+ma[i,j] #
+ k=k+1 } #
+}#
+ m[j]<-m[j]/k}#
+}#
+#
+#
+#
+testfnrc<-testfnr#
+mean_ma(testfnr) #
+#
+#
+#
+#
+#
+warning()#
+testfnrc{1:20,30:200]#
+testfnrc[1:20,30:200]#
+#
+testfnr[1:20,30:200]#
+testfnrc<-testfnr#
+mean_ma(testfnr) #
+#
+warning()#
+warnings()#
+#
+ls()#
+rm(testfn2)#
+rm(testfnr2)#
+rm(testfrm2)#
+rm(test_ped)#
+ls()#
+rm(test_pheno)#
+rm(fin)#
+ls()#
+rm(count)#
+rm(test_fi)#
+rm(testfi)#
+ls#
+ls()#
+testfnrc<-testfnr#
+mean_ma(testfnr) #
+#
+#
+m<-testfnr$SUBJID#
+m[1]#
+m[2000]#
+head(testfnr)#
+testfnrc<-testfnr#
+mean_ma(testfnr) #
+#
+#
+#
+ls()#
+rm_na = function(ma) { for (i in 30:nrow(ma)) {#
+ok <- !is.na(ma[i,]) #
+ma[i,!ok] <- mean(ma[i,ok]) #
+ }   }#
+rm_na(testfnr)#
+#
+is.na(testfnr)#
+rm_na = function(ma) { for (i in 30:nrow(ma)) {#
+ok <- !is.na(ma[i,]) #
+ma[i,!ok] <- mean(ma[i,ok]) #
+ }   }#
+rm_na(testfnr)#
+#
+#
+ok <- !is.na(ma[1,]) #
+ok <- !is.na(testfnr[1,]) #
+#
+ok#
+!ok#
+#
+ok#
+mean(testfn[1,][ok]#
+#
+)#
+mean(testfn[1,ok])#
+#
+#
+mean(testfn[1,ok])#
+#
+#
+#
+testfnr(1:3,1:10)#
+testfnr[1:3,1:10]#
+#
+rm_na = function(ma) { for (j in 30:nrow(ma)) {#
+ok <- !is.na(ma[,j]) #
+ma[!ok,j] <- mean(ma[ok,j]) #
+ }   }#
+rm_na(testfnr)#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+ok <- !is.na(ma[,1]) #
+ok <- !is.na(testfnr[,1]) #
+#
+wicht(ok)#
+which(ok)#
+ok <- !is.na(testfnr[,31]) #
+#
+#
+mean(testfnr[ok,31])#
+ok#
+ok <- !is.na(testfnr[,38]) #
+#
+#
+#
+ok#
+mean(testfnr[ok,38])#
+#
+rm_na = function(ma) { for (j in 30:nrow(ma)) {#
+ok <- !is.na(ma[,j]) #
+ma[!ok,j] <- mean(ma[ok,j]) #
+ }   }#
+rm_na(testfnr)#
+#
+#
+#
+rm_na = function(ma) { for (j in 30:ncol(ma)) {#
+ok <- !is.na(ma[,j]) #
+ma[!ok,j] <- mean(ma[ok,j]) #
+ }   }#
+rm_na(testfnr)#
+#
+#
+#
+#
+colSums(is.na(testfnr)) #
+rm_na = function(ma) { for (j in 30:nrow(ma)) {#
+ok <- !is.na(ma[,j]) #
+ma[!ok,j] <- mean(ma[ok,j]) #
+ }   }#
+rm_na(testfnr)#
+#
+#
+#
+#
+ls()#
+rm_na = function(ma) { for (j in 30:nrow(ma)) {#
+ok <- !is.na(ma[,j]) #
+ma[!ok,j] <- mean(ma[ok,j]) #
+ }   }#
+rm_na(testfnr)#
+#
+#
+#
+#
+#
+rm_na = function(ma) { for (j in 30:ncol(ma)) {#
+ok <- !is.na(ma[,j]) #
+ma[!ok,j] <- mean(ma[ok,j]) #
+ }   }#
+rm_na(testfnr)#
+#
+#
+#
+#
+#
+#
+colSums(is.na(testfnr)) #
+#
+testfnr[1:40,30:100]#
+ok#
+ok <- !is.na(testfnr[,40]) #
+testfnr[!ok,40]<- mean(testfnr[ok,40])#
+which(ok)#
+which(!ok)#
+#
+testfnr[2551,40]#
+is.na(testfnr[2551,40])#
+colSums(is.na(testfnr)) #
+#
+#
+colSums(is.na(testfnr))[40] #
+#
+#
+#
+ls()#
+#
+for (j in 30:ncol(ma)) {#
+ok <- !is.na(testfnr[,j]) #
+testfnr[!ok,j] <- mean(testfnr)[ok,j]) #
+ }   #
+#
+#
+#
+#
+#
+#
+#
+#
+for (j in 30:ncol(ma)) {#
+ok <- !is.na(testfnr[,j]) #
+testfnr[!ok,j] <- mean(testfnr)[ok,j] #
+ }   #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+for (j in 30:ncol(testfnr)) {#
+ok <- !is.na(testfnr[,j]) #
+testfnr[!ok,j] <- mean(testfnr)[ok,j]) #
+ }   #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+for (j in 30:ncol(testfnr)) {#
+ok <- !is.na(testfnr[,j]) #
+testfnr[!ok,j] <- mean(testfnr)[ok,j]#
+ }   #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+ncol(tesfnr)#
+ncol(testfnr)#
+#
+j<-0#
+for (j in 30:ncol(testfnr)) {#
+ok <- !is.na(testfnr[,j]) #
+testfnr[!ok,j] <- mean(testfnr)[ok,j]#
+ }   #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+ls#
+ls()#
+rm(ok)#
+for (j in 30:ncol(testfnr)) {#
+ok <- !is.na(testfnr[,j]) #
+testfnr[!ok,j] <- mean(testfnr)[ok,j]#
+ }   #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+ok#
+rm(ok)#
+ls#
+for (j in 30:ncol(testfnr)) {#
+ok <- !is.na(testfnr[,j]) #
+testfnr[!ok,j] <- mean(testfnr[ok,j])#
+ }   #
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+colSums(is.na(testfnr))[40] #
+#
+#
+#
+#
+colSums(is.na(testfnr)) #
+#
+#
+#
+#
+#
+ls()#
+dtoto<-dcor.ttest(testfrm[,25],testfrm[,26])#
+library(energy)#
+#
+dtoto<-dcor.ttest(testfrm[,25],testfrm[,26])#
+#
+dtoto<-dcor(testfrm[,25],testfrm[,26])#
+#
+#
+dtoto#
+dtoto<-dcor.ttest(testfrm[,25],testfrm[,26])#
+#
+#
+library(MASS)#
+library(energy)#
+#
+#
+dtoto<-dcor.ttest(testfrm[,25],testfrm[,26])#
+#
+#
+#
+dtoto<-dcor.t(testfrm[,25],testfrm[,26])#
+#
+#
+#
+#
+dtoto<-dcor.t(testfrm[,25],testfrm[,26])#
+#
+#
+#
+#
+#
+library(boot)#
+dtoto<-dcor.t(testfrm[,25],testfrm[,26])#
+#
+#
+#
+#
+#
+#
+library(energy)#
+#
+#
+#
+dcor.t#
+man dcor.t#
+dcor.t()#
+dcor()#
+load(energy)#
+library(energy)#
+#
+#
+#
+#
+dcor.ttest()#
+dcor()#
+dtoto<-dcor.t(testfrm[,25],testfrm[,26])#
+#
+#
+#
+#
+#
+#
+#
+dtoto<-dcor.ttest(testfrm[,25],testfrm[,26])#
+#
+#
+#
+#
+#
+#
+#
+#
+testfrm=read.table('~/Documents/data/solomon/data/april/data/letest',sep='')#
+testfrm=read.table('Documents/data/solomon/data/april/data/letest',sep='')#
+#
+testfrm=read.table('documents/data/solomon/data/april/data/letest',sep='')#
+#
+#
+testfrm=read.table('Documents/data/solomon/april/data/letest',sep='')#
+#
+#
+#
+testfrm=read.table('~/Documents/data/solomon/april/data/letest',sep='')#
+#
+#
+#
+#
+testfrm=read.table('Documents/data/solomon/april/data/5pvalue10',sep='')#
+#
+#
+#
+#
+testfrm=read.table('Documents/data/solomon/april/data/5pvalue10',sep='')#
+#
+#
+#
+#
+#
+testfrm=read.table('~/Documents/data/solomon/april/data/5pvalue10',sep='')#
+#
+#
+#
+#
+#
+#
+plot(testfrm)#
+plot(testfrm[1,])#
+#
+plot(testfrm[1,])#
+#
+#
+plot(testfrm[,1])#
+#
+#
+Repli<-1500#
+chr<-4#
+pas<-5#
+pvalue=read.table(paste("~/NFG/resultv/Hdap",chr,"pstand",sep=""),header=T,sep=" ")#
+pdf(file= paste("~/NFG/result/toutH", names(pvalue)[b],"-ch",chr,".pdf",sep=""))#
+par(mfrow=c(4,1), mar=c(1.1,4.1,3.5,2.1))#
+plot(pvalue[,2]/1000000,-log(pvalue[, b],10) ,col="red",pch=18,xlim=c(40,90),ylim=c(0,10),ann=FALSE)#
+##sel=read.table(paste("~/NFG/result/allessaiHdap",chr,"pR","repli=",Repli,"pas=",pas,"select",sep=""))#
+##point(sel[,3]/1000000,-log(sel[,b+1],10) ,col="blue",pch=19)#
+title(xlab=paste("Chr",chr,"pheno=",b,"position (MB)by stand",sep=""), col.lab=rgb(0,0.5,0))#
+title(ylab="b:-log10(p-vlue) stand",col.lab=rgb(.5,0,0))#
+#
+sel=read.table(paste("~/NFG/result/allessaiHdap",chr,"pR","repli=",Repli,"pas=",pas,sep=""))#
+## pdf(file=paste("~/NFG/result/allessaiHd",names(ptdv)[b],"-",chr,"pR","repli=",Repli,"pas=",pas,".pdf",sep=""))#
+plot(sel[,2]/1000000,-log(sel[,1],10) ,col="red",pch=18,xlim=c(40,90),ylim=c(0,5),ann=FALSE)#
+title(xlab=paste("Chr=",chr, " position(Mb) by dcov-pas=",pas," pheno=",names(ptdv)[b]," repli=",500,sep=""), col.lab=rgb(0,0.5,0))#
+title(ylab=paste(names(ptdv)[b],":-log10(p-vlue) repli",sep=""),col.lab=rgb(.5,0,0))#
+#
+##pcvpas<-read.table(paste("~/NFG/result/allessaiHdap",chr,"pcvsecond",pas,sep=""))#
+##pdf(file=paste("~/NFG/result/allessaiHd",names(pcvpas)[b],"-",chr,"pcvsecond",pas,".pdf",sep=""))#
+##plot(pcvpas[,2]/1000000,-log(pcvpas[,b],10) ,col="red",pch=18,xlim=c(40,90),ylim=c(0,4),ann=FALSE)#
+##title(xlab=paste("Chr",chr, "position(Mb) by dcov-pas=",pas,"pheno=",names(pcvpas)[b]," seconddcov",sep=""), col.lab=rgb(0,0.5,0))#
+##title(ylab=paste(names(pcvpas)[b],"(p-vlue) second",sep=""),col.lab=rgb(.5,0,0))#
+#
+dcor=read.table(paste("~/NFG/result/allessaiHdap",chr,"dr",5,sep=""),header=T,sep=" ")#
+##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))#
+plot(dcor[,2]/1000000,dcor[, b] ,col="red",pch=18,xlim=c(40,90),ylim=c(0,.1),ann=FALSE)#
+title(xlab=paste("Chr=",chr," pas=",pas," pheno=",names(dcor)[b]," position (MB) dcor",sep=""), col.lab=rgb(0,0.5,0))#
+title(ylab="dcov",col.lab=rgb(.5,0,0))#
+#
+dcor=read.table(paste("~/NFG/result/allessaiHdap",chr,"dr",10,sep=""),header=T,sep=" ")#
+##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))#
+plot(dcor[,2]/1000000,dcor[, b] ,col="red",pch=18,xlim=c(40,90),ylim=c(0,.1),ann=FALSE)#
+title(xlab=paste("Chr=",chr," pas=",pas," pheno=",names(dcor)[b]," position (MB) dcor",sep=""), col.lab=rgb(0,0.5,0))#
+title(ylab="dcov",col.lab=rgb(.5,0,0))#
+#
+#
+dev.off()#
+#
+load("/Users/laurence/Desktop/PackageCH 2/results/02102014_164924_results_IBD.RData")#
+
+setwd(~Document/data/Sherlock)#
+
+setwd(''~Document/data/Sherlock')#
+#
+
+.#
+
+x#
+
+.#
+
+)#
+
+''#
+
+setwd('~Document/data/Sherlock/ler')#
+#
+#
+
+setwd('~Document/data/Sherlock')#
+#
+#
+#
+
+ls()#
+
+setwd('~Document/data/Sherlock')#
+#
+#
+#
+#
+
+ls()#
+#
+
+setwd('~Document/data/Sherlock')#
+#
+#
+#
+#
+#
+
+X=read.table("~/NFG/raw/kgcta")#
+#
+#
+#
+#
+#
+
+X=read.table("~/sherlock/NFG/raw/kgcta")#
+#
+#
+#
+#
+#
+#
+
+X=read.table("~/Documents/data/sherlock/NFG/raw/kgcta")#
+#
+#
+#
+#
+#
+#
+#
+
+X=read.table("~/Documents/data/sherlock/NFG/raw/kcgta")#
+#
+#
+#
+#
+#
+#
+#
+#
+
+X=read.table("~/Documents/data/sherlock/raw/kcgta")#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+PlotHeatmapCorrelationMatrix <- function(X, #
+                                         correlation = FALSE) {#
+  #
+  if(correlation == TRUE) {#
+    # Get the correlation matrix of X#
+    z <- cor(X)#
+  } else {#
+    z <- X#
+  }#
+#
+  # Get colors between white and black#
+  col <- colorRampPalette(c("white", "black"), space="rgb")#
+  #
+  breaks <- seq(min(z), max(z), length.out=10)#
+  #
+  image(z, col=col(length(breaks)-1), breaks=breaks, xaxt="n", yaxt="n", ylab="", xlab="", useRaster=T)#
+#
+}#
+#
+
+PlotHeatmapCorrelationMatrix(X)#
+
+X<-dta.matrix(X)#
+
+PlotHeatmapCorrelationMatrix(X)#
+#
+
+X<-data.matrix(X)#
+#
+
+PlotHeatmapCorrelationMatrix(X)#
+#
+#
+

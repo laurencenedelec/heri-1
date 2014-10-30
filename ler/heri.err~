@@ -1,0 +1,7 @@
+matrixStats v0.10.0 (2014-06-07) successfully loaded. See ?matrixStats for help.
+Warning messages:
+1: closing unused connection 4 (~/NFG/raw/Kcgta.grm.N.bin) 
+2: closing unused connection 3 (~/NFG/raw/Kcgta.grm.bin) 
+Error in Kdis3o$V3 : $ operator is invalid for atomic vectors
+Execution halted
+srun: error: sh-5-31: task 0: Exited with exit code 1
