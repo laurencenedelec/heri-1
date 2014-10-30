@@ -29,11 +29,49 @@ with_debug(load_all(pkg = "PackageCH"))
 options(digits.secs=10)
 Project <- SetupProject()
 
-N_Estimation <- 100
-N <- rep(400, times = N_Estimation)
-N_SNPS <- seq(from = 10, to = 1000, by = (1000-10+10)/N_Estimation)
-N_real_coeff <- rep(0, times = N_Estimation)
-b <- c(2,2)
-variable <- "N_SNPS"
 
-res <- compare_dcor(N, N_SNPS,N_real_coeff, build_SNPs_matrix, b, variable)
+####################
+### Comparison DCOR
+####################
+
+param.list <- list()
+
+N_Estimation <- 50
+param.list[[1]] <- list(N = rep(400, times = N_Estimation),
+                        N_SNPS = seq(from = 10, to = 1000, by = (1000-10+10)/N_Estimation),
+                        N_real_coeff = rep(0, times = N_Estimation),
+                        b = c(2,2),
+                        variable = "N_SNPS",
+                        AddNoise = TRUE)
+                        
+param.list[[2]] <- list(N = rep(400, times = N_Estimation),
+                        N_SNPS = seq(from = 10, to = 1000, by = (1000-10+10)/N_Estimation),
+                        N_real_coeff = rep(0, times = N_Estimation),
+                        b = c(2,2),
+                        variable = "N_SNPS",
+                        AddNoise = FALSE)                        
+
+param.list[[3]] <- list(N = rep(400, times = N_Estimation),
+                        N_SNPS = seq(from = 10, to = 1000, by = (1000-10+10)/N_Estimation),
+                        N_real_coeff = rep(1, times = N_Estimation),
+                        b = c(2,2),
+                        variable = "N_SNPS",
+                        AddNoise = TRUE)
+
+param.list[[4]] <- list(N = rep(400, times = N_Estimation),
+                        N_SNPS = seq(from = 10, to = 1000, by = (1000-10+10)/N_Estimation),
+                        N_real_coeff = rep(1, times = N_Estimation),
+                        b = c(2,2),
+                        variable = "N_SNPS",
+                        AddNoise = FALSE)
+
+# Do estimation and generate parameters
+for(i in 1:length(param.list)) {
+    res <- compare_dcor(N = param.list[[i]]$N, 
+                        N_SNPS = param.list[[i]]$N_SNPS,
+                        N_real_coeff = param.list[[i]]$N_real_coeff, 
+                        get_snps_matrix = build_SNPs_matrix, 
+                        b = param.list[[i]]$b, 
+                        variable = param.list[[i]]$variable,
+                        AddNoise = param.list[[i]]$AddNoise)
+}
