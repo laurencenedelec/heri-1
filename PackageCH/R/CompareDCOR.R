@@ -154,11 +154,13 @@ compare_dcor <- function(N,
 
     ggsave(plot = p,
            filename = paste0("results/plots/ExperimentalDcor_", 
+                             as.character(substitute(get_alpha)), "_",
                              format(Sys.time(), "%d%m%Y_%H%M%S"),
                              ".pdf"),
            width = 17, height = 7)
     
     save(list = "res", file = paste0("results/ExperimentalDcor_", 
+                                     as.character(substitute(get_alpha)), "_",
                                      format(Sys.time(), "%d%m%Y_%H%M%S"),
                                      ".RData"))
     # return
