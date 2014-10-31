@@ -36,7 +36,7 @@ Project <- SetupProject()
 
 param.list <- list()
 
-N_Estimation <- 500
+N_Estimation <- 5
 N_MAX <- 5000
 param.list[[1]] <- list(N = rep(500, times = N_Estimation),
                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
@@ -94,7 +94,15 @@ for(i in 1:length(param.list)) {
                         product_snps_alpha = product_snps_alpha_dominant,
                         b = param.list[[i]]$b, 
                         variable = param.list[[i]]$variable)
-        
+    
+    res[[length(param.list) + i]] <- compare_dcor(N = param.list[[i]]$N, 
+                             N_SNPS = param.list[[i]]$N_SNPS,
+                             N_real_coeff = param.list[[i]]$N_real_coeff, 
+                             get_snps_matrix = build_SNPs_matrix, 
+                             get_alpha = build_alpha,
+                             b = param.list[[i]]$b, 
+                             variable = param.list[[i]]$variable)
+    
     cat(paste0("= End of ", i, "/", length(param.list), "\n"))
                        
 }
