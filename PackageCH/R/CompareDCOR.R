@@ -1,5 +1,6 @@
 library(energy)
 library(matrixStats)
+library(reshape2)
 
 #' Build alpha s.t. X = G * alpha
 #'
@@ -44,7 +45,6 @@ build_SNPs_matrix <- function(N, N_SNPS, snps_value = c(0,1,2)) {
 #' @param get_snps_matrix function that gives a SNPs matrix
 #' @param b X = G * runif(, -b, b)
 #' @param variable the variable that vary
-#' @param AddNoise if T it adds noise to X = G * alpha + epsilon with N(0,1)
 #' @return export a pdf file
 #' @author Julien Duvanel
 #' @export
@@ -54,8 +54,7 @@ compare_dcor <- function(N,
                          get_snps_matrix,
                          get_alpha,
                          b,
-                         variable = "",
-                         AddNoise = FALSE) {
+                         variable = "") {
     
     # We have to check that dimensions agree
     if(length(N) != length(N_SNPS) | length(N) != length(N_real_coeff)) stop("Problem, length of N has to be the same as N_SNPS.")    
@@ -73,15 +72,12 @@ compare_dcor <- function(N,
                 
         # Build fake trait X
         X <- M %*% alpha
-        
-        if(AddNoise == TRUE) {
-            X <- X + rnorm(N[i], mean = 0, sd = 0)
-        }
-        
+
         # Do dcor estimation
         res <- rbind(res, 
                      c(get(variable[1])[i], 
                        dcor(X, M),
+                       dcor(X + rnorm(N[i], mean = 0, sd = 1), M),
                        # This last line is used to compare dcor(X,Y)
                        # when X and Y are completly independent
                        # (this is done by simulating X and then generating a new SNPs matrix)
@@ -92,18 +88,16 @@ compare_dcor <- function(N,
     
     res <- data.frame(var = res[,1],
                       X_from_G = res[,2],
-                      X_not_from_G = res[,3])
+                      X_from_G_plus_noise = res[,3],
+                      X_not_from_G = res[,4])
 
     # Export a pdf file
-    txtNoise <- ""
-    if(AddNoise == TRUE) txtNoise <- " + N(0,1)"
-
-    p <- ggplot(data = melt(res, measure.vars = c("X_from_G", "X_not_from_G")),
+    p <- ggplot(data = melt(res, measure.vars = c("X_from_G", "X_from_G_plus_noise", "X_not_from_G")),
                 aes_string(x = "var" , y = "value")) +
-            geom_point(aes_string(color = "variable")) +
+            geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 1.5, h = 0)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("dcor(X,G)") + 
-            ggtitle(paste0("X = G * vec of runif(", b[1], ",", b[2],  ")", txtNoise, ", N in ", min(N), ":", max(N),
+            ggtitle(paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
                            ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
 
@@ -113,6 +107,9 @@ compare_dcor <- function(N,
                              ".pdf"),
            width = 17, height = 7)
     
+    save(list = "res", file = paste0("results/ExperimentalDcor_", 
+                                     format(Sys.time(), "%d%m%Y_%H%M%S"),
+                                     ".RData"))
     # return
     list(res = res, X = X, M = M)    
 }
