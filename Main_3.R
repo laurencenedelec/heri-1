@@ -36,7 +36,7 @@ Project <- SetupProject()
 
 param.list <- list()
 
-N_Estimation <- 5
+N_Estimation <- 500
 N_MAX <- 5000
 param.list[[1]] <- list(N = rep(500, times = N_Estimation),
                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
