@@ -116,6 +116,7 @@ compare_dcor <- function(N,
         
         # Build a fake genome matrix
         M <- get_snps_matrix(N[i], N_SNPS[i])
+        M_tilde <- get_snps_matrix(N[i], N_SNPS[i])
         alpha <- get_alpha(N_real_coeff = N_real_coeff[i], 
                            N_SNPS = N_SNPS[i], 
                            b = b)
@@ -131,7 +132,9 @@ compare_dcor <- function(N,
                        # This last line is used to compare dcor(X,Y)
                        # when X and Y are completly independent
                        # (this is done by simulating X and then generating a new SNPs matrix)
-                       dcor(X, get_snps_matrix(N[i], N_SNPS[i]))))
+                       dcor(X, M_tilde),
+                       lm(as.vector(X %*% t(X)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
+                       lm(as.vector(X %*% t(X)) ~ as.vector(as.matrix(dist(M_tilde))))$coefficients[2]))
         
         cat("-> i = ", i, "/", length(N), "\n")
     }
@@ -139,10 +142,16 @@ compare_dcor <- function(N,
     res <- data.frame(var = res[,1],
                       X_from_G = res[,2],
                       X_from_G_plus_noise = res[,3],
-                      X_not_from_G = res[,4])
+                      X_not_from_G = res[,4],
+                      lm_from_G = res[,4],
+                      lm_not_from_G = res[,5])
 
     # Export a pdf file
-    p <- ggplot(data = melt(res, measure.vars = c("X_from_G", "X_from_G_plus_noise", "X_not_from_G")),
+    p <- ggplot(data = melt(res, measure.vars = c("X_from_G", 
+                                                  "X_from_G_plus_noise", 
+                                                  "X_not_from_G",
+                                                  "lm_from_G",
+                                                  "lm_not_from_G")),
                 aes_string(x = "var" , y = "value")) +
             geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 1.5, h = 0)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
