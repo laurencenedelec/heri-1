@@ -8,7 +8,7 @@ print("dcorpart")
 
 library(energy)
 library(plyr)
-
+ 
  testped = read.table(paste("~/NFG/raw/Hd",chr,"clA.raw",sep=""), header=T,sep='')
  testpheno= read.table('~/NFG/raw/Pheno', header=TRUE, sep='',skip=11)
  gsub("X","NA",testpheno)
