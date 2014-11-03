@@ -123,6 +123,8 @@ compare_dcor <- function(N,
         noise <- rnorm(N[i], mean = 0, sd = 1)       
         # Build fake trait X
         X <- product_snps_alpha(M, alpha)
+        X_norm <- (X - mean(X)) / sd(X)
+        X_norm_plus_noise <- (X + noise - mean(X + noise)) / sd(X + noise)
 
         # Do dcor estimation
         res <- rbind(res, 
@@ -133,9 +135,9 @@ compare_dcor <- function(N,
                        # when X and Y are completly independent
                        # (this is done by simulating X and then generating a new SNPs matrix)
                        dcor(X, M_tilde),
-                       lm(as.vector(X %*% t(X)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
-                       lm(as.vector((X + noise) %*% t(X + noise)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
-                       lm(as.vector(X %*% t(X)) ~ as.vector(as.matrix(dist(M_tilde))))$coefficients[2]))
+                       lm(as.vector(X_norm %*% t(X_norm)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
+                       lm(as.vector(X_norm_plus_noise  %*% t(X_norm_plus_noise)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
+                       lm(as.vector(X_norm %*% t(X_norm)) ~ as.vector(as.matrix(dist(M_tilde))))$coefficients[2]))
         
         cat("-> i = ", i, "/", length(N), "\n")
     }
@@ -159,7 +161,7 @@ compare_dcor <- function(N,
             geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 1.5, h = 0)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("dcor(X,G)") + 
-            scale_y_continuous(limits = c(-0.2, 1)) +
+            #scale_y_continuous(limits = c(-0.2, 1)) +
             ggtitle(paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
                            ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
