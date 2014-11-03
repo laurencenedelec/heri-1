@@ -120,7 +120,7 @@ compare_dcor <- function(N,
         alpha <- get_alpha(N_real_coeff = N_real_coeff[i], 
                            N_SNPS = N_SNPS[i], 
                            b = b)
-                
+        noise <- rnorm(N[i], mean = 0, sd = 1)       
         # Build fake trait X
         X <- product_snps_alpha(M, alpha)
 
@@ -128,12 +128,13 @@ compare_dcor <- function(N,
         res <- rbind(res, 
                      c(get(variable[1])[i], 
                        dcor(X, M),
-                       dcor(X + rnorm(N[i], mean = 0, sd = 1), M),
+                       dcor(X + noise, M),
                        # This last line is used to compare dcor(X,Y)
                        # when X and Y are completly independent
                        # (this is done by simulating X and then generating a new SNPs matrix)
                        dcor(X, M_tilde),
                        lm(as.vector(X %*% t(X)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
+                       lm(as.vector((X + noise) %*% t(X + noise)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
                        lm(as.vector(X %*% t(X)) ~ as.vector(as.matrix(dist(M_tilde))))$coefficients[2]))
         
         cat("-> i = ", i, "/", length(N), "\n")
@@ -144,13 +145,15 @@ compare_dcor <- function(N,
                       X_from_G_plus_noise = res[,3],
                       X_not_from_G = res[,4],
                       lm_from_G = res[,5],
-                      lm_not_from_G = res[,6])
+                      lm_from_G_plus_noise = res[,6],
+                      lm_not_from_G = res[,7])
 
     # Export a pdf file
     p <- ggplot(data = melt(res, measure.vars = c("X_from_G", 
                                                   "X_from_G_plus_noise", 
                                                   "X_not_from_G",
                                                   "lm_from_G",
+                                                  "lm_from_G_plus_noise",
                                                   "lm_not_from_G")),
                 aes_string(x = "var" , y = "value")) +
             geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 1.5, h = 0)) +
