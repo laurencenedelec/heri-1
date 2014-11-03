@@ -143,8 +143,8 @@ compare_dcor <- function(N,
                       X_from_G = res[,2],
                       X_from_G_plus_noise = res[,3],
                       X_not_from_G = res[,4],
-                      lm_from_G = res[,4],
-                      lm_not_from_G = res[,5])
+                      lm_from_G = res[,5],
+                      lm_not_from_G = res[,6])
 
     # Export a pdf file
     p <- ggplot(data = melt(res, measure.vars = c("X_from_G", 
@@ -156,7 +156,7 @@ compare_dcor <- function(N,
             geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 1.5, h = 0)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("dcor(X,G)") + 
-            scale_y_continuous(limits = c(0, 1)) +
+            scale_y_continuous(limits = c(-0.2, 1)) +
             ggtitle(paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
                            ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
