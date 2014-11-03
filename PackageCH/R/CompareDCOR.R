@@ -123,7 +123,11 @@ compare_dcor <- function(N,
         noise <- rnorm(N[i], mean = 0, sd = 1)       
         # Build fake trait X
         X <- product_snps_alpha(M, alpha)
-        X_norm <- (X - mean(X)) / sd(X)
+        
+        ifelse(abs(max(X) - min(X)) < .Machine$double.eps, 
+               X_norm <- X,
+               X_norm <- (X - mean(X)) / sd(X))
+        
         X_norm_plus_noise <- (X + noise - mean(X + noise)) / sd(X + noise)
 
         # Do dcor estimation
