@@ -46,7 +46,7 @@ param.list[[1]] <- list(N = rep(500, times = N_Estimation),
                        delta_epi = seq(from = 0, to = 1, by = 1 / N_Estimation),   
                        variable = c("delta_dom", "delta_epi"))                   
 
-param.list[[1]] <- list(N = rep(500, times = N_Estimation),
+param.list[[2]] <- list(N = rep(500, times = N_Estimation),
                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                        N_real_coeff = rep(1, times = N_Estimation),
                        b = c(2,2),
@@ -55,7 +55,7 @@ param.list[[1]] <- list(N = rep(500, times = N_Estimation),
                        delta_epi = rep(1, times = N_Estimation),                        
                        variable = "N_SNPS")
  
-param.list[[2]] <- list(N = rep(500, times = N_Estimation),
+param.list[[3]] <- list(N = rep(500, times = N_Estimation),
                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                         N_real_coeff = rep(10, times = N_Estimation),
                         b = c(2,2),
@@ -64,7 +64,7 @@ param.list[[2]] <- list(N = rep(500, times = N_Estimation),
                         delta_epi = rep(1, times = N_Estimation),   
                         variable = "N_SNPS")
  
-param.list[[3]] <- list(N = rep(20, times = N_Estimation),
+param.list[[4]] <- list(N = rep(20, times = N_Estimation),
                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                         N_real_coeff = rep(10, times = N_Estimation),
                         b = c(2,2),
@@ -73,7 +73,7 @@ param.list[[3]] <- list(N = rep(20, times = N_Estimation),
                         delta_epi = rep(1, times = N_Estimation),     
                         variable = "N_SNPS")
  
-param.list[[4]] <- list(N = rep(N_MAX, times = N_Estimation),
+param.list[[5]] <- list(N = rep(N_MAX, times = N_Estimation),
                         N_SNPS = rep(N_MAX, times = N_Estimation),
                         N_real_coeff = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                         b = c(2,2),
@@ -82,7 +82,7 @@ param.list[[4]] <- list(N = rep(N_MAX, times = N_Estimation),
                         delta_epi = rep(1, times = N_Estimation),  
                         variable = "N_real_coeff")
  
-param.list[[5]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
+param.list[[6]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                         N_SNPS = rep(20, times = N_Estimation),
                         N_real_coeff = rep(10, times = N_Estimation),
                         b = c(2,2),
@@ -91,7 +91,7 @@ param.list[[5]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                         delta_epi = rep(1, times = N_Estimation),  
                         variable = "N")
 
-param.list[[6]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
+param.list[[7]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                         N_real_coeff = rep(10, times = N_Estimation),
                         b = c(2,2),
