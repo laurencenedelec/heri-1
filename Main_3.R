@@ -42,8 +42,8 @@ param.list[[1]] <- list(N = rep(500, times = N_Estimation),
                        N_real_coeff = rep(20, times = N_Estimation),
                        b = c(2,2),
                        delta_add = rep(1, times = N_Estimation),
-                       delta_dom = seq(from = 0, to = 2, by = 2 / N_Estimation),
-                       delta_epi = seq(from = 0, to = 2, by = 2 / N_Estimation),   
+                       delta_dom = seq(from = 0, to = 100, by = 100 / N_Estimation),
+                       delta_epi = seq(from = 0, to = 100, by = 100 / N_Estimation),   
                        variable = c("delta_dom", "delta_epi"))                   
 # 
 # param.list[[2]] <- list(N = rep(500, times = N_Estimation),
