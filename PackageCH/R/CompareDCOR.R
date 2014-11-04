@@ -43,6 +43,45 @@ build_alpha_dominant <- function(N_real_coeff, N_SNPS, b) {
 
 }
 
+#' Build alpha s.t. X = G * alpha but alpha(g_i,g_j)
+#'
+#' @title Build alpha
+#' @param N_real_coeff number of non_zero coeff
+#' @param N_SNPs number of SNPS
+#' @param b value of runif(b[1],b[2])
+#' @return alpha with dominant effect
+#' @author Julien Duvanel
+#' @export
+build_alpha_epistatic <- function(N_real_coeff, N_SNPS, b) {
+    
+    # We create an alpha for the dominant effect
+    alpha_d <- matrix(0, nrow = 4, ncol = N_SNPS)
+    
+    # If product of g_i and g_j = 0
+    alpha_d[1, ] <- sample(c(runif(N_real_coeff, -1, 1), 
+                             rep(x = 0, times = N_SNPS - N_real_coeff)))
+    # If product of g_i and g_j = 1
+    alpha_d[2, ] <- sample(c(runif(N_real_coeff, 3, 4), 
+                             rep(x = 0, times = N_SNPS - N_real_coeff)))
+    # If product of g_i and g_j = 2
+    alpha_d[3, ] <- sample(c(runif(N_real_coeff, 13, 15), 
+                             rep(x = 0, times = N_SNPS - N_real_coeff)))
+    # If product of g_i and g_j = 4
+    alpha_d[4, ] <- sample(c(runif(N_real_coeff, 15, 20), 
+                             rep(x = 0, times = N_SNPS - N_real_coeff)))    
+    alpha_d
+}
+
+#' mat * alpha but alpha(mat)
+#'
+#' @title Product between mat and alpha for additive effect
+#' @param M a matrix with N_SNPS columns
+#' @param alpha a vector 
+#' @return product of mat * alpha
+#' @author Julien Duvanel
+#' @export
+product_snps_alpha <- function(M, alpha) { M %*% alpha }
+
 #' mat * alpha but alpha(mat)
 #'
 #' @title Product between mat and alpha for dominant effect
@@ -61,6 +100,38 @@ product_snps_alpha_dominant <- function(M, alpha) {
         ret <- 0
         for(i in 1:length(x)) {
             ret <- ret + x[i]*alpha[x[i]+1, i]
+        }
+        ret
+    })
+    
+    as.matrix(res)
+}
+
+#' mat * alpha but alpha(mat)
+#'
+#' @title Product between mat and alpha for epistatic effect
+#' @param M a matrix with N_SNPS columns
+#' @param alpha a matrix with 3 rows and N_SNPS columsn
+#' @return product of mat * alpha
+#' @author Julien Duvanel
+#' @export
+product_snps_alpha_epistatic <- function(M, alpha) {
+    # Usually, as.matrix(mat) %*% alpha does the job
+    # but here, the multiplication differs if mat[i,j] has 
+    # a specific value.
+    
+    f <- function(x) {
+        if(x == 0) 1
+        else if(x == 1) 2
+        else if(x == 2) 3
+        else if(x == 4) 4
+        else 1
+    }
+    # For every row, we do the "special product"
+    res <- apply(M, 1, function(x) {
+        ret <- 0
+        for(i in 1:(length(x)-1)) {
+            ret <- ret + x[i]*x[i+1]*alpha[f(x[i]*x[i+1]), i]
         }
         ret
     })
@@ -100,11 +171,11 @@ build_SNPs_matrix <- function(N, N_SNPS, snps_value = c(0,1,2)) {
 compare_dcor <- function(N, 
                          N_SNPS, 
                          N_real_coeff, 
-                         get_snps_matrix,
-                         get_alpha,
                          b,
-                         variable = "",
-                         product_snps_alpha = function(M, alpha) { M %*% alpha }) {
+                         delta_add,
+                         delta_dom,
+                         delta_epi,
+                         variable = "") {
     
     # We have to check that dimensions agree
     if(length(N) != length(N_SNPS) | length(N) != length(N_real_coeff)) stop("Problem, length of N has to be the same as N_SNPS.")    
@@ -114,58 +185,73 @@ compare_dcor <- function(N,
     res <- c()
     for(i in 1:length(N)) {
         
-        # Build a fake genome matrix
-        M <- get_snps_matrix(N[i], N_SNPS[i])
-        M_tilde <- get_snps_matrix(N[i], N_SNPS[i])
-        alpha <- get_alpha(N_real_coeff = N_real_coeff[i], 
-                           N_SNPS = N_SNPS[i], 
-                           b = b)
-        noise <- rnorm(N[i], mean = 0, sd = 1)       
-        # Build fake trait X
-        X <- product_snps_alpha(M, alpha)
+        # Build two fake genome matrices
+        # the second one is only used to compare with random results
+        M <- build_SNPs_matrix(N[i], N_SNPS[i])
+        M_tilde <- build_SNPs_matrix(N[i], N_SNPS[i])
         
+        alpha_add <- build_alpha(N_real_coeff = N_real_coeff[i], 
+                                 N_SNPS = N_SNPS[i], 
+                                 b = b)
+        alpha_dom <- build_alpha_dominant(N_real_coeff = N_real_coeff[i], 
+                                          N_SNPS = N_SNPS[i], 
+                                          b = b)
+        
+        alpha_epi <- build_alpha_epistatic(N_real_coeff = N_real_coeff[i], 
+                                           N_SNPS = N_SNPS[i], 
+                                           b = b)
+
+        # Build fake trait X
+        X <- delta_add[i] * product_snps_alpha(M, alpha_add) + 
+             delta_dom[i] * product_snps_alpha_dominant(M, alpha_dom) +
+             delta_epi[i] * product_snps_alpha_epistatic(M, alpha_epi)
+        
+        # We need to be sure that X is not all zeros
         ifelse(abs(max(X) - min(X)) < .Machine$double.eps, 
                X_norm <- X,
                X_norm <- (X - mean(X)) / sd(X))
         
+        # We are more interested to have X + noise 
+        # noise is 10% of sd(X)
+        noise <- rnorm(N[i], mean = 0, sd = 0.1 * ifelse(sd(X) == 0, 1, sd(X)))   
         X_norm_plus_noise <- (X + noise - mean(X + noise)) / sd(X + noise)
+        
+        # Compute in advance distance matrices for
+        # linear regression estimate of heritability
+        dist_M <- as.vector(as.matrix(dist(M)))
+        dist_M_tilde <- as.vector(as.matrix(dist(M_tilde)))
 
-        # Do dcor estimation
+        # Do estimates
         res <- rbind(res, 
                      c(get(variable[1])[i], 
-                       dcor(X, M),
-                       dcor(X + noise, M),
-                       # This last line is used to compare dcor(X,Y)
-                       # when X and Y are completly independent
-                       # (this is done by simulating X and then generating a new SNPs matrix)
-                       dcor(X, M_tilde),
-                       lm(as.vector(X_norm %*% t(X_norm)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
-                       lm(as.vector(X_norm_plus_noise  %*% t(X_norm_plus_noise)) ~ as.vector(as.matrix(dist(M))))$coefficients[2],
-                       lm(as.vector(X_norm %*% t(X_norm)) ~ as.vector(as.matrix(dist(M_tilde))))$coefficients[2]))
+
+                       dcor(X_norm_plus_noise, M),
+                       dcor(X_norm_plus_noise, M_tilde),
+
+                       lm(as.vector(X_norm_plus_noise  %*% t(X_norm_plus_noise)) ~ dist_M)$coefficients[2],
+                       lm(as.vector(X_norm_plus_noise %*% t(X_norm_plus_noise)) ~ dist_M_tilde)$coefficients[2]))
         
         cat("-> i = ", i, "/", length(N), "\n")
     }
     
     res <- data.frame(var = res[,1],
-                      X_from_G = res[,2],
-                      X_from_G_plus_noise = res[,3],
-                      X_not_from_G = res[,4],
-                      lm_from_G = res[,5],
-                      lm_from_G_plus_noise = res[,6],
-                      lm_not_from_G = res[,7])
+                      
+                      dcor_X_from_G_plus_noise = res[,2],
+                      dcor_X_not_from_G = res[,3],
+                      
+                      lm_from_G_plus_noise = res[,4],
+                      lm_not_from_G = res[,5])
 
     # Export a pdf file
-    p <- ggplot(data = melt(res, measure.vars = c("X_from_G", 
-                                                  "X_from_G_plus_noise", 
-                                                  "X_not_from_G",
-                                                  "lm_from_G",
+    p <- ggplot(data = melt(res, measure.vars = c("dcor_X_from_G_plus_noise", 
+                                                  "dcor_X_not_from_G",
+                                                  
                                                   "lm_from_G_plus_noise",
                                                   "lm_not_from_G")),
                 aes_string(x = "var" , y = "value")) +
             geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 1.5, h = 0)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("dcor(X,G)") + 
-            #scale_y_continuous(limits = c(-0.2, 1)) +
             ggtitle(paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
                            ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
@@ -184,39 +270,3 @@ compare_dcor <- function(N,
     # return
     list(res = res, X = X, M = M)    
 }
-
-# X.cov <- cov(X)
-# M.cov <- cov(M)
-# 
-# X.tilde <- X %*% sqrtm(solve(X.cov))
-# M.tilde <- M %*% sqrtm(solve(M.cov))
-# dcor(X.tilde, M.tilde)
-
-
-
-# 
-# N <- 200
-# res <- c()
-# for(i in 1:200) {
-#     
-#     a <- c(0,1,2)
-#     N <- 20
-#     N_SNPS <- 20
-#     M <- matrix(sample(a, size = N * N_SNPS, replace = T), 
-#                 nrow = N)
-#     alpha <- runif(N_SNPS, 4, 4)
-#     
-#     X <- M %*% alpha
-#     
-#     #X <- rnorm(n = N, mean = 0, sd = 1)
-#     #Y <- rnorm(n = N, mean = 0, sd = 1)
-#     
-#     res <- rbind(res, cbind(
-#                             dcor(X, M)^2,
-#                             
-#                             abs(cov(X,M)/var(M)))
-#                             )
-# }
-# plot(res)
-# lm.res <- lm(res[,2] ~ res[,1])
-# 
