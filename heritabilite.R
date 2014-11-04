@@ -10,19 +10,19 @@ names(tfam)<-c("SUBJID","x","y","t","z","w")
 
 ##pheno  in the same order as tfam                           
 testpheno= read.table('~/NFG/raw/pheno2', header=T, sep='')
-                
+#Keep only some pheno                 
 pheno<-testpheno[,c(-3,-4,-5,-6,-7,-8)]                                       
-opheno<-join(tfam[,c(1,2)],pheno[,c(2,3,4,5,6)],"SUBJID")                       
-##for all trait
+pheno.order<-join(tfam[,c(1,2)],pheno[,c(2,3,4,5,6)],"SUBJID")                       
+##for those pheno add the individu id 3=K 4=H 5=L 6=T
+Kpheno<-data.matrix(pheno.order[,c(1,2,3)])
 
-Kpheno<-data.matrix(opheno[,c(1,2,3)])
-write.table(Kpheno,file="~/NFG/raw/Kpheno",row.names=F,col.names=F)
+#write.table(Kpheno,file="~/NFG/raw/Kpheno",row.names=F,col.names=F)
 Hpheno<-data.matrix(opheno[,c(1,2,4)])                                        
-write.table(Hpheno,file="~/NFG/raw/Hpheno",row.names=F,col.names=F)
+# write.table(Hpheno,file="~/NFG/raw/Hpheno",row.names=F,col.names=F)
 Lpheno<-data.matrix(opheno[,c(1,2,5)])                                        
- write.table(Lpheno,file="~/NFG/raw/Lpheno",row.names=F,col.names=F)
+# write.table(Lpheno,file="~/NFG/raw/Lpheno",row.names=F,col.names=F)
 Tpheno<-data.matrix(opheno[,c(1,2,6)])
- write.table(Tpheno,file="~/NFG/raw/Tpheno",row.names=F,col.names=F)    
+# write.table(Tpheno,file="~/NFG/raw/Tpheno",row.names=F,col.names=F)    
 
 # Hpheno<- read.table("~/NFG/raw/Hpheno")
 # Lpheno<-read.table("~/NFG/raw/Lpheno")
@@ -32,25 +32,26 @@ Tpheno<-data.matrix(opheno[,c(1,2,6)])
 # Tpheno<-data.matrix(Tpheno)
 
 ##Keep the pheno you wants normalize pheno
-V<-matrix(c(Hpheno[,3],Lpheno[,3],Tpheno[,3],Kpheno[,3]),ncol=4)
-tV<-t(V)-colMeans(V)
-V<-t(tV)
-Sd<-colSds(V)
-tV<-t(V)*(1/Sd)
-V<-t(tV)
-write.table(V,file="~/NFG/raw/phenonor")
-#V=read.table("~/NFG/raw/phenonor")
+pheno<-matrix(c(Hpheno[,3],Lpheno[,3],Tpheno[,3],Kpheno[,3]),ncol=4)
+pheno.t<-t(pheno)-colMeans(pheno)
+pheno<-t(pheno.t)
+pheno.sd<-colSds(pheno)
+pheno.t<-t(pheno)*(1/pheno.sd)
+pheno<-t(pheno.t)
+#write.table(pheno,file="~/NFG/raw/pheno.normal")
+#V=read.table("~/NFG/raw/pheno.normal")
 
 #source("~/NFG/ler/loadk.R")
 #K.divers<-load_K()
 K.ibsg<-read.table("~/NFG/raw/K.ibsg")
 K.ibdg<-read.table("~/NFG/raw/K.ibdg")
-
-Kdis1= read.table('~/NFG/result/plinkdis.mdist', sep='')
-Kdis1<-1-Kdis1
-Kgcta<-read.table("~/NFG/raw/kpgc")
-K.divers<-list(K.ibsg,K.ibdg,Kdis1,Kgcta)
-#identical(K_GCTA$id$V1,tfam$SUBJID)
+Kdis.plink= read.table('~/NFG/result/plinkdis.mdist', sep='')
+Kdis.plink<-1-Kdis.plink
+K.gcta<-read.table("~/NFG/raw/kpgc")
+#all method together
+K.divers<-list(K.ibsg,K.ibdg,Kdis.plink,K.gcta)
+print("oder id in CGTA")
+identical(K_GCTA$id$V1,tfam$SUBJID)
 #browser()
 source("~/NFG/ler/heat.R")
 
@@ -69,63 +70,62 @@ for (j in 1:4)
 {Kdis<-data.matrix( 2*K.divers[[j]])} 
 print('j=')
 print(j)
-#browser()
 #print(colSums(is.na(Kdis)))
-##remove NA in Kdis
+##detect NA in Kdis
 Kdis.na<-na.omit(Kdis)
 miss<-setdiff(Kdis.na[,1],Kdis[,1])
+print("diff Kdis na ")
 print(miss)
+#remove NA in Kdis
 for (l in 1:ncol(Kdis)) {ok <- !is.na(Kdis[,l])
                                Kdis[!ok,l]<- mean(Kdis[ok,l])  }
 norm<-dcov_mc(Kdis,Kdis,1)
-Ke<-as.numeric(c(Kdis))
-Ke.mean<-mean(Ke)
-list<- Ke<4*Ke.mean
+Kdis.list<-as.numeric(c(Kdis))
+Kdis.mean<-mean(Kdis.list)
+list<- Kdis.list<2*Kdis.mean
 print(norm)
-print(Ke.mean)
-#for all trait
+print(Kdis.mean)
+#for all pheno 
 for (i in 1:4) 
 { 
-Y<-V[,i]
+Y<-pheno[,i]
 print('i=')
 print(i)
-Yp<-Y %*%t(Y)
-Ye<-data.matrix(Yp)
-Ye<-as.numeric(c(Ye))
+Y.produit<-Y %*%t(Y)
+Y.produit.list<-as.numeric(c(data.matrix(Y.produit)))
 
 ##compute the heritability-linear regression
 
-Ke.red<-as.numeric(as.vector(Ke[list]))
-Ye.red<-as.numeric( as.vector( Ye[list]))
-#herlm<-lm(Ye.red~Ke.red)
-herlmall<-lm(Ye~Ke)
-#her<-summary(herlm)$coef[2,1]
-#pvher<-summary(herlm)$coef[2,4]
-herall<-summary(herlmall)$coef[2,1]
-pvherall<-summary(herlmall)$coef[2,4]
+Kdist.list.red<-as.numeric(as.vector(Kdist.list[list]))
+Y.produit.list.red<-as.numeric( as.vector( Y.produit.list[list]))
+heri.lm.red<-lm(Y.produit.list.red~Kdist.list.red)
+heri.lm.all<-lm(Y.produit.list~Kdist.list)
+heri.red<-summary(heri.lm.red)$coef[2,1]
+pv.heri.red<-summary(heri.lm.red)$coef[2,4]
+heri.all<-summary(heri.lm.all)$coef[2,1]
+pv.heri.all<-summary(heri.lm.all)$coef[2,4]
 ##compute the dcov 
-ny<-length(Y)
+#ny<-length(Y)
 #Ydis2<- matrix(rep(Y^2,ny),ncol=ny)+t(matrix(rep(Y^2,ny),ncol=ny))-2*Yp
 print(norm)
-her.covp<-dcov_mc(Yp,Kdis,1)
-her.covp<-her.covp/norm
-print('hedcove=')
-print(her.covp)
-
-#norm.cov<-(dcov(Kdis,Kdis,1))^2
-#her.covpb<-(dcov(Yp,Kdis,1))^2
-#her.covpb<-her.covpb/norm.cov
-her.covpb<-1
-norm.cov<-1
+heri.dcov<-dcov_mc(Y.produit,Kdis,1)
+heri.dcov<-heri.dcov/norm
+#ne marche pas
+#norm.dcov.energy<-(dcov(as.distance(Kdis),as.distance(Kdis),1))^2
+#heri.dcov.energy<-(dcov(as.distance(Y.produit),as.distance(Kdis),1))^2
+#heri.dcov.energy<-her.dcov.energy/norm.dcov
+heri.dcov.energy<-1
+norm.dcov<-1
 ##the results
-herita<-c(j,i,herall,pvherall,her.covp, her.covpb, Ke.mean,norm,norm.cov)
+herita<-c(j,i,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov, heri.dcov.energy, Kdist.mean,norm,norm.dcov)
 res<-rbind(res,herita)
 
+
 }
 }
-names(res)<-c('trait', 'method','lm','pvlm','hdcov','hdcovbis','meanK', 'dcov(meanK)','dcov(meanKb)')
-rownames(res)<c('K ibs','K idb','K ibs','K CG','H ibs','H idb','H ibs','H CG','L ibs','L idb','L ibs','L CG','T ibs','T idb','T ibs','T CG')
-write.table(res,file="~/NFG/ler/resallac.RData", row.names = TRUE,
+names(res)<-c('pheno', 'method', 'lm.red','pv.lm.red', 'lm','pv.lm','heri.dcov','heri.dcov.energy','meanK', 'dcov(meanK)','dcov(meanK).energy')
+rownames(res)<c('K.ibs','K.idb','K.ibs','K.cgta','H.ibs','H.idb','H.ibs','H.cgta','L.ibs','L.idb','L.ibs','L.cgta','T.ibs','T.idb','T.ibs','T.cgta')
+write.table(res,file="~/NFG/ler/res.heri.RData", row.names = TRUE,
             col.names = TRUE)
 
 

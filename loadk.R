@@ -34,8 +34,8 @@ write.table(K.ibdg,file="~/NFG/raw/K.ibdg")
 
 print('K23')
 
-##same as Kdis1
-#K.ibsp<-read.table("~/NFG/result/plinkdis.mdist")
+##same as K.ibs from plink
+#K.ibs.plink<-read.table("~/NFG/result/plinkdis.mdist")
 
 
 
