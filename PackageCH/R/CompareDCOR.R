@@ -241,15 +241,15 @@ compare_dcor <- function(N,
                       
                       lm_from_G_plus_noise = res[,4],
                       lm_not_from_G = res[,5])
-
+    data.melt <- melt(res, measure.vars = c("dcor_X_from_G_plus_noise", 
+                                            "dcor_X_not_from_G",
+                                            
+                                            "lm_from_G_plus_noise",
+                                            "lm_not_from_G"))
     # Export a pdf file
-    p <- ggplot(data = melt(res, measure.vars = c("dcor_X_from_G_plus_noise", 
-                                                  "dcor_X_not_from_G",
-                                                  
-                                                  "lm_from_G_plus_noise",
-                                                  "lm_not_from_G")),
+    p <- ggplot(data = data.melt,
                 aes_string(x = "var" , y = "value")) +
-            geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 1.5, h = 0)) +
+            geom_point(aes_string(color = "variable"), size = 2, position = position_jitter(w = 0.005 * sd(data.melt$value), h = 0)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("dcor(X,G)") + 
             ggtitle(paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
