@@ -254,6 +254,9 @@ compare_dcor <- function(N,
             ylab("dcor(X,G)") + 
             ggtitle(paste0("X = G * vec of runif(", b[1], ",", b[2],  "), N in ", min(N), ":", max(N),
                            ", N_SNPS in ", min(N_SNPS), ":", max(N_SNPS),
+                           ", delta add in ", min(delta_add), ":", max(delta_add),
+                           ", dom in ", min(delta_dom), ":", max(delta_dom),
+                           ", epi in ", min(delta_epi), ":", max(delta_epi),
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
 
     ggsave(plot = p,
