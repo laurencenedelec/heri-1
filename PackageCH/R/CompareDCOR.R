@@ -200,7 +200,7 @@ compare_dcor <- function(N,
         alpha_epi <- build_alpha_epistatic(N_real_coeff = N_real_coeff[i], 
                                            N_SNPS = N_SNPS[i], 
                                            b = b)
-
+        
         # Build fake trait X
         X <- delta_add[i] * product_snps_alpha(M, alpha_add) + 
              delta_dom[i] * product_snps_alpha_dominant(M, alpha_dom) +
@@ -246,6 +246,9 @@ compare_dcor <- function(N,
                                             
                                             "lm_from_G_plus_noise",
                                             "lm_not_from_G"))
+    
+    browser()
+    
     # Export a pdf file
     p <- ggplot(data = data.melt,
                 aes_string(x = "var" , y = "value")) +
