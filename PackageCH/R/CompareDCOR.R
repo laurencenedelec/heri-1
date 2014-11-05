@@ -51,7 +51,7 @@ build_alpha_dominant <- function(N_real_coeff, N_SNPS, b) {
 #' @param b value of runif(b[1],b[2])
 #' @return alpha with dominant effect
 #' @author Julien Duvanel
-#' @export
+#' @export 
 build_alpha_epistatic <- function(N_real_coeff, N_SNPS, b) {
     
     # We create an alpha for the dominant effect
