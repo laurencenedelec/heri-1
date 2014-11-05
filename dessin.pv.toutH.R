@@ -75,39 +75,35 @@ dev.off()
 pdf(file= paste("~/NFG/result/toutH2", names(pvalue)[b],"-ch",chr,".pdf",sep=""))
 #par(mfrow=c(3,2), mar=c(1.1,4.1,3.5,2.1))
 if (chr==4) {par(mfrow=c(3,1))} else {par(mfrow=c(2,1))}
- if (chr==4) {
-dcor=read.table(paste("~/NFG/result/allessaiHdap",chr,"dr",15,sep=""),header=T,sep=" ")
+ 
+dcor=read.table(paste("~/NFG/result/Hdap",chr,"pv",10,sep=""),header=T,sep=" ")
 ##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))
-plot(dcor[,2]/1000000,dcor[, b] ,col="red",pch=18,xlim=c(40,90),ylim=c(0,.1),ann=FALSE)
-title(xlab=paste("Chr=",chr," pas=",10," pheno=",names(dcor)[b]," position (MB) dcor",sep=""), col.lab=rgb(0,0.5,0))
-title(ylab="dcor pas 15",col.lab=rgb(.5,0,0))
+plot(dcor[,2]/1000000,-log(dcor[, b],10) ,col="red",pch=18,xlim=c(40,90),ylim=c(0,10),ann=FALSE)
+title(xlab=paste("Chr=",chr," pas=10"," pheno=",names(dcor)[b]," position (MB) pttest ",sep=""), col.lab=rgb(0,0.5,0))
+title(ylab="pttest",col.lab=rgb(.5,0,0))
+if (chr==4) {
+  dcor=read.table(paste("~/NFG/result/allessaiHdap",chr,"dr",15,sep=""),header=T,sep=" ")
+  ##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))
+  plot(dcor[,2]/1000000,dcor[, b] ,col="red",pch=18,xlim=c(40,90),ylim=c(0,.1),ann=FALSE)
+  title(xlab=paste("Chr=",chr," pas=15"," pheno=",names(dcor)[b]," position (MB) dcor",sep=""), col.lab=rgb(0,0.5,0))
+  title(ylab="dcor pas 15",col.lab=rgb(.5,0,0))
 }
 dcor=read.table(paste("~/NFG/result/allessaiHdap",chr,"pttestpas=",20,sep=""),header=T,sep=" ")
 ##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))
 plot(dcor[,2]/1000000,-log(dcor[, b],10) ,col="red",pch=18,xlim=c(40,90),ylim=c(0,10),ann=FALSE)
-title(xlab=paste("Chr=",chr," pas=20"," pheno=",names(dcor)[b]," position (MB) pttest pas 20",sep=""), col.lab=rgb(0,0.5,0))
+title(xlab=paste("Chr=",chr," pas=20"," pheno=",names(dcor)[b]," position (MB) pttest ",sep=""), col.lab=rgb(0,0.5,0))
 title(ylab="pttest",col.lab=rgb(.5,0,0))
 
 
-dcor=read.table(paste("~/NFG/result/Hdap",chr,"pv",10,sep=""),header=T,sep=" ")
-##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))
-plot(dcor[,2]/1000000,-log(dcor[, b],10) ,col="red",pch=18,xlim=c(40,90),ylim=c(0,10),ann=FALSE)
-title(xlab=paste("Chr=",chr," pas=20"," pheno=",names(dcor)[b]," position (MB) pttest pas 10",sep=""), col.lab=rgb(0,0.5,0))
-title(ylab="pttest",col.lab=rgb(.5,0,0))
+
 
 dev.off()
 
 if (chr==19) {
 pdf(file= paste("~/NFG/result/toutH4", names(pvalue)[b],"-ch",chr,".pdf",sep=""))
 #par(mfrow=c(3,2), mar=c(1.1,4.1,3.5,2.1))
-if (chr==4) {par(mfrow=c(3,1))} else {par(mfrow=c(2,1))}
- if (chr==4) {
-dcor=read.table(paste("~/NFG/result/allessaiHdap",chr,"dr",15,sep=""),header=T,sep=" ")
-##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))
-plot(dcor[,2]/1000000,dcor[, b] ,col="red",pch=18,xlim=c(0,90),ylim=c(0,.1),ann=FALSE)
-title(xlab=paste("Chr=",chr," pas=",10," pheno=",names(dcor)[b]," position (MB) dcor",sep=""), col.lab=rgb(0,0.5,0))
-title(ylab="dcor pas 15",col.lab=rgb(.5,0,0))
-}
+
+
 dcor=read.table(paste("~/NFG/result/allessaiHdap",chr,"fullpttestpas=",20,sep=""),header=T,sep=" ")
 ##pdf(file= paste("~/NFG/result/allH",names(dcor)[b],"-ch",chr,"dc",pas,".pdf",sep=""))
 plot(dcor[,2]/1000000,-log(dcor[, b],10) ,col="red",pch=18,xlim=c(0,90),ylim=c(0,10),ann=FALSE)
