@@ -1,4 +1,5 @@
 #!/bin/ksh
+##summit for Sherlock, all trait  
 for posi in  4 5 6  ; do
     SHFILE=essaipdcorm-$posi.sh
      cat > $SHFILE <<EOF
@@ -14,7 +15,7 @@ for posi in  4 5 6  ; do
 #SBATCH --mem=64000
 #################
 module load R
-srun -n 1 Rscript ~/NFG/ler/essaipdcor.R $posi
+srun -n 1 Rscript ~/NFG/ler/dcor.R $posi
 EOF
 chmod +x $SHFILE
 sbatch $SHFILE

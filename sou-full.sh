@@ -14,7 +14,7 @@ for posi in  4 5 6   ; do
 
 #######
 module load R
-srun -n 1  Rscript ~/NFG/ler/essaifull.R $posi
+srun -n 1  Rscript ~/NFG/ler/ttest-pas-fullgeno.R $posi
 EOF
 chmod +x $SHFILE
 sbatch $SHFILE

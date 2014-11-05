@@ -1,4 +1,5 @@
 #!/usr/bin/env  Rscript
+##ttest for pas full geno 
 index <- as.numeric(commandArgs(trailingOnly=TRUE))
 para <- read.csv("~/NFG/ler/para.csv", header=TRUE, as.is=TRUE)
 ## dataFile <- paste("~/NFG/ler/raw", para$dataFile[index], sep="/")

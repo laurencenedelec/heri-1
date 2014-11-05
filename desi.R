@@ -1,4 +1,5 @@
 #!/usr/bin/env Rscript
+##drawn for LDL dcor and weirdpv
 index <- as.numeric(commandArgs(trailingOnly=TRUE))
 # index<-1
 para <- read.csv("~/NFG/ler/dessinpara.csv", header=TRUE, as.is=TRUE)
