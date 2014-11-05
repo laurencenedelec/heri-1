@@ -5,9 +5,11 @@ names(tfam)<-c("SUBJID","x","y","t","z","w")
 ## pourcentage of allele share between two indiv IBS  square matrix
 
 K.ibs= read.table('~/NFG/result/NFGsimi.mibs', sep='')
-Nom=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
+K.ibs.id=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
 #K.ibs<-1-K.ibs
-identical(Nom$V1,tfam$SUBJID)
+K.ibs$id<-K.ibs.id$V1
+colnames(K.ibs) <- paste(K.ibs.id$V1)
+rownames(K.ibs) <- paste(K.ibs.id$V1)
 print('K1')
 
 ##Other K ibd compute from IBS there is one more individu ??
@@ -20,6 +22,13 @@ K.ibdg[pt$IID1[j],pt$IID2[j]]<-pt$DST[j]
 K.ibsg[pt$IID2[j],pt$IID1[j]]<-pt$PI_HAT[j]
 K.ibdg[pt$IID2[j],pt$IID1[j]]<-pt$DST[j]
 }
+K.ibsg<-K.ibsg[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
+K.ibdg<-K.ibdg[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
+write.table(Ki_pGC,file="~/NFG/raw/kpgc")
+colnames(K.ibsg) <- paste(tfam$SUBJID)
+rownames(K.ibsg) <- paste(tfam$SUBJID)
+colnames(K.ibsg) <- paste(tfam$SUBJID)
+rownames(K.ibsg) <- paste(tfam$SUBJID)
 for (j in 1:(nrow(tfam)+1))
 {K.ibsg[j,j]<-0
 K.ibdg[j,j]<-1}
@@ -58,7 +67,7 @@ ReadGRMBin=function(prefix, AllN=F, size=4){
   else N=readBin(NFile, n=1, what=numeric(0), size=size)
   i=sapply(1:n, sum_i)
   return(list(diag=grm[i], off=grm[-i], id=id, N=N))
-identical(nom$V1,tfam$SUBJID)}
+}
 
 
  # Data are stored in the data/METHODNAME directory
@@ -70,35 +79,37 @@ identical(nom$V1,tfam$SUBJID)}
   diag(Ki_GCTA) <- K_GCTA$diag
   Ki_GCTA[lower.tri(Ki_GCTA, diag = F)] <- K_GCTA$off
   Ki_GCTA <- Ki_GCTA + t(Ki_GCTA) - diag(diag(Ki_GCTA))
-
   # Give the correct col/row names (this information is used later on to filter data)
   colnames(Ki_GCTA) <- paste(K_GCTA$id$V1)
   rownames(Ki_GCTA) <- paste(K_GCTA$id$V1)
 
 
-#write.table(Ki_GCTA,file="~/NFG/raw/kgcta")
+write.table(Ki_GCTA,file="~/NFG/raw/kgcta")
 
 #identical(K_GCTA$id$V1,tfam$SUBJID)
 print('Kgcta')
 
 ##GCTA avec plink 1.9
-nom<- read.table('~/NFG/result/plinkdisex.mibs.id')
-Ki_pGC<- diag(length(nom$V1))
-#print(length(nom$V1))
+Ki_pGC.id<- read.table('~/NFG/result/plinkdisex.mibs.id')
+Ki_pGC<- diag(length(Ki_pGC$id))
+#print(length(K_pGC$id))
 Ki_pGC_tri<- data.matrix( read.table('~/NFG/result/plinkdisex.mibs', fill=TRUE, col.names=paste("V", 1:length(nom$V1))))
 Ki_pGC[lower.tri(Ki_pGC, diag = T)] <- Ki_pGC_tri[lower.tri(Ki_pGC_tri,diag=T)]
 Ki_pGC <- Ki_pGC + t(Ki_pGC) - diag(diag(Ki_pGC))
+rownames(Ki_pGC) <- paste(Ki_pGC.id$V1)
+colnames(Ki_pGC) <- paste(Ki_pGC.id$V1)
 write.table(Ki_pGC,file="~/NFG/raw/kpgc")
-identical(nom$V1,tfam$SUBJID)
 ##all together
 
 ##GCTA with plink -make-rel 
-nom<- read.table('~/NFG/result/plinkgcta.rel.id')
+K_ppGC.id<- read.table('~/NFG/result/plinkgcta.rel.id')
 K_ppGC<- data.matrix( read.table('~/NFG/result/plinkgcta.rel'))
-identical(nom$V1,tfam$SUBJID)
+rownames(K_ppGC) <- paste(K_ppGC.id$V1)
+colnames(K_ppGC) <- paste(K_ppGC.id$V1)
+write.table(K_ppGC,file="~/NFG/raw/kppgc")
 print('last load')
 
-K.divers<-list(K_ibs=K.ibsg,K_ibd=K.ibsg,K_plink=K.ibs,K_gcta=Ki_pGC,K_last=K_ppGC)
+K.divers<-list(K_ibs=K.ibsg,K_ibd=K.ibsg,K_plink=K.ibs,K_gcta=Ki_pGC,K_ppGC=K_ppGC)
 return(K.divers)
 
 }

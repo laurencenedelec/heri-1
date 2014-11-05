@@ -12,7 +12,8 @@ names(tfam)<-c("SUBJID","x","y","t","z","w")
 testpheno= read.table('~/NFG/raw/pheno2', header=T, sep='')
 #Keep only some pheno                 
 pheno<-testpheno[,c(-3,-4,-5,-6,-7,-8)]                                       
-pheno.order<-join(tfam[,c(1,2)],pheno[,c(2,3,4,5,6)],"SUBJID")                       
+pheno.order<-join(tfam[,c(1,2)],pheno[,c(2,3,4,5,6)],"SUBJID")   
+rownames(pheno.order) <- paste(tfam[,1])
 ##for those pheno add the individu id 3=K 4=H 5=L 6=T
 Kpheno<-data.matrix(pheno.order[,c(1,2,3)])
 
@@ -33,6 +34,7 @@ Tpheno<-data.matrix(pheno.order[,c(1,2,6)])
 
 ##Keep the pheno you wants normalize pheno
 pheno<-matrix(c(Hpheno[,3],Lpheno[,3],Tpheno[,3],Kpheno[,3]),ncol=4)
+rownames(pheno) <- paste(tfam[,1])
 pheno.t<-t(pheno)-colMeans(pheno)
 pheno<-t(pheno.t)
 pheno.sd<-colSds(pheno)
@@ -44,35 +46,30 @@ pheno<-t(pheno.t)
 #source("~/NFG/ler/loadk.R")
 #K.divers<-load_K()
 K.ibsg<-read.table("~/NFG/raw/K.ibsg")
-K.ibsg.order<-
 K.ibdg<-read.table("~/NFG/raw/K.ibdg")
-K.ibdg.order<-
 Kdis.plink= read.table('~/NFG/result/plinkdis.mdist', sep='')
 Kdis.plink<-1-Kdis.plink
-Kdis.plink.order<-
 K.gcta<-read.table("~/NFG/raw/kpgc")
-K.gcta.order<-
+K.ppgc<-read.table("~/NFG/raw/K.ppgc")
 #all method together
-K.divers<-list(K.ibsg,K.ibdg,Kdis.plink,K.gcta)
-print("order id in CGTA")
-identical(K.gcta$id$V1,tfam$SUBJID)
+K.divers<-list(K.ibsg,K.ibdg,Kdis.plink,K.gcta,K.ppgc)
+
 
 #browser()
 source("~/NFG/ler/heat.R")
+res<-c()
 
 #one plot
 #for (j in 1:4)
 #{if (j==4) {Kdis<-data.matrix(K.divers[[j]])} else {Kdis<-data.matrix( 2*K.divers[[j]] )}
 # PlotHeatmapCorrelationMatrix( Kdis)}
-
-
-res<-c()
-
-##for all method
-for (j in 1:4)
+##for all method, choice of K
+for (j in 1:5)
 { 
-#{if (j==4) {Kdis<-data.matrix(K.divers[[j]])} else 
-{Kdis<-data.matrix( 2*K.divers[[j]])} 
+#{if (j==4) {Kdis<-K.divers[[j]]} else 
+Kdis<-K.divers[[j]]
+id<-rownames(Kdis)
+Kdis<-data.matrix(2*Kdis)
 print('j=')
 print(j)
 #print(colSums(is.na(Kdis)))
@@ -92,8 +89,12 @@ print(norm)
 print(Kdis.mean)
 #for all pheno 
 for (i in 1:4) 
-{ 
-Y<-pheno[,i]
+{
+  Y<-pheno[,i]
+  rownames(Y) <- paste(tfam$SUBJID)
+  
+## sort the pheno with the K$id
+if (!identical(id,tfam$SUBJID)) { Y<-pheno[as.vector(id),]} 
 print('i=')
 print(i)
 Y.produit<-Y %*%t(Y)
