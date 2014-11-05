@@ -1,3 +1,3 @@
 # Comparison of heritability estimation
 
-TODO
+TODO 11/04/2014
