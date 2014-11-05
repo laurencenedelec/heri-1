@@ -300,6 +300,7 @@ for(i in 1:length(param.list)) {
                              delta_add = param.list[[i]]$delta_add,
                              delta_dom = param.list[[i]]$delta_dom,
                              delta_epi = param.list[[i]]$delta_epi,
+                             snps_value = param.list[[i]]$snps_value,
                              variable = param.list[[i]]$variable)
     
     cat(paste0("= End of ", i, "/", length(param.list), "\n"))
