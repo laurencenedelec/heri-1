@@ -180,7 +180,7 @@ param.list[[15]] <- list(N = rep(20, times = N_Estimation),
                          N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
                          N_real_coeff = rep(10, times = N_Estimation),
                          b = c(2,2),
-                         delta_add = rep(100, times = N_Estimation),
+                         delta_add = rep(1, times = N_Estimation),
                          delta_dom = rep(100, times = N_Estimation),
                          delta_epi = rep(100, times = N_Estimation),     
                          variable = "N_SNPS")
