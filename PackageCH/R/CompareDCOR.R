@@ -166,6 +166,7 @@ build_SNPs_matrix <- function(N, N_SNPS, snps_value = c(0,1,2)) {
 #' @param delta_add importance of additive effect
 #' @param delta_dom importance of dominant effect
 #' @param delta_epi importance of epistatic effect
+#' @param snps_values the value randomly chosen for the G matrix
 #' @param variable the variable that vary
 #' @return export a pdf file
 #' @author Julien Duvanel
@@ -177,10 +178,16 @@ compare_dcor <- function(N,
                          delta_add,
                          delta_dom,
                          delta_epi,
+                         snps_value,
                          variable = "") {
     
     # We have to check that dimensions agree
-    if(length(N) != length(N_SNPS) | length(N) != length(N_real_coeff)) stop("Problem, length of N has to be the same as N_SNPS.")    
+    if (length(N) != length(N_SNPS) | 
+        length(N) != length(N_real_coeff) |
+        length(N) != length(delta_add) |
+        length(N) != length(delta_dom) |
+        length(N) != length(delta_epi) |
+        length(N) != nrow(snps_value)) stop("Problem, length of N has to be the same as N_SNPS, delta_add/dom/epi and snps_value.")    
     if(length(b) != 2) stop("b has to be a vector of length 2 because we use it as runif(..., b[1], b[2]) !")
     
     # We loop through length(N) (but they all have same length at this point)
@@ -189,7 +196,7 @@ compare_dcor <- function(N,
         
         # Build two fake genome matrices
         # the second one is only used to compare with random results
-        M <- build_SNPs_matrix(N[i], N_SNPS[i])
+        M <- build_SNPs_matrix(N[i], N_SNPS[i], snps_value[i,])
         M_tilde <- build_SNPs_matrix(N[i], N_SNPS[i])
         
         # Prepare all alpha's (additive/dominant/epistatic effect)
