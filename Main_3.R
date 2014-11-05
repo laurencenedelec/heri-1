@@ -14,7 +14,7 @@
 ####
 ####**********************************************************************
 
-suppressPackageStartupMessages(library(devtools))
+suppressPackageStartupMessages(library(devtools)) 
 
 ### Clean workspace, set directory and load functions
 rm(list = ls())
