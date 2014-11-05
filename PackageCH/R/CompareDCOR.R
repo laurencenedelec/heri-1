@@ -184,9 +184,6 @@ compare_dcor <- function(N,
     # We have to check that dimensions agree
     if (length(N) != length(N_SNPS) | 
         length(N) != length(N_real_coeff) |
-        length(N) != length(delta_add) |
-        length(N) != length(delta_dom) |
-        length(N) != length(delta_epi) |
         length(N) != nrow(snps_value)) stop("Problem, length of N has to be the same as N_SNPS, delta_add/dom/epi and snps_value.")    
     if(length(b) != 2) stop("b has to be a vector of length 2 because we use it as runif(..., b[1], b[2]) !")
     
