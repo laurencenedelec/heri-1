@@ -24,8 +24,7 @@ for (j in 1:(nrow(tfam)+1))
 {K.ibsg[j,j]<-0
 K.ibdg[j,j]<-1}
 K.ibsg<-(1-K.ibsg)
-K.ibsg<-K.ibsg[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
-K.ibdg<-K.ibdg[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
+
 
 write.table(K.ibsg,file="~/NFG/raw/K.ibsg")
 write.table(K.ibdg,file="~/NFG/raw/K.ibdg")

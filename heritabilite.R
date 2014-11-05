@@ -17,11 +17,11 @@ pheno.order<-join(tfam[,c(1,2)],pheno[,c(2,3,4,5,6)],"SUBJID")
 Kpheno<-data.matrix(pheno.order[,c(1,2,3)])
 
 #write.table(Kpheno,file="~/NFG/raw/Kpheno",row.names=F,col.names=F)
-Hpheno<-data.matrix(opheno[,c(1,2,4)])                                        
+Hpheno<-data.matrix(pheno.order[,c(1,2,4)])                                        
 # write.table(Hpheno,file="~/NFG/raw/Hpheno",row.names=F,col.names=F)
-Lpheno<-data.matrix(opheno[,c(1,2,5)])                                        
+Lpheno<-data.matrix(pheno.order[,c(1,2,5)])                                        
 # write.table(Lpheno,file="~/NFG/raw/Lpheno",row.names=F,col.names=F)
-Tpheno<-data.matrix(opheno[,c(1,2,6)])
+Tpheno<-data.matrix(pheno.order[,c(1,2,6)])
 # write.table(Tpheno,file="~/NFG/raw/Tpheno",row.names=F,col.names=F)    
 
 # Hpheno<- read.table("~/NFG/raw/Hpheno")
@@ -44,14 +44,19 @@ pheno<-t(pheno.t)
 #source("~/NFG/ler/loadk.R")
 #K.divers<-load_K()
 K.ibsg<-read.table("~/NFG/raw/K.ibsg")
+K.ibsg.order<-
 K.ibdg<-read.table("~/NFG/raw/K.ibdg")
+K.ibdg.order<-
 Kdis.plink= read.table('~/NFG/result/plinkdis.mdist', sep='')
 Kdis.plink<-1-Kdis.plink
+Kdis.plink.order<-
 K.gcta<-read.table("~/NFG/raw/kpgc")
+K.gcta.order<-
 #all method together
 K.divers<-list(K.ibsg,K.ibdg,Kdis.plink,K.gcta)
-print("oder id in CGTA")
-identical(K_GCTA$id$V1,tfam$SUBJID)
+print("order id in CGTA")
+identical(K.gcta$id$V1,tfam$SUBJID)
+
 #browser()
 source("~/NFG/ler/heat.R")
 
@@ -96,10 +101,10 @@ Y.produit.list<-as.numeric(c(data.matrix(Y.produit)))
 
 ##compute the heritability-linear regression
 
-Kdist.list.red<-as.numeric(as.vector(Kdist.list[list]))
+Kdis.list.red<-as.numeric(as.vector(Kdis.list[list]))
 Y.produit.list.red<-as.numeric( as.vector( Y.produit.list[list]))
-heri.lm.red<-lm(Y.produit.list.red~Kdist.list.red)
-heri.lm.all<-lm(Y.produit.list~Kdist.list)
+heri.lm.red<-lm(Y.produit.list.red~Kdis.list.red)
+heri.lm.all<-lm(Y.produit.list~Kdis.list)
 heri.red<-summary(heri.lm.red)$coef[2,1]
 pv.heri.red<-summary(heri.lm.red)$coef[2,4]
 heri.all<-summary(heri.lm.all)$coef[2,1]
@@ -117,7 +122,7 @@ heri.dcov<-heri.dcov/norm
 heri.dcov.energy<-1
 norm.dcov<-1
 ##the results
-herita<-c(j,i,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov, heri.dcov.energy, Kdist.mean,norm,norm.dcov)
+herita<-c(j,i,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov, heri.dcov.energy, Kdis.mean,norm,norm.dcov)
 res<-rbind(res,herita)
 
 
