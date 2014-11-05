@@ -158,12 +158,14 @@ build_SNPs_matrix <- function(N, N_SNPS, snps_value = c(0,1,2)) {
 
 #' Compare DCOR with different kind of settings
 #'
-#' @title GBuild a random SNps matrix
+#' @title Compare DCOR and LM
 #' @param N sample size
 #' @param N_SNPs number of SNPS
 #' @param N_real_coeff number of SNPs that really explain the phenotype
-#' @param get_snps_matrix function that gives a SNPs matrix
 #' @param b X = G * runif(, -b, b)
+#' @param delta_add importance of additive effect
+#' @param delta_dom importance of dominant effect
+#' @param delta_epi importance of epistatic effect
 #' @param variable the variable that vary
 #' @return export a pdf file
 #' @author Julien Duvanel
@@ -190,6 +192,7 @@ compare_dcor <- function(N,
         M <- build_SNPs_matrix(N[i], N_SNPS[i])
         M_tilde <- build_SNPs_matrix(N[i], N_SNPS[i])
         
+        # Prepare all alpha's (additive/dominant/epistatic effect)
         alpha_add <- build_alpha(N_real_coeff = N_real_coeff[i], 
                                  N_SNPS = N_SNPS[i], 
                                  b = b)
@@ -206,11 +209,6 @@ compare_dcor <- function(N,
              delta_dom[i] * product_snps_alpha_dominant(M, alpha_dom) +
              delta_epi[i] * product_snps_alpha_epistatic(M, alpha_epi)
         
-        # We need to be sure that X is not all zeros
-        ifelse(abs(max(X) - min(X)) < .Machine$double.eps, 
-               X_norm <- X,
-               X_norm <- (X - mean(X)) / sd(X))
-        
         # We are more interested to have X + noise 
         # noise is 10% of sd(X)
         noise <- rnorm(N[i], mean = 0, sd = 0.1 * ifelse(sd(X) == 0, 1, sd(X)))   
@@ -225,15 +223,18 @@ compare_dcor <- function(N,
         res <- rbind(res, 
                      c(get(variable[1])[i], 
 
+                       # dcor estimates
                        dcor(X_norm_plus_noise, M),
                        dcor(X_norm_plus_noise, M_tilde),
-
+    
+                       # lm estimates
                        lm(as.vector(X_norm_plus_noise  %*% t(X_norm_plus_noise)) ~ dist_M)$coefficients[2],
                        lm(as.vector(X_norm_plus_noise %*% t(X_norm_plus_noise)) ~ dist_M_tilde)$coefficients[2]))
         
         cat("-> i = ", i, "/", length(N), "\n")
     }
     
+    # Gather data into a dataframe
     res <- data.frame(var = res[,1],
                       
                       dcor_X_from_G_plus_noise = res[,2],
@@ -241,14 +242,14 @@ compare_dcor <- function(N,
                       
                       lm_from_G_plus_noise = res[,4],
                       lm_not_from_G = res[,5])
+    
+    # melt data to be able plot group into ggplots
     data.melt <- melt(res, measure.vars = c("dcor_X_from_G_plus_noise", 
                                             "dcor_X_not_from_G",
                                             
                                             "lm_from_G_plus_noise",
                                             "lm_not_from_G"))
-    
-    browser()
-    
+        
     # Export a pdf file
     p <- ggplot(data = data.melt,
                 aes_string(x = "var" , y = "value")) +
@@ -263,16 +264,18 @@ compare_dcor <- function(N,
                            " and N_real_coeff in ", min(N_real_coeff), ":", max(N_real_coeff)))
 
     ggsave(plot = p,
-           filename = paste0("results/plots/ExperimentalDcor_", 
+           filename = paste0("results/plots/dcor_vs_lm_", 
                              as.character(substitute(get_alpha)), "_",
                              format(Sys.time(), "%d%m%Y_%H%M%S"),
                              ".pdf"),
            width = 17, height = 7)
     
-    save(list = "res", file = paste0("results/ExperimentalDcor_", 
+    save(list = "res", file = paste0("results/data/dcor_vs_lm_", 
                                      as.character(substitute(get_alpha)), "_",
                                      format(Sys.time(), "%d%m%Y_%H%M%S"),
                                      ".RData"))
+    
     # return
     list(res = res, X = X, M = M)    
+    
 }
