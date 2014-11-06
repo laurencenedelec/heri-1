@@ -76,8 +76,8 @@ source("methods/loadPhenotypes_real.R")
 
 param.list <- list()
 param.list[[1]] <- list(method.to.test = c(
-                                           "GCTA"#,
-                                           #"TheoKin",
+                                           #"GCTA"#,
+                                           "TheoKin"#,
                                            #"IBS",
                                            #"IBD"
                                            ),
