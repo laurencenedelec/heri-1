@@ -50,7 +50,7 @@ K.ibdg<-read.table("~/NFG/raw/K.ibdg")
 Kdis.plink= read.table('~/NFG/result/plinkdis.mdist', sep='')
 Kdis.plink<-1-Kdis.plink
 K.gcta<-read.table("~/NFG/raw/kpgc")
-K.ppgc<-read.table("~/NFG/raw/K.ppgc")
+K.ppgc<-read.table("~/NFG/raw/kppgc")
 #all method together
 K.divers<-list(K.ibsg,K.ibdg,Kdis.plink,K.gcta,K.ppgc)
 
