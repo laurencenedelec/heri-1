@@ -36,19 +36,20 @@ GetLegendFromGgplot2 <- function(a.gplot) {
 #' @return ggplot's theme
 #' @author Julien Duvanel
 GetCustomGgplotTheme <- function() {
-  theme_bw() + 
+  #theme_bw() + 
   theme(title = element_text(size = rel(1)),
         axis.text = element_text(size = 20),
-        axis.title = element_text(size = 30, face = "bold"),
-        plot.margin = grid::unit(c(1,1,1,1.09), "cm"),
+        axis.title = element_text(size = 22, face = "bold"),
+        plot.margin = grid::unit(c(1,1,0,0), "cm"),
         legend.justification = c(1,0), 
-        #legend.position = "bottom",
+        legend.position = "bottom",
         legend.title = element_blank(),
         legend.key = element_blank(),
-        legend.text = element_text(size = 12),
+        legend.text = element_text(size = 16),
         legend.background = element_rect(fill = "transparent"),
+        legend.key.width = grid::unit(0.5, "line"),
         legend.key.height = grid::unit(1.8,"line"),
-        legend.key.size = grid::unit(2, "line"))
+        legend.key.size = grid::unit(3, "line"))
 }
 
 #' This function gives the final color (including transparency)

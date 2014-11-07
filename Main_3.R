@@ -19,8 +19,8 @@ suppressPackageStartupMessages(library(devtools))
 ### Clean workspace, set directory and load functions
 rm(list = ls())
 
-#setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
-setwd("/home/duvanel/git/PackageCH/")
+setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
+#setwd("/home/duvanel/git/PackageCH/")
 
 # Main R file
 with_debug(load_all(pkg = "PackageCH"))
@@ -35,256 +35,256 @@ Project <- SetupProject()
 ####################
 param.list <- list()
 
-N_Estimation <- 50
-N_MAX <- 500
+n_Estimation <- 2
+n_MAX <- 500
 
 ##########
 ## Compare variation of importance of delta dom and epi in a specific setup
 ##########
-param.list[[1]] <- list(N = rep(500, times = N_Estimation),
-                       N_SNPS = rep(500, times = N_Estimation),
-                       N_real_coeff = rep(20, times = N_Estimation),
+param.list[[1]] <- list(n = rep(500, times = n_Estimation),
+                       s = rep(500, times = n_Estimation),
+                       u = rep(20, times = n_Estimation),
                        b = c(2,2),
-                       delta_add = rep(1, times = N_Estimation),
-                       delta_dom = seq(from = 0, to = 100, by = 100 / N_Estimation),
-                       delta_epi = seq(from = 0, to = 100, by = 100 / N_Estimation), 
-                       snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),
+                       delta_add = rep(1, times = n_Estimation),
+                       delta_dom = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                       delta_epi = seq(from = 0, to = 100, by = 100 / n_Estimation), 
+                       snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),
                        variable = c("delta_dom", "delta_epi"))                   
 
-param.list[[2]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = rep(20, times = N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
+param.list[[2]] <- list(n = rep(500, times = n_Estimation),
+                        s = rep(20, times = n_Estimation),
+                        u = rep(10, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = seq(from = 0, to = 100, by = 100 / N_Estimation),
-                        delta_epi = seq(from = 0, to = 100, by = 100 / N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                        delta_epi = seq(from = 0, to = 100, by = 100 / n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),
                         variable = c("delta_dom", "delta_epi"))    
 
-param.list[[3]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = rep(20, times = N_Estimation),
-                        N_real_coeff = rep(1, times = N_Estimation),
+param.list[[3]] <- list(n = rep(500, times = n_Estimation),
+                        s = rep(20, times = n_Estimation),
+                        u = rep(1, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = seq(from = 0, to = 100, by = 100 / N_Estimation),
-                        delta_epi = seq(from = 0, to = 100, by = 100 / N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                        delta_epi = seq(from = 0, to = 100, by = 100 / n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),
                         variable = c("delta_dom", "delta_epi"))    
 
 ##########
-## When varying number of SNPS, also vary importance of dom and epi effect
+## When varying number of SnPS, also vary importance of dom and epi effect
 ##########
-param.list[[4]] <- list(N = rep(500, times = N_Estimation),
-                       N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                       N_real_coeff = rep(1, times = N_Estimation),
+param.list[[4]] <- list(n = rep(500, times = n_Estimation),
+                       s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                       u = rep(1, times = n_Estimation),
                        b = c(2,2),
-                       delta_add = rep(1, times = N_Estimation),
-                       delta_dom = rep(0, times = N_Estimation),
-                       delta_epi = rep(0, times = N_Estimation),   
-                       snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                        
-                       variable = "N_SNPS")
+                       delta_add = rep(1, times = n_Estimation),
+                       delta_dom = rep(0, times = n_Estimation),
+                       delta_epi = rep(0, times = n_Estimation),   
+                       snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                        
+                       variable = "s")
 
-param.list[[5]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(1, times = N_Estimation),
+param.list[[5]] <- list(n = rep(500, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(1, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(1, times = N_Estimation),
-                        delta_epi = rep(1, times = N_Estimation),    
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                       
-                        variable = "N_SNPS")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(1, times = n_Estimation),
+                        delta_epi = rep(1, times = n_Estimation),    
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                       
+                        variable = "s")
 
-param.list[[6]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(1, times = N_Estimation),
+param.list[[6]] <- list(n = rep(500, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(1, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(10, times = N_Estimation),
-                        delta_epi = rep(10, times = N_Estimation),    
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                       
-                        variable = "N_SNPS")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(10, times = n_Estimation),
+                        delta_epi = rep(10, times = n_Estimation),    
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                       
+                        variable = "s")
 
-param.list[[7]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(1, times = N_Estimation),
+param.list[[7]] <- list(n = rep(500, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(1, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(100, times = N_Estimation),
-                        delta_epi = rep(100, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                        
-                        variable = "N_SNPS")
-
-##########
-## When varying number of SNPS, also vary importance of dom and epi effect
-##########
-param.list[[8]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
-                        b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(0, times = N_Estimation),
-                        delta_epi = rep(0, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                        
-                        variable = "N_SNPS")
-
-param.list[[9]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
-                        b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(1, times = N_Estimation),
-                        delta_epi = rep(1, times = N_Estimation),    
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                       
-                        variable = "N_SNPS")
-
-param.list[[10]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
-                        b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(10, times = N_Estimation),
-                        delta_epi = rep(10, times = N_Estimation),     
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                      
-                        variable = "N_SNPS")
-
-param.list[[11]] <- list(N = rep(500, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
-                        b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(100, times = N_Estimation),
-                        delta_epi = rep(100, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),                        
-                        variable = "N_SNPS")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(100, times = n_Estimation),
+                        delta_epi = rep(100, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                        
+                        variable = "s")
 
 ##########
-## When varying number of SNPS with low N, also vary importance of dom and epi effect
+## When varying number of SnPS, also vary importance of dom and epi effect
 ##########
-param.list[[12]] <- list(N = rep(20, times = N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
+param.list[[8]] <- list(n = rep(500, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(10, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(0, times = N_Estimation),
-                        delta_epi = rep(0, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),     
-                        variable = "N_SNPS")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(0, times = n_Estimation),
+                        delta_epi = rep(0, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                        
+                        variable = "s")
+
+param.list[[9]] <- list(n = rep(500, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(10, times = n_Estimation),
+                        b = c(2,2),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(1, times = n_Estimation),
+                        delta_epi = rep(1, times = n_Estimation),    
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                       
+                        variable = "s")
+
+param.list[[10]] <- list(n = rep(500, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(10, times = n_Estimation),
+                        b = c(2,2),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(10, times = n_Estimation),
+                        delta_epi = rep(10, times = n_Estimation),     
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                      
+                        variable = "s")
+
+param.list[[11]] <- list(n = rep(500, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(10, times = n_Estimation),
+                        b = c(2,2),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(100, times = n_Estimation),
+                        delta_epi = rep(100, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),                        
+                        variable = "s")
+
+##########
+## When varying number of SnPS with low n, also vary importance of dom and epi effect
+##########
+param.list[[12]] <- list(n = rep(20, times = n_Estimation),
+                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = rep(10, times = n_Estimation),
+                        b = c(2,2),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(0, times = n_Estimation),
+                        delta_epi = rep(0, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),     
+                        variable = "s")
  
-param.list[[13]] <- list(N = rep(20, times = N_Estimation),
-                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                         N_real_coeff = rep(10, times = N_Estimation),
+param.list[[13]] <- list(n = rep(20, times = n_Estimation),
+                         s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                         u = rep(10, times = n_Estimation),
                          b = c(2,2),
-                         delta_add = rep(1, times = N_Estimation),
-                         delta_dom = rep(1, times = N_Estimation),
-                         delta_epi = rep(1, times = N_Estimation),   
-                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),     
-                         variable = "N_SNPS")
+                         delta_add = rep(1, times = n_Estimation),
+                         delta_dom = rep(1, times = n_Estimation),
+                         delta_epi = rep(1, times = n_Estimation),   
+                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),     
+                         variable = "s")
 
-param.list[[14]] <- list(N = rep(20, times = N_Estimation),
-                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                         N_real_coeff = rep(10, times = N_Estimation),
+param.list[[14]] <- list(n = rep(20, times = n_Estimation),
+                         s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                         u = rep(10, times = n_Estimation),
                          b = c(2,2),
-                         delta_add = rep(1, times = N_Estimation),
-                         delta_dom = rep(10, times = N_Estimation),
-                         delta_epi = rep(10, times = N_Estimation),   
-                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),     
-                         variable = "N_SNPS")
+                         delta_add = rep(1, times = n_Estimation),
+                         delta_dom = rep(10, times = n_Estimation),
+                         delta_epi = rep(10, times = n_Estimation),   
+                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),     
+                         variable = "s")
 
-param.list[[15]] <- list(N = rep(20, times = N_Estimation),
-                         N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                         N_real_coeff = rep(10, times = N_Estimation),
+param.list[[15]] <- list(n = rep(20, times = n_Estimation),
+                         s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                         u = rep(10, times = n_Estimation),
                          b = c(2,2),
-                         delta_add = rep(1, times = N_Estimation),
-                         delta_dom = rep(100, times = N_Estimation),
-                         delta_epi = rep(100, times = N_Estimation),    
-                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),    
-                         variable = "N_SNPS")
+                         delta_add = rep(1, times = n_Estimation),
+                         delta_dom = rep(100, times = n_Estimation),
+                         delta_epi = rep(100, times = n_Estimation),    
+                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),    
+                         variable = "s")
 
 ##########
 ## When varying number of real_coeff, also vary importance of dom and epi effect
 ##########
-param.list[[16]] <- list(N = rep(N_MAX, times = N_Estimation),
-                        N_SNPS = rep(N_MAX, times = N_Estimation),
-                        N_real_coeff = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
+param.list[[16]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = rep(n_MAX, times = n_Estimation),
+                        u = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(0, times = N_Estimation),
-                        delta_epi = rep(0, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),  
-                        variable = "N_real_coeff")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(0, times = n_Estimation),
+                        delta_epi = rep(0, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),  
+                        variable = "u")
  
-param.list[[17]] <- list(N = rep(N_MAX, times = N_Estimation),
-                        N_SNPS = rep(N_MAX, times = N_Estimation),
-                        N_real_coeff = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
+param.list[[17]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = rep(n_MAX, times = n_Estimation),
+                        u = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(1, times = N_Estimation),
-                        delta_epi = rep(1, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),  
-                        variable = "N_real_coeff")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(1, times = n_Estimation),
+                        delta_epi = rep(1, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),  
+                        variable = "u")
 
-param.list[[18]] <- list(N = rep(N_MAX, times = N_Estimation),
-                        N_SNPS = rep(N_MAX, times = N_Estimation),
-                        N_real_coeff = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
+param.list[[18]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = rep(n_MAX, times = n_Estimation),
+                        u = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(10, times = N_Estimation),
-                        delta_epi = rep(10, times = N_Estimation),    
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T), 
-                        variable = "N_real_coeff")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(10, times = n_Estimation),
+                        delta_epi = rep(10, times = n_Estimation),    
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T), 
+                        variable = "u")
 
-param.list[[19]] <- list(N = rep(N_MAX, times = N_Estimation),
-                        N_SNPS = rep(N_MAX, times = N_Estimation),
-                        N_real_coeff = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
+param.list[[19]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = rep(n_MAX, times = n_Estimation),
+                        u = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(100, times = N_Estimation),
-                        delta_epi = rep(100, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),  
-                        variable = "N_real_coeff")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(100, times = n_Estimation),
+                        delta_epi = rep(100, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),  
+                        variable = "u")
 
 ##########
-## When varying number N, also vary importance of dom and epi effect
+## When varying number n, also vary importance of dom and epi effect
 ##########
-param.list[[20]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_SNPS = rep(20, times = N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
+param.list[[20]] <- list(n = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        s = rep(20, times = n_Estimation),
+                        u = rep(10, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(0, times = N_Estimation),
-                        delta_epi = rep(0, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),  
-                        variable = "N")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(0, times = n_Estimation),
+                        delta_epi = rep(0, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),  
+                        variable = "n")
 
-param.list[[21]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_SNPS = rep(20, times = N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
+param.list[[21]] <- list(n = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        s = rep(20, times = n_Estimation),
+                        u = rep(10, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(1, times = N_Estimation),
-                        delta_epi = rep(1, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),  
-                        variable = "N")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(1, times = n_Estimation),
+                        delta_epi = rep(1, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),  
+                        variable = "n")
 
-param.list[[22]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_SNPS = rep(20, times = N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
+param.list[[22]] <- list(n = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        s = rep(20, times = n_Estimation),
+                        u = rep(10, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(10, times = N_Estimation),
-                        delta_epi = rep(10, times = N_Estimation),    
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T), 
-                        variable = "N")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(10, times = n_Estimation),
+                        delta_epi = rep(10, times = n_Estimation),    
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T), 
+                        variable = "n")
 
-param.list[[23]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_SNPS = rep(20, times = N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
+param.list[[23]] <- list(n = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
+                        s = rep(20, times = n_Estimation),
+                        u = rep(10, times = n_Estimation),
                         b = c(2,2),
-                        delta_add = rep(1, times = N_Estimation),
-                        delta_dom = rep(100, times = N_Estimation),
-                        delta_epi = rep(100, times = N_Estimation),   
-                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = N_Estimation, ncol = 8, byrow = T),  
-                        variable = "N")
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(100, times = n_Estimation),
+                        delta_epi = rep(100, times = n_Estimation),   
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),  
+                        variable = "n")
 
 
 res <- list()
@@ -293,9 +293,9 @@ for(i in 1:length(param.list)) {
     
     cat(paste0("= Param list: ", i, "/", length(param.list), "\n"))
     
-    res[[i]] <- compare_dcor(N = param.list[[i]]$N, 
-                             N_SNPS = param.list[[i]]$N_SNPS,
-                             N_real_coeff = param.list[[i]]$N_real_coeff, 
+    res[[i]] <- compare_dcor(n = param.list[[i]]$n, 
+                             s = param.list[[i]]$s,
+                             u = param.list[[i]]$u, 
                              b = param.list[[i]]$b, 
                              delta_add = param.list[[i]]$delta_add,
                              delta_dom = param.list[[i]]$delta_dom,

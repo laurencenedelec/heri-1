@@ -88,8 +88,6 @@ PlotScatterMethods <- function(full.res, heridiff.file, editplotname.file, pdf.p
                                         y = "HeriDiff",
                                         color = "PlotGroup")) +
                 geom_point(aes_string(shape = "PlotGroup")) +    # Use hollow circles
-                #geom_smooth(method=lm,   # Add linear regression line
-                #            se=FALSE) +  # Don't add shaded confidence region
                 scale_shape_manual(values = 0:length(unique(datafrm$PlotGroup))) +
                 guides(col = guide_legend(ncol = 1)) +
                 GetCustomGgplotTheme()
