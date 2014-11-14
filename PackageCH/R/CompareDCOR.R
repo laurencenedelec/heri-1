@@ -118,6 +118,37 @@ build_alpha_epistatic <- function(u, s, b) {
     alpha_d
 }
 
+#' Build X using alpha and M with multi traits and mode
+#'
+#' @title Build X
+#' @param M genome matrix
+#' @param alpha matrix of traits
+#' @param m the mode
+#' @return X 
+#' @author Julien Duvanel
+#' @export 
+build_X_multi <- function(M, alpha) {
+    
+    # Build fake trait X
+    X <- product_snps_alpha(M, alpha)
+    
+    # We are more interested to have X + noise 
+    # noise is 10% of sd(X)
+    noise <- sapply(1:ncol(alpha), function(x) rnorm(nrow(M), 
+                                                     mean = 0, 
+                                                     sd = 0.1 * ifelse(sd(X) == 0, 1, sd(X))))  
+    
+    # Normalize X 
+    X_norm_plus_noise <- t(t(X + noise) - colMeans(X + noise))
+    X.sd <- colSds(X + noise)
+    
+    # what we return
+    t(t(X_norm_plus_noise) * (1/X.sd))
+    
+}
+
+
+
 #' mat * alpha but alpha(mat)
 #'
 #' @title Product between mat and alpha for additive effect
@@ -356,7 +387,6 @@ compare_dcor <- function(n,
 compare_dcor_multi <- function(n, 
                                s, 
                                t,
-                               m,
                                snps_value,
                                variable = "") {
     
@@ -375,43 +405,42 @@ compare_dcor_multi <- function(n,
         M <- build_SNPs_matrix(n[i], s[i], snps_value[i,])
         M_tilde <- build_SNPs_matrix(n[i], s[i])
         
+        X <- list()
+        
         # Prepare all multi alpha
-        alpha_multi_add <- build_alpha_multi(s = s[i],
-                                             t = t[i],
-                                             mode = m[i])
-        
-        # Build fake trait X
-        X <- product_snps_alpha(M, alpha_multi_add)
-        
-        # We are more interested to have X + noise 
-        # noise is 10% of sd(X)
-        noise <- sapply(1:t[i], function(x) rnorm(n[i], mean = 0, sd = 0.1 * ifelse(sd(X) == 0, 1, sd(X))))  
-        
-        # Normalize X 
-        X_norm_plus_noise <- t(t(X + noise) - colMeans(X + noise))
-        X.sd <- colSds(X + noise)
-        X_norm_plus_noise <- t(t(X_norm_plus_noise) * (1/X.sd))
-        
+        for(j in 1:4) {
+            X[[j]] <- build_X_multi(M = M,
+                                    build_alpha_multi(s = s[i],
+                                                      t = t[i],
+                                                      mode = j))
+        }
+
         # Compute in advance distance matrices for
         # linear regression estimate of heritability
         # dist_M <- 1 - as.vector(as.matrix(dist(M)))
         # dist_M_tilde <- 1 - as.vector(as.matrix(dist(M_tilde)))
-        
+                
         # Do estimates
-        res_est <- c()
-        res_est_tilde <- c()
-        for(j in 1:ncol(X_norm_plus_noise)) {
-            if(j %% 2 == 0) {
-                res_est <- c(res_est, dcor(X[,1:j], M))
-                res_est_tilde <- c(res_est_tilde, dcor(X[,1:j], M_tilde))                
-            }
+        res_est <- vector(mode = "list", length = 4)
+        res_est_tilde <- vector(mode = "list", length = 4)
+        for(l in 1:4) {
+            for(j in 1:ncol(X[[l]])) {
+                if(j %% 2 == 0) {
+                    res_est[[l]] <- c(res_est[[l]], dcor(X[[l]][,1:j], M))
+                    res_est_tilde[[l]] <- c(res_est_tilde[[l]], dcor(X[[l]][,1:j], M_tilde))                
+                }
+            }        
         }
-        res <- rbind.fill(res, 
-                          data.frame(var = get(variable[1])[i], 
-                                     est = res_est))
-        res_tilde <- rbind.fill(res_tilde, 
-                                data.frame(var = get(variable[1])[i], 
-                                           est = res_est_tilde))
+
+        for(l in 1:4) {
+            res <- rbind.fill(res, 
+                              data.frame(var = get(variable[1])[i] + l*0.02*max(s), 
+                                         est = t(res_est[[l]])))
+            res_tilde <- rbind.fill(res_tilde, 
+                                    data.frame(var = get(variable[1])[i] + l*0.02*max(s), 
+                                               est = t(res_est_tilde[[l]])))
+        }
+
         
         cat("-> i = ", i, "/", length(n), "\n")
     }
@@ -430,19 +459,24 @@ compare_dcor_multi <- function(n,
     # Export a pdf file
     p <- ggplot(data = data.melt,
                 aes_string(x = "var" , y = "value")) +
-        geom_point(aes_string(color = "variable"), size = 3, position = position_jitter(w = 0.005 * sd(data.melt$value), h = 0)) +
+        geom_point(aes_string(colour = "variable"), 
+                   size = 3, 
+                   position = position_jitter(w = 0.005 * sd(data.melt$value), 
+                                              h = 0)) +
         xlab(paste0("Value of ", paste(variable, collapse=", "))) +
         ylab("Heritability estimate") + 
-        scale_y_continuous(limits = c(0, 1)) +          
-        GetCustomGgplotTheme()
+        scale_y_continuous(limits = c(0, 1)) +     
+        GetCustomGgplotTheme() +
+        theme(legend.position="none")
     
     p_tilde <- ggplot(data = data.melt.tilde,
                 aes_string(x = "var" , y = "value")) +
         geom_point(aes_string(color = "variable"), size = 3, position = position_jitter(w = 0.005 * sd(data.melt.tilde$value), h = 0)) +
         xlab(paste0("Value of ", paste(variable, collapse=", "))) +
-        ylab("Heritability estimate with random genetic matrix") + 
+        ylab("Heritability estimate w/ rand. gen. matrix") + 
         scale_y_continuous(limits = c(0, 1)) +          
-        GetCustomGgplotTheme()
+        GetCustomGgplotTheme() +
+        theme(legend.position="none")
     
     # Create a grid with 2 rows, length(p) columns
     # Plot results, 3 columns (= 3 methods)
@@ -450,7 +484,6 @@ compare_dcor_multi <- function(n,
                       "n", min(n), "-", max(n), "_",
                       "s", min(s), "-", max(s), "_",
                       "t", min(t), "-", max(t), "_",
-                      "m", min(m), "-", max(m), "_",
                       format(Sys.time(), "%d%m%Y_%H%M%S"),
                       ".pdf"), 
         width = 17, 
@@ -470,7 +503,6 @@ compare_dcor_multi <- function(n,
                                      "n", min(n), "-", max(n), "_",
                                      "s", min(s), "-", max(s), "_",
                                      "t", min(t), "-", max(t), "_",
-                                     "m", min(m), "-", max(m), "_",
                                      format(Sys.time(), "%d%m%Y_%H%M%S"),
                                      ".RData"))
     
