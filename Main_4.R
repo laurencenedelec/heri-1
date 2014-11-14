@@ -35,17 +35,23 @@ Project <- SetupProject()
 ####################
 param.list <- list()
 
-n_Estimation <- 5
+n_Estimation <- 10
 n_MAX <- 500
 
 ##########
 ## Compare 
 ##########
 param.list[[1]] <- list(n = rep(500, times = n_Estimation),
-                        s = seq(from = 10, to = n_MAX, by = n_MAX/n_Estimation),
-                        t = rep(50, times = n_Estimation),
+                        s = seq(from = 50, to = n_MAX, by = n_MAX/n_Estimation),
+                        t = rep(100, times = n_Estimation),
                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),
                         variable = c("s"))
+
+param.list[[2]] <- list(n = seq(from = 50, to = n_MAX, by = n_MAX/n_Estimation),
+                        s = rep(500, times = n_Estimation),
+                        t = rep(100, times = n_Estimation),
+                        snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),
+                        variable = c("n"))
 
 # param.list[[1]] <- list(n = rep(500, times = n_Estimation),
 #                         s = rep(500, times = n_Estimation),
