@@ -1,12 +1,13 @@
 library(energy)
 library(matrixStats)
 library(reshape2)
+library(plyr)
 
 #' Build alpha s.t. X = G * alpha
 #'
 #' @title Build alpha
 #' @param u number of non_zero coeff
-#' @param s number of SnPS
+#' @param s number of SNPS
 #' @param b value of runif(b[1],b[2])
 #' @return alpha
 #' @author Julien Duvanel
@@ -19,11 +20,56 @@ build_alpha <- function(u, s, b) {
     
 }
 
+#' Build alpha multi s.t. X = G * alpha 
+#'
+#' @title Build alpha
+#' @param s number of SNPS
+#' @param t number of traits
+#' @param mode 1 = random, 2 = disjoint, 3 = half random / half noise, 4 = half disjoint / half noise
+#' @return alpha
+#' @author Julien Duvanel
+#' @export
+build_alpha_multi <- function(s, t, mode = 1) {
+    
+    if(t %% 2 != 0) stop("t has to be an even number !")
+    
+    if(mode == 1) {
+        # Completly random mode
+        alpha <- sapply(1:t, function(x) runif(n = s, min = -1, max = 1))
+    } else if(mode == 2) {
+        # We can have floor ( s / t ) number of SNPs for each traits (so that they are disjoint)
+        alpha <- sapply(1:t, function(x) {
+            c(rep(0, times = (x-1)*floor(s/t)),
+              runif(n = floor(s/t), min = -1, max = 1),
+              rep(0, times = s - (x*floor(s/t))))
+        })
+    } else if(mode == 3) {
+        # half random / half noise (i.e. 0 and noise is added later)
+        alpha <- cbind(sapply(1:(t/2), function(x) runif(n = s, min = -1, max = 1)),
+                       sapply(1:(t/2), function(x) rep(0, times = s)))
+    } else if(mode == 4) {
+        # half disjoint / half noise
+        t_half <- t/2
+        alpha <- cbind(sapply(1:t_half, function(x) {
+                            c(rep(0, times = (x-1)*floor(s/t_half)),
+                            runif(n = floor(s/t_half), min = -1, max = 1),
+                            rep(0, times = s - (x*floor(s/t_half))))}),
+                       sapply(1:t_half, function(x) rep(0, times = s)))
+    } else {
+        # Only noise
+        alpha <- sapply(1:t, function(x) rep(0, times = s))
+    }
+    
+    alpha
+    
+}
+
+
 #' Build alpha s.t. X = G * alpha but alpha(g_i)
 #'
 #' @title Build alpha
 #' @param u number of non_zero coeff
-#' @param s number of SnPS
+#' @param s number of SNPS
 #' @param b value of runif(b[1],b[2])
 #' @return alpha with dominant effect
 #' @author Julien Duvanel
@@ -47,7 +93,7 @@ build_alpha_dominant <- function(u, s, b) {
 #'
 #' @title Build alpha
 #' @param u number of non_zero coeff
-#' @param s number of SnPS
+#' @param s number of SNPS
 #' @param b value of runif(b[1],b[2])
 #' @return alpha with dominant effect
 #' @author Julien Duvanel
@@ -143,12 +189,12 @@ product_snps_alpha_epistatic <- function(M, alpha) {
 #'
 #' @title Build a random Snps matrix
 #' @param n sample size
-#' @param s number of SnPS
+#' @param s number of SNPS
 #' @param snps_value value that SnPs can take
 #' @return a random SnPs matrix
 #' @author Julien Duvanel
 #' @export
-build_SnPs_matrix <- function(n, s, snps_value = c(0,1,2)) {
+build_SNPs_matrix <- function(n, s, snps_value = c(0,1,2)) {
 
     # build a completly random matrix
     M <- matrix(sample(snps_value, size = n * s, replace = T), 
@@ -160,7 +206,7 @@ build_SnPs_matrix <- function(n, s, snps_value = c(0,1,2)) {
 #'
 #' @title Compare DCOR and LM
 #' @param n sample size
-#' @param s number of SnPS
+#' @param s number of SNPS
 #' @param u number of SnPs that really explain the phenotype
 #' @param b X = G * runif(, -b, b)
 #' @param delta_add importance of additive effect
@@ -193,8 +239,8 @@ compare_dcor <- function(n,
         
         # Build two fake genome matrices
         # the second one is only used to compare with random results
-        M <- build_SnPs_matrix(n[i], s[i], snps_value[i,])
-        M_tilde <- build_SnPs_matrix(n[i], s[i])
+        M <- build_SNPs_matrix(n[i], s[i], snps_value[i,])
+        M_tilde <- build_SNPs_matrix(n[i], s[i])
         
         # Prepare all alpha's (additive/dominant/epistatic effect)
         alpha_add <- build_alpha(u = u[i], 
@@ -294,3 +340,142 @@ compare_dcor <- function(n,
     list(res = res, X = X, M = M)    
     
 }
+
+#' Compare DCOR with different kind of settings and multi-traits
+#'
+#' @title Compare DCOR and LM
+#' @param n sample size
+#' @param s number of SNPS
+#' @param t the number of traits
+#' @param m mode (see build_alpha_multi)
+#' @param snps_values the value randomly chosen for the G matrix
+#' @param variable the variable that vary
+#' @return export a pdf file
+#' @author Julien Duvanel
+#' @export
+compare_dcor_multi <- function(n, 
+                               s, 
+                               t,
+                               m,
+                               snps_value,
+                               variable = "") {
+    
+    # We have to check that dimensions agree
+    if (length(n) != length(s) | 
+            length(n) != length(t) |
+            length(n) != nrow(snps_value)) stop("Problem, length of n has to be the same as s, delta_add/dom/epi and snps_value.")    
+    
+    # We loop through length(n) (but they all have same length at this point)
+    res <- data.frame()
+    res_tilde <- data.frame()
+    for(i in 1:length(n)) {
+        
+        # Build two fake genome matrices
+        # the second one is only used to compare with random results
+        M <- build_SNPs_matrix(n[i], s[i], snps_value[i,])
+        M_tilde <- build_SNPs_matrix(n[i], s[i])
+        
+        # Prepare all multi alpha
+        alpha_multi_add <- build_alpha_multi(s = s[i],
+                                             t = t[i],
+                                             mode = m[i])
+        
+        # Build fake trait X
+        X <- product_snps_alpha(M, alpha_multi_add)
+        
+        # We are more interested to have X + noise 
+        # noise is 10% of sd(X)
+        noise <- sapply(1:t[i], function(x) rnorm(n[i], mean = 0, sd = 0.1 * ifelse(sd(X) == 0, 1, sd(X))))  
+        
+        # Normalize X 
+        X_norm_plus_noise <- t(t(X + noise) - colMeans(X + noise))
+        X.sd <- colSds(X + noise)
+        X_norm_plus_noise <- t(t(X_norm_plus_noise) * (1/X.sd))
+        
+        # Compute in advance distance matrices for
+        # linear regression estimate of heritability
+        # dist_M <- 1 - as.vector(as.matrix(dist(M)))
+        # dist_M_tilde <- 1 - as.vector(as.matrix(dist(M_tilde)))
+        
+        # Do estimates
+        res_est <- c()
+        res_est_tilde <- c()
+        for(j in 1:ncol(X_norm_plus_noise)) {
+            if(j %% 2 == 0) {
+                res_est <- c(res_est, dcor(X[,1:j], M))
+                res_est_tilde <- c(res_est_tilde, dcor(X[,1:j], M_tilde))                
+            }
+        }
+        res <- rbind.fill(res, 
+                          data.frame(var = get(variable[1])[i], 
+                                     est = res_est))
+        res_tilde <- rbind.fill(res_tilde, 
+                                data.frame(var = get(variable[1])[i], 
+                                           est = res_est_tilde))
+        
+        cat("-> i = ", i, "/", length(n), "\n")
+    }
+    
+    # Gather data into a dataframe
+    res <- data.frame(var = res[,1],
+                      est = res[,-1])
+    res_tilde <- data.frame(var = res_tilde[,1],
+                            est = res_tilde[,-1])
+    
+    # melt data to be able plot group into ggplots
+    data.melt <- melt(res, measure.vars = names(res)[-1])
+    data.melt.tilde <- melt(res_tilde, measure.vars = names(res_tilde)[-1])
+    
+    
+    # Export a pdf file
+    p <- ggplot(data = data.melt,
+                aes_string(x = "var" , y = "value")) +
+        geom_point(aes_string(color = "variable"), size = 3, position = position_jitter(w = 0.005 * sd(data.melt$value), h = 0)) +
+        xlab(paste0("Value of ", paste(variable, collapse=", "))) +
+        ylab("Heritability estimate") + 
+        scale_y_continuous(limits = c(0, 1)) +          
+        GetCustomGgplotTheme()
+    
+    p_tilde <- ggplot(data = data.melt.tilde,
+                aes_string(x = "var" , y = "value")) +
+        geom_point(aes_string(color = "variable"), size = 3, position = position_jitter(w = 0.005 * sd(data.melt.tilde$value), h = 0)) +
+        xlab(paste0("Value of ", paste(variable, collapse=", "))) +
+        ylab("Heritability estimate with random genetic matrix") + 
+        scale_y_continuous(limits = c(0, 1)) +          
+        GetCustomGgplotTheme()
+    
+    # Create a grid with 2 rows, length(p) columns
+    # Plot results, 3 columns (= 3 methods)
+    pdf(file = paste0("results/plots/dcor_multi_", 
+                      "n", min(n), "-", max(n), "_",
+                      "s", min(s), "-", max(s), "_",
+                      "t", min(t), "-", max(t), "_",
+                      "m", min(m), "-", max(m), "_",
+                      format(Sys.time(), "%d%m%Y_%H%M%S"),
+                      ".pdf"), 
+        width = 17, 
+        height = 7)
+    
+        grid.newpage()
+            pushViewport(viewport(layout = grid.layout(1, 2)))   
+    
+            print(p, vp = vplayout(1,1))
+            print(p_tilde, vp = vplayout(1,2))        
+    
+        upViewport(0)
+    
+    dev.off()
+    
+    save(list = "res", file = paste0("results/data/dcor_multi_", 
+                                     "n", min(n), "-", max(n), "_",
+                                     "s", min(s), "-", max(s), "_",
+                                     "t", min(t), "-", max(t), "_",
+                                     "m", min(m), "-", max(m), "_",
+                                     format(Sys.time(), "%d%m%Y_%H%M%S"),
+                                     ".RData"))
+    
+    # return
+    list(res = res, X = X, M = M)    
+    
+}
+
