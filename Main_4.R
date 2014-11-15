@@ -19,8 +19,8 @@ suppressPackageStartupMessages(library(devtools))
 ### Clean workspace, set directory and load functions
 rm(list = ls())
 
-setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
-#setwd("/home/duvanel/git/PackageCH/")
+#setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
+setwd("/home/duvanel/git/PackageCH/")
 
 # Main R file
 with_debug(load_all(pkg = "PackageCH"))
