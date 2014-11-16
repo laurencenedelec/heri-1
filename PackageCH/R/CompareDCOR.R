@@ -408,7 +408,7 @@ compare_dcor_multi <- function(n,
         X <- list()
         
         # Prepare all multi alpha
-        for(j in 1:4) {
+        for(j in 1:5) {
             X[[j]] <- build_X_multi(M = M,
                                     build_alpha_multi(s = s[i],
                                                       t = t[i],
