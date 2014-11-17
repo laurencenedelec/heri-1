@@ -423,7 +423,7 @@ compare_dcor_multi <- function(n,
         # Do estimates
         res_est <- vector(mode = "list", length = 4)
         res_est_tilde <- vector(mode = "list", length = 4)
-        for(l in 1:4) {
+        for(l in 1:5) {
             for(j in 1:ncol(X[[l]])) {
                 if(j %% 2 == 0) {
                     res_est[[l]] <- c(res_est[[l]], dcor(X[[l]][,1:j], M))
@@ -432,7 +432,7 @@ compare_dcor_multi <- function(n,
             }        
         }
 
-        for(l in 1:4) {
+        for(l in 1:5) {
             res <- rbind.fill(res, 
                               data.frame(var = get(variable[1])[i] + l*0.02*max(s), 
                                          est = t(res_est[[l]])))
