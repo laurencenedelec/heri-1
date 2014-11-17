@@ -421,8 +421,8 @@ compare_dcor_multi <- function(n,
         # dist_M_tilde <- 1 - as.vector(as.matrix(dist(M_tilde)))
                 
         # Do estimates
-        res_est <- vector(mode = "list", length = 4)
-        res_est_tilde <- vector(mode = "list", length = 4)
+        res_est <- vector(mode = "list", length = 5)
+        res_est_tilde <- vector(mode = "list", length = 5)
         for(l in 1:5) {
             for(j in 1:ncol(X[[l]])) {
                 if(j %% 2 == 0) {
