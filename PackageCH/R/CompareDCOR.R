@@ -434,10 +434,10 @@ compare_dcor_multi <- function(n,
 
         for(l in 1:5) {
             res <- rbind.fill(res, 
-                              data.frame(var = get(variable[1])[i] + l*0.02*max(s), 
+                              data.frame(var = get(variable[1])[i] + (l-1)*0.02*max(s), 
                                          est = t(res_est[[l]])))
             res_tilde <- rbind.fill(res_tilde, 
-                                    data.frame(var = get(variable[1])[i] + l*0.02*max(s), 
+                                    data.frame(var = get(variable[1])[i] + (l-1)*0.02*max(s), 
                                                est = t(res_est_tilde[[l]])))
         }
 
@@ -499,7 +499,7 @@ compare_dcor_multi <- function(n,
     
     dev.off()
     
-    save(list = "res", file = paste0("results/data/dcor_multi_", 
+    save(list = c("data.melt", "data.melt.tilde"), file = paste0("results/data/dcor_multi_", 
                                      "n", min(n), "-", max(n), "_",
                                      "s", min(s), "-", max(s), "_",
                                      "t", min(t), "-", max(t), "_",

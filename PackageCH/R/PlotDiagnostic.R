@@ -34,7 +34,7 @@ PlotHeatmapCorrelationMatrix <- function(X,
   # Get colors between white and black
   col <- colorRampPalette(c("white", "black"), space="rgb")
   
-  breaks <- seq(0, 1, length.out=10)
+  breaks <- seq(min(X), max(X), length.out=10)
   
   image(z, col=col(length(breaks)-1), breaks=breaks, xaxt="n", yaxt="n", ylab="", xlab="", useRaster=T)
 
