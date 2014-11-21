@@ -35,14 +35,14 @@ Project <- SetupProject()
 ####################
 param.list <- list()
 
-n_Estimation <- 20
-n_MAX <- 4000
+n_Estimation <- 5
+n_MAX <- 2000
 
 ##########
 ## Compare variation of importance of delta dom and epi in a specific setup
 ##########
 param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
-                       s = seq(from = 20, to = 2*n_MAX, by = 2*n_MAX/n_Estimation),
+                       s = seq(from = 20, to = n_MAX, by = n_MAX/n_Estimation),
                        u = rep(20, times = n_Estimation),
                        b = c(2,2),
                        noise.sd = rep(0, times = n_Estimation),
