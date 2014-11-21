@@ -35,8 +35,8 @@ Project <- SetupProject()
 ####################
 param.list <- list()
 
-n_Estimation <- 5
-n_MAX <- 2000
+n_Estimation <- 10
+n_MAX <- 3000
 
 ##########
 ## Compare variation of importance of delta dom and epi in a specific setup
@@ -58,8 +58,8 @@ param.list[[2]] <- list(n = rep(n_MAX, times = n_Estimation),
                         b = c(2,2),
                         noise.sd = rep(0, times = n_Estimation),
                         delta_add = rep(1, times = n_Estimation),
-                        delta_dom = seq(from = 0, to = 100, by = 100 / n_Estimation),
-                        delta_epi = seq(from = 0, to = 100, by = 100 / n_Estimation),   
+                        delta_dom = seq(from = 0, to = 90, by = 100 / n_Estimation),
+                        delta_epi = seq(from = 0, to = 90, by = 100 / n_Estimation),   
                         snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
                         variable = c("delta_dom", "delta_epi"))  
 
@@ -78,7 +78,7 @@ param.list[[4]] <- list(n = rep(n_MAX, times = n_Estimation),
                         s = rep(n_MAX, times = n_Estimation),
                         u = rep(20, times = n_Estimation),
                         b = c(2,2),
-                        noise.sd = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                        noise.sd = seq(from = 10, to = 100, by = 100 / n_Estimation),
                         delta_add = rep(1, times = n_Estimation),
                         delta_dom = rep(0, times = n_Estimation),
                         delta_epi = rep(0, times = n_Estimation),
@@ -89,7 +89,7 @@ param.list[[5]] <- list(n = rep(n_MAX, times = n_Estimation),
                         s = rep(20, times = n_Estimation),
                         u = rep(20, times = n_Estimation),
                         b = c(2,2),
-                        noise.sd = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                        noise.sd = seq(from = 10, to = 100, by = 100 / n_Estimation),
                         delta_add = rep(1, times = n_Estimation),
                         delta_dom = rep(0, times = n_Estimation),
                         delta_epi = rep(0, times = n_Estimation),
