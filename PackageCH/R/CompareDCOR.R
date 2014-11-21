@@ -240,6 +240,7 @@ build_SNPs_matrix <- function(n, s, snps_value = c(0,1,2)) {
 #' @param s number of SNPS
 #' @param u number of SnPs that really explain the phenotype
 #' @param b X = G * runif(, -b, b)
+#' @param noise noise
 #' @param delta_add importance of additive effect
 #' @param delta_dom importance of dominant effect
 #' @param delta_epi importance of epistatic effect
@@ -252,6 +253,7 @@ compare_dcor <- function(n,
                          s, 
                          u, 
                          b,
+                         noise.sd,
                          delta_add,
                          delta_dom,
                          delta_epi,
@@ -292,25 +294,38 @@ compare_dcor <- function(n,
         
         # We are more interested to have X + noise 
         # noise is 10% of sd(X)
-        noise <- rnorm(n[i], mean = 0, sd = 0.1 * ifelse(sd(X) == 0, 1, sd(X)))   
-        X_norm_plus_noise <- (X + noise - mean(X + noise)) / sd(X + noise)
+        noise <- rnorm(n[i], mean = 0, sd = noise.sd[i])   
+        X.noise <- X + noise
         
         # Compute in advance distance matrices for
         # linear regression estimate of heritability
-        dist_M <- 1- as.vector(as.matrix(dist(M)))
-        dist_M_tilde <- 1 - as.vector(as.matrix(dist(M_tilde)))
+        # Actually, we use GRM as stated in one of the papers
+        M_W <- compute_W(G = M)
+        A_M <- M_W %*% t(M_W) / ncol(M_W)
+        A_M.tri <- A_M[lower.tri(A_M)]
+        
+        M_tilde_W <- compute_W(G = M_tilde)
+        A_M_tilde <- M_tilde_W %*% t(M_tilde_W) / ncol(M_tilde_W)
+        A_M_tilde.tri <- A_M_tilde[lower.tri(A_M_tilde)]
 
+        Z <- X.noise %*% t(X.noise)
+        Z.tri <- Z[lower.tri(Z)]
+        
         # Do estimates
         res <- rbind(res, 
                      c(get(variable[1])[i], 
 
                        # dcor estimates
-                       dcor(X_norm_plus_noise, M),
-                       dcor(X_norm_plus_noise, M_tilde),
+                       dcor(X.noise, A_M),
+                       dcor(X.noise, A_M_tilde),
     
                        # lm estimates
-                       lm(as.vector(X_norm_plus_noise  %*% t(X_norm_plus_noise)) ~ dist_M)$coefficients[2],
-                       lm(as.vector(X_norm_plus_noise %*% t(X_norm_plus_noise)) ~ dist_M_tilde)$coefficients[2]))
+                       lm( Z.tri ~ A_M.tri)$coefficients[2] / var(X.noise),
+                       lm( Z.tri ~ A_M_tilde.tri)$coefficients[2] / var(X.noise),
+                       
+                       var(delta_add[i] * product_snps_alpha(M, alpha_add)) / var(X.noise),
+                       var(X) / var(X.noise)
+                     ))
         
         cat("-> i = ", i, "/", length(n), "\n")
     }
@@ -322,14 +337,20 @@ compare_dcor <- function(n,
                       dcor_X_not_from_G = res[,3],
                       
                       lm_from_G_plus_noise = res[,4],
-                      lm_not_from_G = res[,5])
+                      lm_not_from_G = res[,5],
+                      
+                      h2 = res[,6],
+                      H2 = res[,7])
     
     # melt data to be able plot group into ggplots
     data.melt <- melt(res, measure.vars = c("dcor_X_from_G_plus_noise", 
                                             "dcor_X_not_from_G",
                                             
                                             "lm_from_G_plus_noise",
-                                            "lm_not_from_G"))
+                                            "lm_not_from_G",
+                                            
+                                            "h2",
+                                            "H2"))
 
     # Export a pdf file
     p <- ggplot(data = data.melt,
@@ -337,16 +358,20 @@ compare_dcor <- function(n,
             geom_point(aes_string(color = "variable"), size = 3, position = position_jitter(w = 0.005 * sd(data.melt$value), h = 0)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("Heritability estimate") + 
-            scale_y_continuous(limits = c(0, 1)) +
+            scale_y_continuous(limits = c(-0.1, 1)) +
             scale_colour_discrete(name="Methods",
                                 breaks=c("dcor_X_from_G_plus_noise", 
                                          "dcor_X_not_from_G", 
                                          "lm_from_G_plus_noise",
-                                         "lm_not_from_G"),
+                                         "lm_not_from_G",
+                                         "h2",
+                                         "H2"),
                                 labels=c("dcor(X, G)", 
                                          expression(paste("dcor(X,", tilde(G), ")")), 
                                          "lm(X ~ G)",
-                                         expression(paste("lm(X ~ ", tilde(G), ")")))) +            
+                                         expression(paste("lm(X ~ ", tilde(G), ")")),
+                                         "real h2",
+                                         "real H2")) +            
             GetCustomGgplotTheme()
         
     ggsave(plot = p,
