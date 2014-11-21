@@ -51,6 +51,52 @@ param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
                        delta_epi = rep(0, times = n_Estimation),
                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
                        variable = c("s"))                   
+
+param.list[[2]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = rep(n_MAX, times = n_Estimation),
+                        u = rep(20, times = n_Estimation),
+                        b = c(2,2),
+                        noise.sd = rep(0, times = n_Estimation),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                        delta_epi = seq(from = 0, to = 100, by = 100 / n_Estimation),   
+                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                        variable = c("delta_dom", "delta_epi"))  
+
+param.list[[3]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = seq(from = 20, to = n_MAX, by = n_MAX/n_Estimation),
+                        u = seq(from = 20, to = n_MAX, by = n_MAX/n_Estimation),
+                        b = c(2,2),
+                        noise.sd = rep(0, times = n_Estimation),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(0, times = n_Estimation),
+                        delta_epi = rep(0, times = n_Estimation),
+                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                        variable = c("s", "u"))   
+
+param.list[[4]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = rep(n_MAX, times = n_Estimation),
+                        u = rep(20, times = n_Estimation),
+                        b = c(2,2),
+                        noise.sd = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(0, times = n_Estimation),
+                        delta_epi = rep(0, times = n_Estimation),
+                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                        variable = c("noise.sd"))     
+
+param.list[[5]] <- list(n = rep(n_MAX, times = n_Estimation),
+                        s = rep(20, times = n_Estimation),
+                        u = rep(20, times = n_Estimation),
+                        b = c(2,2),
+                        noise.sd = seq(from = 0, to = 100, by = 100 / n_Estimation),
+                        delta_add = rep(1, times = n_Estimation),
+                        delta_dom = rep(0, times = n_Estimation),
+                        delta_epi = rep(0, times = n_Estimation),
+                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                        variable = c("noise.sd"))     
+
+
 # 
 # param.list[[2]] <- list(n = rep(500, times = n_Estimation),
 #                         s = rep(20, times = n_Estimation),
