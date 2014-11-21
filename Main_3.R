@@ -50,7 +50,7 @@ param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
                        delta_dom = rep(0, times = n_Estimation),
                        delta_epi = rep(0, times = n_Estimation),
                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
-                       variable = c("n"))                   
+                       variable = c("s"))                   
 # 
 # param.list[[2]] <- list(n = rep(500, times = n_Estimation),
 #                         s = rep(20, times = n_Estimation),
