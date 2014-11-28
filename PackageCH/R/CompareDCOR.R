@@ -15,7 +15,7 @@ library(plyr)
 build_alpha <- function(u, s, b) {
     
     # build alpha
-    alpha <- sample(c(runif(u, b[1], b[2]), 
+    alpha <- sample(c(runif(u, 0, 1), 
                       rep(x = 0, times = s - u)))
     
 }
@@ -146,8 +146,6 @@ build_X_multi <- function(M, alpha) {
     t(t(X_norm_plus_noise) * (1/X.sd))
     
 }
-
-
 
 #' mat * alpha but alpha(mat)
 #'
