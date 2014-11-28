@@ -15,9 +15,14 @@ library(plyr)
 build_alpha <- function(u, s, b) {
     
     # build alpha
-    alpha <- sample(c(runif(u, 0, 1), 
-                      rep(x = 0, times = s - u)))
-    
+    if(length(b) == 2) {
+        alpha <- sample(c(runif(u, b[1], b[2]), 
+                          rep(x = 0, times = s - u)))
+    } else {
+        alpha <- sample(c(rnorm(u, 0, 1), 
+                          rep(x = 0, times = s - u)))
+    }
+  
 }
 
 #' Build alpha multi s.t. X = G * alpha 
@@ -262,7 +267,6 @@ compare_dcor <- function(n,
     if (length(n) != length(s) | 
         length(n) != length(u) |
         length(n) != nrow(snps_value)) stop("Problem, length of n has to be the same as s, delta_add/dom/epi and snps_value.")    
-    if(length(b) != 2) stop("b has to be a vector of length 2 because we use it as runif(..., b[1], b[2]) !")
     
     # We loop through length(n) (but they all have same length at this point)
     res <- c()
@@ -312,33 +316,34 @@ compare_dcor <- function(n,
         # Do estimates
         res <- rbind(res, 
                      c(get(variable[1])[i], 
+                       sqrt(mean(abs(dist(X.noise, p = 1))) / (sqrt(n[i]-1)*dcov(X.noise,X.noise))),
 
                        # dcor estimates
                        dcor(X.noise, A_M),
                        dcor(X.noise, A_M_tilde),
     
                        # lm estimates
-                       lm( Z.tri ~ A_M.tri)$coefficients[2] / var(X.noise),
-                       lm( Z.tri ~ A_M_tilde.tri)$coefficients[2] / var(X.noise),
+                       lm( Z.tri ~ A_M.tri )$coefficients[2] / var(X.noise),
+                       lm( Z.tri ~ A_M_tilde.tri )$coefficients[2] / var(X.noise),
                        
                        var(delta_add[i] * product_snps_alpha(M, alpha_add)) / var(X.noise),
                        var(X) / var(X.noise)
                      ))
-        
         cat("-> i = ", i, "/", length(n), "\n")
     }
     
     # Gather data into a dataframe
     res <- data.frame(var = res[,1],
+                      lim = res[,2],
                       
-                      dcor_X_from_G_plus_noise = res[,2],
-                      dcor_X_not_from_G = res[,3],
+                      dcor_X_from_G_plus_noise = res[,3],
+                      dcor_X_not_from_G = res[,4],
                       
-                      lm_from_G_plus_noise = res[,4],
-                      lm_not_from_G = res[,5],
+                      lm_from_G_plus_noise = res[,5],
+                      lm_not_from_G = res[,6],
                       
-                      h2 = res[,6],
-                      H2 = res[,7])
+                      h2 = res[,7],
+                      H2 = res[,8])
     
     # melt data to be able plot group into ggplots
     data.melt <- melt(res, measure.vars = c("dcor_X_from_G_plus_noise", 
@@ -353,18 +358,23 @@ compare_dcor <- function(n,
     # Export a pdf file
     p <- ggplot(data = data.melt,
                 aes_string(x = "var" , y = "value")) +
-            geom_point(aes_string(color = "variable"), size = 3, position = position_jitter(w = 0.005 * sd(data.melt$value), h = 0)) +
+            geom_jitter(aes_string(color = "variable"), 
+                        size = 3,
+                        position = position_jitter(w = 0.005 * sd(data.melt$value), h = 0)) +
+            geom_line(data = res, aes(x = var, y = lim)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("Heritability estimate") + 
             scale_y_continuous(limits = c(-0.1, 1)) +
             scale_colour_discrete(name="Methods",
-                                breaks=c("dcor_X_from_G_plus_noise", 
+                                breaks=c("lim",
+                                         "dcor_X_from_G_plus_noise", 
                                          "dcor_X_not_from_G", 
                                          "lm_from_G_plus_noise",
                                          "lm_not_from_G",
                                          "h2",
                                          "H2"),
-                                labels=c("dcor(X, G)", 
+                                labels=c("lim", 
+                                         "dcor(X, G)", 
                                          expression(paste("dcor(X,", tilde(G), ")")), 
                                          "lm(X ~ G)",
                                          expression(paste("lm(X ~ ", tilde(G), ")")),
