@@ -19,8 +19,8 @@ suppressPackageStartupMessages(library(devtools))
 ### Clean workspace, set directory and load functions
 rm(list = ls())
 
-#setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
-setwd("/home/duvanel/git/PackageCH/")
+setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
+#setwd("/home/duvanel/git/PackageCH/")
 
 # Main R file
 with_debug(load_all(pkg = "PackageCH"))
@@ -36,22 +36,22 @@ Project <- SetupProject()
 param.list <- list()
 
 n_Estimation <- 10
-n_MAX <- 3000
+n_MAX <- 500
 
 ##########
 ## Compare variation of importance of delta dom and epi in a specific setup
 ##########
-# param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
-#                        s = seq(from = 20, to = n_MAX, length.out = n_Estimation),
-#                        u = rep(20, times = n_Estimation),
-#                        b = c(2,2),
-#                        noise.sd = rep(0, times = n_Estimation),
-#                        delta_add = rep(1, times = n_Estimation),
-#                        delta_dom = rep(0, times = n_Estimation),
-#                        delta_epi = rep(0, times = n_Estimation),
-#                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
-#                        variable = c("s"))                   
-# 
+param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
+                       s = floor(seq(from = 20, to = n_MAX, length.out = n_Estimation)),
+                       u = rep(20, times = n_Estimation),
+                       b = c(0),
+                       noise.sd = rep(0, times = n_Estimation),
+                       delta_add = rep(1, times = n_Estimation),
+                       delta_dom = rep(0, times = n_Estimation),
+                       delta_epi = rep(0, times = n_Estimation),
+                       snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                       variable = c("s"))                   
+
 # param.list[[2]] <- list(n = rep(n_MAX, times = n_Estimation),
 #                         s = rep(n_MAX, times = n_Estimation),
 #                         u = rep(20, times = n_Estimation),
@@ -74,50 +74,7 @@ n_MAX <- 3000
 #                         snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
 #                         variable = c("s", "u"))   
 
-param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
-                        s = rep(n_MAX, times = n_Estimation),
-                        u = rep(20, times = n_Estimation),
-                        b = c(2,2),
-                        noise.sd = seq(from = 0, to = 70, length.out = n_Estimation),
-                        delta_add = rep(1, times = n_Estimation),
-                        delta_dom = rep(0, times = n_Estimation),
-                        delta_epi = rep(0, times = n_Estimation),
-                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
-                        variable = c("noise.sd"))     
 
-param.list[[2]] <- list(n = rep(n_MAX, times = n_Estimation),
-                        s = rep(20, times = n_Estimation),
-                        u = rep(20, times = n_Estimation),
-                        b = c(2,2),
-                        noise.sd = seq(from = 0, to = 70, length.out = n_Estimation),
-                        delta_add = rep(1, times = n_Estimation),
-                        delta_dom = rep(0, times = n_Estimation),
-                        delta_epi = rep(0, times = n_Estimation),
-                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
-                        variable = c("noise.sd"))     
-
-
-# 
-# param.list[[2]] <- list(n = rep(500, times = n_Estimation),
-#                         s = rep(20, times = n_Estimation),
-#                         u = rep(10, times = n_Estimation),
-#                         b = c(2,2),
-#                         delta_add = rep(1, times = n_Estimation),
-#                         delta_dom = seq(from = 0, to = 100, by = 100 / n_Estimation),
-#                         delta_epi = seq(from = 0, to = 100, by = 100 / n_Estimation),   
-#                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),
-#                         variable = c("delta_dom", "delta_epi"))    
-# 
-# param.list[[3]] <- list(n = rep(500, times = n_Estimation),
-#                         s = rep(20, times = n_Estimation),
-#                         u = rep(1, times = n_Estimation),
-#                         b = c(2,2),
-#                         delta_add = rep(1, times = n_Estimation),
-#                         delta_dom = seq(from = 0, to = 100, by = 100 / n_Estimation),
-#                         delta_epi = seq(from = 0, to = 100, by = 100 / n_Estimation),   
-#                         snps_value = matrix(c(0,1,1,1,1,1,1,2), nrow = n_Estimation, ncol = 8, byrow = T),
-#                         variable = c("delta_dom", "delta_epi"))    
-# 
 # ##########
 # ## When varying number of SnPS, also vary importance of dom and epi effect
 # ##########
