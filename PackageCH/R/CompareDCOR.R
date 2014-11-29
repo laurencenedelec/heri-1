@@ -16,10 +16,10 @@ build_alpha <- function(u, s, b) {
     
     # build alpha
     if(length(b) == 2) {
-        alpha <- sample(c(runif(ifelse(u == 1, 2, u), b[1], b[2]), 
+        alpha <- sample(c(runif(ifelse(s - u == 0, 2, u), b[1], b[2]), 
                           rep(x = 0, times = s - u)), size = s)
     } else {
-        alpha <- sample(c(rnorm(ifelse(u == 1, 2, u), 0, 1), 
+        alpha <- sample(c(rnorm(ifelse(s - u == 0, 2, u), 0, 1), 
                           rep(x = 0, times = s - u)), size = s)
     }
   
