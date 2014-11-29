@@ -43,16 +43,16 @@ n_MAX <- 2000
 ##########
 
 # number of snps
-param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
-                       s = floor(seq(from = 1, to = n_MAX, length.out = n_Estimation)),
-                       u = rep(1, times = n_Estimation),
-                       b = c(0),
-                       noise.sd = rep(0, times = n_Estimation),
-                       delta_add = rep(1, times = n_Estimation),
-                       delta_dom = rep(0, times = n_Estimation),
-                       delta_epi = rep(0, times = n_Estimation),
-                       snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
-                       variable = c("s"))                   
+#param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
+#                       s = floor(seq(from = 1, to = n_MAX, length.out = n_Estimation)),
+#                       u = rep(1, times = n_Estimation),
+#                       b = c(0),
+#                       noise.sd = rep(0, times = n_Estimation),
+#                       delta_add = rep(1, times = n_Estimation),
+#                       delta_dom = rep(0, times = n_Estimation),
+#                       delta_epi = rep(0, times = n_Estimation),
+#                       snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+#                       variable = c("s"))                   
 
 param.list[[2]] <- list(n = rep(n_MAX, times = n_Estimation),
                         s = floor(seq(from = 1, to = n_MAX, length.out = n_Estimation)),
@@ -112,7 +112,7 @@ param.list[[6]] <- list(n = rep(n_MAX, times = n_Estimation),
                         variable = c("delta_dom", "delta_epi"))  
 
 # number of individuals
-param.list[[7]] <- list(n = floor(seq(from = 100, to = n_MAX, length.out = n_Estimation)),
+param.list[[1]] <- list(n = floor(seq(from = 100, to = n_MAX, length.out = n_Estimation)),
                         s = rep(5, times = n_Estimation),
                         u = rep(5, times = n_Estimation),
                         b = c(0),
