@@ -16,11 +16,11 @@ build_alpha <- function(u, s, b) {
     
     # build alpha
     if(length(b) == 2) {
-        alpha <- sample(c(runif(u, b[1], b[2]), 
-                          rep(x = 0, times = s - u)))
+        alpha <- sample(c(runif(ifelse(u == 1, 2, u), b[1], b[2]), 
+                          rep(x = 0, times = s - u)), size = s)
     } else {
-        alpha <- sample(c(rnorm(u, 0, 1), 
-                          rep(x = 0, times = s - u)))
+        alpha <- sample(c(rnorm(ifelse(u == 1, 2, u), 0, 1), 
+                          rep(x = 0, times = s - u)), size = s)
     }
   
 }
@@ -83,12 +83,12 @@ build_alpha_dominant <- function(u, s, b) {
     
     # We create an alpha for the dominant effect
     alpha_d <- matrix(0, nrow = 3, ncol = s)
-    alpha_d[1, ] <- sample(c(runif(u, -1, 1), 
-                             rep(x = 0, times = s - u)))
-    alpha_d[2, ] <- sample(c(runif(u, 3, 4), 
-                             rep(x = 0, times = s - u)))
-    alpha_d[3, ] <- sample(c(runif(u, 15, 20), 
-                             rep(x = 0, times = s - u)))
+    alpha_d[1, ] <- sample(c(runif(ifelse(u == 1, 2, u), -1, 1), 
+                             rep(x = 0, times = s - u)), size = s)
+    alpha_d[2, ] <- sample(c(runif(ifelse(u == 1, 2, u), 3, 4), 
+                             rep(x = 0, times = s - u)), size = s)
+    alpha_d[3, ] <- sample(c(runif(ifelse(u == 1, 2, u), 15, 20), 
+                             rep(x = 0, times = s - u)), size = s)
     
     alpha_d
 
@@ -109,17 +109,17 @@ build_alpha_epistatic <- function(u, s, b) {
     alpha_d <- matrix(0, nrow = 4, ncol = s)
     
     # If product of g_i and g_j = 0
-    alpha_d[1, ] <- sample(c(runif(u, -1, 1), 
-                             rep(x = 0, times = s - u)))
+    alpha_d[1, ] <- sample(c(runif(ifelse(u == 1, 2, u), -1, 1), 
+                             rep(x = 0, times = s - u)), size = s)
     # If product of g_i and g_j = 1
-    alpha_d[2, ] <- sample(c(runif(u, 3, 4), 
-                             rep(x = 0, times = s - u)))
+    alpha_d[2, ] <- sample(c(runif(ifelse(u == 1, 2, u), 3, 4), 
+                             rep(x = 0, times = s - u)), size = s)
     # If product of g_i and g_j = 2
-    alpha_d[3, ] <- sample(c(runif(u, 13, 15), 
-                             rep(x = 0, times = s - u)))
+    alpha_d[3, ] <- sample(c(runif(ifelse(u == 1, 2, u), 13, 15), 
+                             rep(x = 0, times = s - u)), size = s)
     # If product of g_i and g_j = 4
-    alpha_d[4, ] <- sample(c(runif(u, 15, 20), 
-                             rep(x = 0, times = s - u)))    
+    alpha_d[4, ] <- sample(c(runif(ifelse(u == 1, 2, u), 15, 20), 
+                             rep(x = 0, times = s - u)), size = s)    
     alpha_d
 }
 
@@ -211,7 +211,9 @@ product_snps_alpha_epistatic <- function(M, alpha) {
     res <- apply(M, 1, function(x) {
         ret <- 0
         for(i in 1:(length(x)-1)) {
-            ret <- ret + x[i]*x[i+1]*alpha[f(x[i]*x[i+1]), i]
+            if(length(x) != 1) {
+                ret <- ret + x[i]*x[i+1]*alpha[f(x[i]*x[i+1]), i]
+            }
         }
         ret
     })
@@ -281,6 +283,7 @@ compare_dcor <- function(n,
         alpha_add <- build_alpha(u = u[i], 
                                  s = s[i], 
                                  b = b)
+        
         alpha_dom <- build_alpha_dominant(u = u[i], 
                                           s = s[i], 
                                           b = b)
@@ -288,7 +291,6 @@ compare_dcor <- function(n,
         alpha_epi <- build_alpha_epistatic(u = u[i], 
                                            s = s[i], 
                                            b = b)
-        
         # Build fake trait X
         X <- delta_add[i] * product_snps_alpha(M, alpha_add) + 
              delta_dom[i] * product_snps_alpha_dominant(M, alpha_dom) +
@@ -320,6 +322,7 @@ compare_dcor <- function(n,
 
                        # dcor estimates
                        dcor(X.noise, A_M),
+                       dcor(X.noise, M),
                        dcor(X.noise, A_M_tilde),
     
                        # lm estimates
@@ -336,17 +339,19 @@ compare_dcor <- function(n,
     res <- data.frame(var = res[,1],
                       lim = res[,2],
                       
-                      dcor_X_from_G_plus_noise = res[,3],
-                      dcor_X_not_from_G = res[,4],
+                      dcor_X_from_GRM_plus_noise = res[,3],
+                      dcor_X_from_G_plus_noise = res[,4],
+                      dcor_X_not_from_G = res[,5],
                       
-                      lm_from_G_plus_noise = res[,5],
-                      lm_not_from_G = res[,6],
+                      lm_from_G_plus_noise = res[,6],
+                      lm_not_from_G = res[,7],
                       
-                      h2 = res[,7],
-                      H2 = res[,8])
+                      h2 = res[,8],
+                      H2 = res[,9])
     
     # melt data to be able plot group into ggplots
-    data.melt <- melt(res, measure.vars = c("dcor_X_from_G_plus_noise", 
+    data.melt <- melt(res, measure.vars = c("dcor_X_from_GRM_plus_noise",
+                                            "dcor_X_from_G_plus_noise", 
                                             "dcor_X_not_from_G",
                                             
                                             "lm_from_G_plus_noise",
@@ -354,19 +359,20 @@ compare_dcor <- function(n,
                                             
                                             "h2",
                                             "H2"))
+    data.melt$var <- jitter(data.melt$var, factor = 0.2)
 
     # Export a pdf file
     p <- ggplot(data = data.melt,
                 aes_string(x = "var" , y = "value")) +
-            geom_jitter(aes_string(color = "variable"), 
-                        size = 3,
-                        position = position_jitter(w = 0.005 * sd(data.melt$value), h = 0)) +
+            geom_point(aes_string(color = "variable"), 
+                       size = 3) +
             geom_line(data = res, aes(x = var, y = lim)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("Heritability estimate") + 
             scale_y_continuous(limits = c(-0.1, 1)) +
             scale_colour_discrete(name="Methods",
                                 breaks=c("lim",
+                                         "dcor_X_from_GRM_plus_noise",
                                          "dcor_X_from_G_plus_noise", 
                                          "dcor_X_not_from_G", 
                                          "lm_from_G_plus_noise",
@@ -374,6 +380,7 @@ compare_dcor <- function(n,
                                          "h2",
                                          "H2"),
                                 labels=c("lim", 
+                                         "dcor(X, GRM)",
                                          "dcor(X, G)", 
                                          expression(paste("dcor(X,", tilde(G), ")")), 
                                          "lm(X ~ G)",
@@ -390,7 +397,7 @@ compare_dcor <- function(n,
                              "delta_dom", min(delta_dom), "-", max(delta_dom), "_",
                              "delta_epi", min(delta_epi), "-", max(delta_epi), "_",
                              "u", min(u), "-", max(u), "_",
-                             "b", b[1], "-", b[2], "_",                             
+                             "noise.sd", min(noise.sd), "-", max(noise.sd), "_",                             
                              format(Sys.time(), "%d%m%Y_%H%M%S"),
                              ".pdf"),
            width = 11, height = 7)
