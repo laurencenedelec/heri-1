@@ -16,10 +16,10 @@ build_alpha <- function(u, s, b) {
     
     # build alpha
     if(length(b) == 2) {
-        alpha <- sample(c(runif(ifelse(s - u == 0, 2, u), b[1], b[2]), 
+        alpha <- sample(c(runif(ifelse(u == 1, 2, u), b[1], b[2]), 
                           rep(x = 0, times = s - u)), size = s)
     } else {
-        alpha <- sample(c(rnorm(ifelse(s - u == 0, 2, u), 0, 1), 
+        alpha <- sample(c(rnorm(ifelse(u == 1, 2, u), 0, 1), 
                           rep(x = 0, times = s - u)), size = s)
     }
   
@@ -83,11 +83,11 @@ build_alpha_dominant <- function(u, s, b) {
     
     # We create an alpha for the dominant effect
     alpha_d <- matrix(0, nrow = 3, ncol = s)
-    alpha_d[1, ] <- sample(c(runif(ifelse(s - u == 0, 2, u), -1, 1), 
+    alpha_d[1, ] <- sample(c(runif(ifelse(u == 1, 2, u), -1, 1), 
                              rep(x = 0, times = s - u)), size = s)
-    alpha_d[2, ] <- sample(c(runif(ifelse(s - u == 0, 2, u), 3, 4), 
+    alpha_d[2, ] <- sample(c(runif(ifelse(u == 1, 2, u), 3, 4), 
                              rep(x = 0, times = s - u)), size = s)
-    alpha_d[3, ] <- sample(c(runif(ifelse(s - u == 0, 2, u), 15, 20), 
+    alpha_d[3, ] <- sample(c(runif(ifelse(u == 1, 2, u), 15, 20), 
                              rep(x = 0, times = s - u)), size = s)
     
     alpha_d
@@ -109,16 +109,16 @@ build_alpha_epistatic <- function(u, s, b) {
     alpha_d <- matrix(0, nrow = 4, ncol = s)
     
     # If product of g_i and g_j = 0
-    alpha_d[1, ] <- sample(c(runif(ifelse(s - u == 0, 2, u), -1, 1), 
+    alpha_d[1, ] <- sample(c(runif(ifelse(u == 1, 2, u), -1, 1), 
                              rep(x = 0, times = s - u)), size = s)
     # If product of g_i and g_j = 1
-    alpha_d[2, ] <- sample(c(runif(ifelse(s - u == 0, 2, u), 3, 4), 
+    alpha_d[2, ] <- sample(c(runif(ifelse(u == 1, 2, u), 3, 4), 
                              rep(x = 0, times = s - u)), size = s)
     # If product of g_i and g_j = 2
-    alpha_d[3, ] <- sample(c(runif(ifelse(s - u == 0, 2, u), 13, 15), 
+    alpha_d[3, ] <- sample(c(runif(ifelse(u == 1, 2, u), 13, 15), 
                              rep(x = 0, times = s - u)), size = s)
     # If product of g_i and g_j = 4
-    alpha_d[4, ] <- sample(c(runif(ifelse(s - u == 0, 2, u), 15, 20), 
+    alpha_d[4, ] <- sample(c(runif(ifelse(u == 1, 2, u), 15, 20), 
                              rep(x = 0, times = s - u)), size = s)    
     alpha_d
 }
