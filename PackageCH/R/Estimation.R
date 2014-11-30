@@ -155,7 +155,7 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
     cat("== Saving results for method ", k, "/", length(param.list))
     
     # data
-    save(full.res, file=paste0("results/", 
+    save(full.res, file=paste0("results/data/", 
                                datetime.stamp, 
                                "_results_", name, ".RData"))
     
@@ -163,29 +163,6 @@ DoBatchEstimation <- function(param.list = NULL, ...) {
     
     # For each param.list entry, we wanna plot the graph
     dev.off()
-  
-    
-    ###############################
-    # Plot results of all estimates
-    ###############################    
-#     pdf(file=paste0("results/", 
-#                     datetime.stamp, "_average_plot_", 
-#                     GetDistributionNameFromFunction(rfunction)$id, "_", 
-#                     K, "_", 
-#                     corr[1], ".pdf"), width=17, height=7)
-#     
-#     grid.arrange(gridExtra::arrangeGrob(average.plot.auc + theme(legend.position = "none"),
-#                              average.plot.mse + theme(legend.position = "none"),
-#                              ncol = 2), 
-#                  average.plot.legend, 
-# #                  textGrob(paste0(K, " datasets generated with a ", 
-# #                                  GetDistributionNameFromFunction(rfunction)$name), 
-# #                           just = "bottom", gp = gpar(fontsize = 18)),
-#                  heights = grid::unit.c(grid::unit(1, "npc") - 1.5*average.plot.legend.height , 
-#                                   average.plot.legend.height, 0.5*average.plot.legend.height)
-#     )
-#     
-#     dev.off()
     
     # Ending k loop
     cat("========================================================\n")
