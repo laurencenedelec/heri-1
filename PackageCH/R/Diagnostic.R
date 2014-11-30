@@ -67,8 +67,8 @@ PlotScatterMethods <- function(full.res, heridiff.file, editplotname.file, pdf.p
         
         # Get data from raw results (thanks to the cluster)
         # Give correct name and transform data into numeric
-        dat <- full.res[[i]][,-1]
-        colnames(dat) <- c("LR", "DCOV", "DCOVPLUS")
+        dat <- as.matrix(full.res[[i]][,-1])
+        colnames(dat) <- c("DCOR")
         class(dat) <- "numeric"
         dat <- as.data.frame(dat)
         
@@ -89,18 +89,19 @@ PlotScatterMethods <- function(full.res, heridiff.file, editplotname.file, pdf.p
                                         color = "PlotGroup")) +
                 geom_point(aes_string(shape = "PlotGroup")) +    # Use hollow circles
                 scale_shape_manual(values = 0:length(unique(datafrm$PlotGroup))) +
-                guides(col = guide_legend(ncol = 1)) +
+                xlim(c(0,1)) + ylim(c(0,1)) +
+                #guides(col = guide_legend(nrow = 16, byrow = TRUE)) +
                 GetCustomGgplotTheme()
         }
         
         # Plot results, 3 columns (= 3 methods)
-        pdf(file = paste0(pdf.path, names(full.res)[i], "_", datetime.stamp, ".pdf"), width = 17, height = 7)
+        pdf(file = paste0(pdf.path, names(full.res)[i], "_", datetime.stamp, ".pdf"), width = 9.4, height = 7)
             
             # Create a grid with 2 rows, length(p) columns
             grid.newpage()
             pushViewport(viewport(layout = grid.layout(2, length(p)+1, 
                                                        heights = unit(c(0.5, 5), "null"),
-                                                       widths = unit(c(0.28, 0.28, 0.28, 0.16), "null"))))   
+                                                       widths = unit(c(0.7, 0.3), "null"))))   
             
             # First row contains the title
             grid.text(label = paste0("Comparison ", names(full.res)[i], " vs HeriDiff"),  
@@ -122,6 +123,107 @@ PlotScatterMethods <- function(full.res, heridiff.file, editplotname.file, pdf.p
     
 }
 
+#' Compare methods via ScatterPlot
+#' 
+#' @title Scatter plot methods
+#' @param full.res results obtained after estimating heritability
+#' @param heridiff.file file containing estimates given by Chiara
+#' @param editplotname.file file containing PlotGroup (needed to plot group)
+#' @param pdf.path where the pdf are exported
+#' @return nothing but export a pdf
+#' @author Julien Duvanel
+PlotScatterMethodsBis <- function(full.res, heridiff.file, editplotname.file, pdf.path = "") {
+    
+    # Used to give dynamic pdf name file
+    datetime.stamp <- format(Sys.time(), "%d%m%Y_%H%M%S")
+    
+    
+    # Give correct rownames (used to filter afterwards)
+    for(i in 1:length(full.res)) {
+        rownames(full.res[[i]]) <- as.character(full.res[[i]][,1])
+    }
+    
+    # Load HeriDiff (from Chiara) and give correct rownames
+    HeriDiff <- read.csv(heridiff.file)
+    EDITED_PLOT_NAMES <- read.csv(editplotname.file, header = TRUE)
+    
+    # Select only the columns we are interested in
+    HERIDIFF <- data.frame(Phenotypes = as.character(HeriDiff$FieldName), 
+                           Value = as.numeric(HeriDiff$H2r))
+    # give correct rownames
+    rownames(HERIDIFF) <- as.character(HeriDiff$FieldName)
+    
+    # Filter data where we have data
+    # (because we can only compare if we have data in both datasets)
+    index <- intersect(HERIDIFF$Phenotypes, full.res[[1]][,1])
+    HERIDIFF <- HERIDIFF[as.vector(index), ]
+    HERIDIFF <- merge(HERIDIFF, EDITED_PLOT_NAMES, by.x = "Phenotypes", by.y = "FieldName", sort=F)
+    
+    # Required to have the correct "data format"
+    for(i in 1:length(full.res)) {
+        full.res[[i]] <- full.res[[i]][as.vector(index), ]
+    }
+    
+    # Now we have 2 datasets with the same number of rows
+    
+    # For each methods stored in full.res
+    # we go through an plot a scatterplot between
+    # this method and heridiff
+    for(i in 1:length(full.res)) {
+        
+        # Get data from raw results (thanks to the cluster)
+        # Give correct name and transform data into numeric
+        dat <- as.matrix(full.res[[i]][,-1])
+        colnames(dat) <- c("DCOR", "DCOR_LIM")
+        class(dat) <- "numeric"
+        dat <- as.data.frame(dat)
+        
+        # Create the dataframe we want to plant
+        datafrm <- data.frame(dat[,1], dat[,2],
+                              HeriDiff = HERIDIFF$Value, 
+                              PlotGroup = HERIDIFF$PlotGroup, 
+                              PlotDomain = HERIDIFF$PlotDomain)
+        colnames(datafrm) <- c(colnames(dat)[1], colnames(dat)[2], "HeriDiff", "PlotGroup", "PlotDomain")
+        
+        # Store the plot (because we're gonna use it latter)
+        p <- ggplot(datafrm, 
+                         aes_string(x = colnames(dat)[1],
+                                    y = "HeriDiff",
+                                    color = "PlotGroup")) +
+            geom_point(aes_string(shape = "PlotGroup")) +    # Use hollow circles
+            geom_segment(data = datafrm, 
+                         mapping = aes_string(x = colnames(dat)[1], y = "HeriDiff", 
+                                              xend = colnames(dat)[2], yend = "HeriDiff")) +
+            scale_shape_manual(values = 0:length(unique(datafrm$PlotGroup))) +
+            xlim(c(0,1)) + ylim(c(0,1)) +
+            GetCustomGgplotTheme()
+        
+        # Plot results, 3 columns (= 3 methods)
+        pdf(file = paste0(pdf.path, names(full.res)[i], "_", datetime.stamp, ".pdf"), width = 9.4, height = 7)
+        
+        # Create a grid with 2 rows, length(p) columns
+        grid.newpage()
+        pushViewport(viewport(layout = grid.layout(2, 2, 
+                                                   heights = unit(c(0.5, 5), "null"),
+                                                   widths = unit(c(0.7, 0.3), "null"))))   
+        
+        # First row contains the title
+        grid.text(label = paste0("Comparison ", names(full.res)[i], " vs HeriDiff"),  
+                  vp = viewport(layout.pos.row = 1, layout.pos.col = 1:2),
+                  gp = gpar(fontsize = 25))
+        
+        # Second row and length(p) columns contains the plot we saved earlier
+        print(p + theme(legend.position = "none"), vp = vplayout(x=2,y=1))
+        
+        pushViewport(vp = vplayout(x=2, y = 2 ))
+            grid.draw(GetLegendFromGgplot2(a.gplot = p))    
+        upViewport(0)
+        
+        dev.off()
+        
+    }
+    
+}
 
 #' Compare method dcov+ via ScatterPlot
 #' 

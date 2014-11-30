@@ -98,20 +98,20 @@ filter_data <- function(P, phi.matrix) {
 #' @author Julien Duvanel
 #' @export
 build_matrix_V <- function(P) {
-  
-  P <- as.matrix(P)
-  
-  ### We keep one phenotype and normalize its
-  V <- matrix(P, 
-              nrow = nrow(P),
-              ncol = ncol(P))
-  
-  V <- t(t(V) - colMeans(V))
-  V.sd <- colSds(V)
-  
-  # Return
-  t(t(V) * (1/V.sd))
-  
+#   
+#   P <- as.matrix(P)
+#   
+#   ### We keep one phenotype and normalize its
+#   V <- matrix(P, 
+#               nrow = nrow(P),
+#               ncol = ncol(P))
+#   
+#   V <- t(t(V) - colMeans(V))
+#   V.sd <- colSds(V)
+#   
+#   # Return
+#   t(t(V) * (1/V.sd))
+  as.matrix(P)
 }
 
 #' Build the matrix K

@@ -76,18 +76,19 @@ source("methods/loadPhenotypes_real.R")
 
 param.list <- list()
 param.list[[1]] <- list(method.to.test = c(
-                                           #"GCTA"#,
-                                           "TheoKin"#,
+                                           "GCTA"#,
+                                           #"TheoKin"#,
                                            #"IBS",
                                            #"IBD"
                                            ),
-                        model.to.test = c(
+                        model.to.test = c( "_dcor",
+                                           "_dcor_lim"
                                             #"", 
                                             #"_dcov",
                                             #"_dcov_LN"
-                                            "_PlotSimilarity"
+                                            #"_PlotSimilarity"
                                         ),
-                        phenotypes.id = c(4:14)
+                        phenotypes.id = c(4:170)
                        )
 
 try(DoBatchEstimation(param.list = param.list))

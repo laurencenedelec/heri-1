@@ -42,7 +42,7 @@ GetCustomGgplotTheme <- function() {
         axis.title = element_text(size = 22, face = "bold"),
         plot.margin = grid::unit(c(1,1,0,0), "cm"),
         legend.justification = c(1,0), 
-        legend.position = "bottom",
+        #legend.position = "bottom",
         legend.title = element_blank(),
         legend.key = element_blank(),
         legend.text = element_text(size = 16),
