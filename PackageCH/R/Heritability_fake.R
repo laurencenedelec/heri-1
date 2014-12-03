@@ -80,8 +80,10 @@ compare_dcor <- function(n,
         Z <- X.noise %*% t(X.noise)
         Z.tri <- Z[lower.tri(Z)]
         
-        dist_M <- dist(M, p = 1)
-        dist_X <- dist(X, p = 1)
+        dist_M <- dist(M, p = 2)
+        dist_M.tri <- as.matrix(dist_M)[lower.tri(as.matrix(dist_M))]
+        dist_X <- dist(X.noise, p = 1)
+        dist_X.tri <- as.matrix(dist_X)[lower.tri(as.matrix(dist_X))]
         
         # Do estimates
         res <- rbind(res, 
@@ -95,8 +97,10 @@ compare_dcor <- function(n,
                        dcor(dist_X, as.dist(A_M)),
                        
                        # lm estimates
-                       cor(Z.tri, A_M.tri),
-                       cor(Z.tri, dist_M[lower.tri(dist_M)]),
+                       cor(as.vector(Z), as.vector(A_M)),
+                       cor(as.vector(Z), as.vector(as.matrix(dist_M))),
+                       lm( Z.tri ~ A_M.tri )$coefficients[2] * sd(A_M.tri) / sd(Z.tri),
+                       lm( Z.tri ~ dist_M.tri )$coefficients[2] * sd(dist_M.tri) / sd(Z.tri),
                        
                        var(delta_add[i] * product_snps_alpha(M, alpha_add)) / var(X.noise),
                        var(X) / var(X.noise)
@@ -115,9 +119,11 @@ compare_dcor <- function(n,
                       
                       cor_XX_GRM = res[,7],
                       cor_XX_distG = res[,8],
+                      lm_cor_XX_GRM = res[,9],
+                      lm_cor_XX_distG = res[,10],
                       
-                      h2 = res[,9],
-                      H2 = res[,10])
+                      h2 = res[,11],
+                      H2 = res[,12])
     
     # melt data to be able plot group into ggplots
     data.melt <- melt(res, measure.vars = c("dcor_XX_GRM",
@@ -127,39 +133,50 @@ compare_dcor <- function(n,
                                             
                                             "cor_XX_GRM",
                                             "cor_XX_distG",
+                                            "lm_cor_XX_GRM",
+                                            "lm_cor_XX_distG",
                                             
                                             "h2",
                                             "H2"))
-    data.melt$var <- jitter(data.melt$var, factor = 0.2)
+    
+    data.melt$var <- jitter(data.melt$var, factor = 0.4)
+    data.melt$value <- abs(data.melt$value)
 
     # Export a pdf file
     p <- ggplot(data = data.melt,
                 aes_string(x = "var" , y = "value")) +
-            geom_point(aes_string(color = "variable"), 
+            geom_point(aes_string(color = "variable", shape = "variable"), 
                        size = 3) +
+            geom_line(aes_string(color = "variable"),
+                      alpha = 0.6, size = 0.8) +
             geom_line(data = res, aes(x = var, y = lim)) +
             xlab(paste0("Value of ", paste(variable, collapse=", "))) +
             ylab("Heritability estimate") + 
+            scale_shape_manual(values = 0:length(unique(data.melt$variable))) +
             scale_y_continuous(limits = c(-0.1, 1)) +
-            scale_colour_discrete(name="Methods",
-                                breaks=c("lim",
-                                         "dcor_XX_GRM",
-                                         "dcor_XX_distG", 
-                                         "dcor_distX_distG",
-                                         "dcor_distX_GRM",
-                                         "cor_XX_GRM",
-                                         "cor_XX_distG",
-                                         "h2",
-                                         "H2"),
-                                labels=c("lim", 
-                                         "dcor(XX, GRM)",
-                                         "dcor(XX, distG)",
-                                         "dcor(distX, distG)",
-                                         "dcor(distX, GRM)",
-                                         "cor(XX, GRM)",
-                                         "cor(XX, distG)",
-                                         "real h2",
-                                         "real H2")) +            
+#             scale_colour_discrete(name="Methods",
+#                                 breaks=c("lim",
+#                                          "dcor_XX_GRM",
+#                                          "dcor_XX_distG", 
+#                                          "dcor_distX_distG",
+#                                          "dcor_distX_GRM",
+#                                          "cor_XX_GRM",
+#                                          "cor_XX_distG",
+#                                          "lm_cor_XX_GRM",
+#                                          "lm_cor_XX_distG",
+#                                          "h2",
+#                                          "H2"),
+#                                 labels=c("lim", 
+#                                          "dcor(XX, GRM)",
+#                                          "dcor(XX, distG)",
+#                                          "dcor(distX, distG)",
+#                                          "dcor(distX, GRM)",
+#                                          "cor(XX, GRM)",
+#                                          "cor(XX, distG)",
+#                                          "lm(XX, GRM) * sd(GRM) / sd(XX)",
+#                                          "lm(XX, distG) * sd(distG) / sd(XX)",
+#                                          "real h2",
+#                                          "real H2")) +            
             GetCustomGgplotTheme()
         
     ggsave(plot = p,

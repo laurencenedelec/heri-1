@@ -35,7 +35,7 @@ Project <- SetupProject()
 ####################
 param.list <- list()
 
-n_Estimation <- 20
+n_Estimation <- 10
 n_MAX <- 2000
 
 ##########
