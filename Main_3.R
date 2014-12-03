@@ -19,8 +19,8 @@ suppressPackageStartupMessages(library(devtools))
 ### Clean workspace, set directory and load functions
 rm(list = ls())
 
-#setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
-setwd("/home/duvanel/git/PackageCH/")
+setwd("/Users/julien/Dropbox/Ecole/EPFL/5eme annee/MA4 - PDM/PackageCH/")
+#setwd("/home/duvanel/git/PackageCH/")
 
 # Main R file
 with_debug(load_all(pkg = "PackageCH"))
@@ -35,8 +35,8 @@ Project <- SetupProject()
 ####################
 param.list <- list()
 
-n_Estimation <- 50
-n_MAX <- 2000
+n_Estimation <- 5
+n_MAX <- 500
 
 ##########
 ## Compare variation of importance of delta dom and epi in a specific setup
@@ -89,7 +89,7 @@ n_MAX <- 2000
 #                       variable = c("noise.sd"))  
 
 #dom and epi part
-param.list[[1]] <- list(n = rep(500, times = n_Estimation),
+param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
                        s = rep(n_MAX, times = n_Estimation),
                        u = rep(1, times = n_Estimation),
                        b = c(0),
@@ -100,7 +100,7 @@ param.list[[1]] <- list(n = rep(500, times = n_Estimation),
                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
                        variable = c("delta_dom", "delta_epi"))  
 
-param.list[[2]] <- list(n = rep(500, times = n_Estimation),
+param.list[[2]] <- list(n = rep(n_MAX, times = n_Estimation),
                        s = rep(n_MAX, times = n_Estimation),
                        u = rep(20, times = n_Estimation),
                        b = c(0),
