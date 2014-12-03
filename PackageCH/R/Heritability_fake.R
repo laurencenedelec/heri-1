@@ -80,19 +80,23 @@ compare_dcor <- function(n,
         Z <- X.noise %*% t(X.noise)
         Z.tri <- Z[lower.tri(Z)]
         
+        dist_M <- dist(M, p = 1)
+        dist_X <- dist(X, p = 1)
+        
         # Do estimates
         res <- rbind(res, 
                      c(get(variable[1])[i], 
                        sqrt(mean(abs(dist(X.noise, p = 1))) / (sqrt(n[i]-1)*dcov(X.noise,X.noise))),
 
                        # dcor estimates
-                       dcor(X.noise, A_M),
-                       dcor(X.noise, M),
-                       dcor(X.noise, A_M_tilde),
-    
+                       dcor(as.dist(Z), as.dist(A_M)),
+                       dcor(as.dist(Z), dist_M),
+                       dcor(dist_X, dist_M),
+                       dcor(dist_X, as.dist(A_M)),
+                       
                        # lm estimates
-                       lm( Z.tri ~ A_M.tri )$coefficients[2] / var(X.noise),
-                       lm( Z.tri ~ A_M_tilde.tri )$coefficients[2] / var(X.noise),
+                       cor(Z.tri, A_M.tri),
+                       cor(Z.tri, dist_M[lower.tri(dist_M)]),
                        
                        var(delta_add[i] * product_snps_alpha(M, alpha_add)) / var(X.noise),
                        var(X) / var(X.noise)
@@ -104,23 +108,25 @@ compare_dcor <- function(n,
     res <- data.frame(var = res[,1],
                       lim = res[,2],
                       
-                      dcor_X_from_GRM_plus_noise = res[,3],
-                      dcor_X_from_G_plus_noise = res[,4],
-                      dcor_X_not_from_G = res[,5],
+                      dcor_XX_GRM = res[,3],
+                      dcor_XX_distG = res[,4],
+                      dcor_distX_distG = res[,5],
+                      dcor_distX_GRM = res[,6],
                       
-                      lm_from_G_plus_noise = res[,6],
-                      lm_not_from_G = res[,7],
+                      cor_XX_GRM = res[,7],
+                      cor_XX_distG = res[,8],
                       
-                      h2 = res[,8],
-                      H2 = res[,9])
+                      h2 = res[,9],
+                      H2 = res[,10])
     
     # melt data to be able plot group into ggplots
-    data.melt <- melt(res, measure.vars = c("dcor_X_from_GRM_plus_noise",
-                                            "dcor_X_from_G_plus_noise", 
-                                            "dcor_X_not_from_G",
+    data.melt <- melt(res, measure.vars = c("dcor_XX_GRM",
+                                            "dcor_XX_distG", 
+                                            "dcor_distX_distG",
+                                            "dcor_distX_GRM",
                                             
-                                            "lm_from_G_plus_noise",
-                                            "lm_not_from_G",
+                                            "cor_XX_GRM",
+                                            "cor_XX_distG",
                                             
                                             "h2",
                                             "H2"))
@@ -137,19 +143,21 @@ compare_dcor <- function(n,
             scale_y_continuous(limits = c(-0.1, 1)) +
             scale_colour_discrete(name="Methods",
                                 breaks=c("lim",
-                                         "dcor_X_from_GRM_plus_noise",
-                                         "dcor_X_from_G_plus_noise", 
-                                         "dcor_X_not_from_G", 
-                                         "lm_from_G_plus_noise",
-                                         "lm_not_from_G",
+                                         "dcor_XX_GRM",
+                                         "dcor_XX_distG", 
+                                         "dcor_distX_distG",
+                                         "dcor_distX_GRM",
+                                         "cor_XX_GRM",
+                                         "cor_XX_distG",
                                          "h2",
                                          "H2"),
                                 labels=c("lim", 
-                                         "dcor(X, GRM)",
-                                         "dcor(X, G)", 
-                                         expression(paste("dcor(X,", tilde(G), ")")), 
-                                         "lm(X ~ G)",
-                                         expression(paste("lm(X ~ ", tilde(G), ")")),
+                                         "dcor(XX, GRM)",
+                                         "dcor(XX, distG)",
+                                         "dcor(distX, distG)",
+                                         "dcor(distX, GRM)",
+                                         "cor(XX, GRM)",
+                                         "cor(XX, distG)",
                                          "real h2",
                                          "real H2")) +            
             GetCustomGgplotTheme()
