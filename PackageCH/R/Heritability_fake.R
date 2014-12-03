@@ -76,7 +76,7 @@ compare_dcor <- function(n,
         M_tilde_W <- compute_W(G = M_tilde)
         A_M_tilde <- M_tilde_W %*% t(M_tilde_W) / ncol(M_tilde_W)
         A_M_tilde.tri <- A_M_tilde[lower.tri(A_M_tilde)]
-
+        
         Z <- X.noise %*% t(X.noise)
         Z.tri <- Z[lower.tri(Z)]
         
