@@ -3,6 +3,46 @@ library(matrixStats)
 library(reshape2)
 library(plyr)
 
+dcor.perso <- function (x, y, index = 1) 
+{
+    #     if (!(class(x) == "dist")) 
+    #         x <- dist(x)
+    #     if (!(class(y) == "dist")) 
+    #         y <- dist(y)
+    #     x <- as.matrix(x)
+    #     y <- as.matrix(y)
+    n <- nrow(x)
+    m <- nrow(y)
+    if (n != m) 
+        stop("Sample sizes must agree")
+    if (!(all(is.finite(c(x, y))))) 
+        stop("Data contains missing or infinite values")
+    if (index < 0 || index > 2) {
+        warning("index must be in [0,2), using default index=1")
+        index = 1
+    }
+    stat <- 0
+    dims <- c(n, ncol(x), ncol(y))
+    Akl <- function(x) {
+        d <- as.matrix(x)^index
+        m <- rowMeans(d)
+        M <- mean(d)
+        a <- sweep(d, 1, m)
+        b <- sweep(a, 2, m)
+        return(b + M)
+    }
+    A <- Akl(x)
+    B <- Akl(y)
+    dCov <- sqrt(mean(A * B))
+    dVarX <- sqrt(mean(A * A))
+    dVarY <- sqrt(mean(B * B))
+    V <- sqrt(dVarX * dVarY)
+    if (V > 0) 
+        dCor <- dCov/V
+    else dCor <- 0
+    return(list(dCov = dCov, dCor = dCor, dVarX = dVarX, dVarY = dVarY))
+}
+
 #' Compare DCOR with different kind of settings
 #'
 #' @title Compare DCOR and LM
@@ -80,10 +120,12 @@ compare_dcor <- function(n,
         Z <- X.noise %*% t(X.noise)
         Z.tri <- Z[lower.tri(Z)]
         
-        dist_M <- dist(M, p = 2)
+        dist_M <- dist(M, p = 1)
         dist_M.tri <- as.matrix(dist_M)[lower.tri(as.matrix(dist_M))]
         dist_X <- dist(X.noise, p = 1)
         dist_X.tri <- as.matrix(dist_X)[lower.tri(as.matrix(dist_X))]
+        
+        dcor_XX_GRM <- dcor.perso(Z, A_M)
         
         # Do estimates
         res <- rbind(res, 
@@ -91,16 +133,12 @@ compare_dcor <- function(n,
                        sqrt(mean(abs(dist(X.noise, p = 1))) / (sqrt(n[i]-1)*dcov(X.noise,X.noise))),
 
                        # dcor estimates
-                       dcor(as.dist(Z), as.dist(A_M)),
-                       dcor(as.dist(Z), dist_M),
-                       dcor(dist_X, dist_M),
-                       dcor(dist_X, as.dist(A_M)),
-                       
+                       dcor_XX_GRM$dCor,
+                       (dcor_XX_GRM$dCor * sqrt(dcor_XX_GRM$dVarX)) / (sqrt(dcor_XX_GRM$dVarY) * var(X.noise)),                       
                        # lm estimates
                        cor(as.vector(Z), as.vector(A_M)),
-                       cor(as.vector(Z), as.vector(as.matrix(dist_M))),
                        lm( Z.tri ~ A_M.tri )$coefficients[2] * sd(A_M.tri) / sd(Z.tri),
-                       lm( Z.tri ~ dist_M.tri )$coefficients[2] * sd(dist_M.tri) / sd(Z.tri),
+                       lm( Z.tri ~ A_M.tri )$coefficients[2] / var(X.noise),
                        
                        var(delta_add[i] * product_snps_alpha(M, alpha_add)) / var(X.noise),
                        var(X) / var(X.noise)
@@ -113,28 +151,22 @@ compare_dcor <- function(n,
                       lim = res[,2],
                       
                       dcor_XX_GRM = res[,3],
-                      dcor_XX_distG = res[,4],
-                      dcor_distX_distG = res[,5],
-                      dcor_distX_GRM = res[,6],
+                      dcor_H2 = res[,4],
                       
-                      cor_XX_GRM = res[,7],
-                      cor_XX_distG = res[,8],
-                      lm_cor_XX_GRM = res[,9],
-                      lm_cor_XX_distG = res[,10],
+                      cor_XX_GRM = res[,5],
+                      lm_cor_XX_GRM = res[,6],
+                      lm_H2 = res[,7],
                       
-                      h2 = res[,11],
-                      H2 = res[,12])
+                      h2 = res[,8],
+                      H2 = res[,9])
     
     # melt data to be able plot group into ggplots
     data.melt <- melt(res, measure.vars = c("dcor_XX_GRM",
-                                            "dcor_XX_distG", 
-                                            "dcor_distX_distG",
-                                            "dcor_distX_GRM",
+                                            "dcor_H2",
                                             
                                             "cor_XX_GRM",
-                                            "cor_XX_distG",
                                             "lm_cor_XX_GRM",
-                                            "lm_cor_XX_distG",
+                                            "lm_H2",
                                             
                                             "h2",
                                             "H2"))
