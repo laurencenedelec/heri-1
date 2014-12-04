@@ -224,7 +224,7 @@ compare_dcor <- function(n,
                              ".pdf"),
            width = 11, height = 7)
     
-    save(list = ls(all = TRUE), file = paste0("results/data/dcor_vs_lm_", 
+    save(list = "res", file = paste0("results/data/dcor_vs_lm_", 
                                      as.character(substitute(get_alpha)), "_",
                                      format(Sys.time(), "%d%m%Y_%H%M%S"),
                                      ".RData"))
