@@ -98,20 +98,20 @@ filter_data <- function(P, phi.matrix) {
 #' @author Julien Duvanel
 #' @export
 build_matrix_V <- function(P) {
-  
-  P <- as.matrix(P)
-  
-  ### We keep one phenotype and normalize its
-  V <- matrix(P, 
-              nrow = nrow(P),
-              ncol = ncol(P))
-  
-  V <- t(t(V) - colMeans(V))
-  V.sd <- colSds(V)
-  
-  # Return
-  t(t(V) * (1/V.sd))
-  
+#   
+#   P <- as.matrix(P)
+#   
+#   ### We keep one phenotype and normalize its
+#   V <- matrix(P, 
+#               nrow = nrow(P),
+#               ncol = ncol(P))
+#   
+#   V <- t(t(V) - colMeans(V))
+#   V.sd <- colSds(V)
+#   
+#   # Return
+#   t(t(V) * (1/V.sd))
+  as.matrix(P)
 }
 
 #' Build the matrix K
@@ -221,4 +221,45 @@ build_matrix_G <- function(snps) {
     G
 }
 
+
+#' Get frequency of the minor allele for the SNP snp
+#' 
+#' @title Get frequency of minor allele
+#' @param G genomic matrix
+#' @param snp a snp (index)
+#' @return frequency of the minor allele
+#' @author Julien Duvanel
+get_frequency <- function(G, snp) {
+    # Since we are interested by the minor allele
+    # it is very easy to obtain it because it's just the sum of the values 
+    # for this snp across all individuals divided by 2 times the sample size
+    sum(G[,snp]) / (2 * nrow(G))
+}
+
+#' Build W a normalizd version of the genomic matrix
+#' 
+#' @title Build a normalized version of the genomic matrix
+#' @param G a genomic matrix
+#' @return W a normalized version of the genomic matrix
+#' @author Julien Duvanel
+compute_W <- function(G) {
     
+    # Create W a matrix that has the same size as G
+    W <- matrix(0, ncol = ncol(G), nrow = nrow(G))
+    
+    # For each SNPs
+    for(i in 1:ncol(G)) {
+        # Get the minor allele frequency of this SNP
+        p_i <- get_frequency(G, i)
+        
+        # For each individuals
+        for(j in 1:nrow(G)) {
+            # Normalize it using minor allele frequency
+            W[j,i] <- (G[j,i] - 2 * p_i) / sqrt(2*p_i*(1 - p_i))
+        }    
+    }
+    
+    # Return the matrix
+    W
+}
+
