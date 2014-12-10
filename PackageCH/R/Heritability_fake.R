@@ -159,8 +159,8 @@ compare_dcor <- function(n,
                       
                       dcor_XX_GRM = res[,3],
                       dcor_H2 = res[,4],
-                      dcor_hdc_squared = res[,5],
-                      dcor_hdc_abs = res[,6],
+                      dcor_LN_hdc = res[,5],
+                      dcor_LN_gc = res[,6],
                       
                       cor_XX_GRM = res[,7],
                       lm_cor_XX_GRM = res[,8],
