@@ -40,7 +40,7 @@ estimate_heritability <- function(V, phi) {
   # Compute the heritability using a linear regression
   lm.heritability <- lm(Y.square.vec ~ phi)
   
-  heritability <- summary(lm.heritability)$coef[2,1]
+  heritability <- summary(lm.heritability)$coef[2,1] / var(V)
   heritability.p.value <- summary(lm.heritability)$coef[2,4]
   
   # Return
@@ -106,6 +106,24 @@ estimate_heritability_dcov_LN <- function(V, phi) {
     list(heritability = heritability)
     
 }
+
+#' Estimate heritability with dcov / LN version
+#'
+#' @title Estimate heritability with dcov / LN version
+#' @param V matrix built from P,K
+#' @param phi 2*Kinship
+#' @return heritability + p.value obtained from lm
+#' @author Julien Duvanel
+#' @export
+estimate_heritability_dcor <- function(V, phi) {
+    
+    heritability <- dcor(V,phi)
+    
+    # Return
+    list(heritability = heritability)
+    
+}
+
 
 #' Estimate heritability with dcov / LN version
 #'

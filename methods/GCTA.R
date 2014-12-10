@@ -54,6 +54,35 @@ get_estimate_GCTA_dcov <- function(V, phi) {
 #' @return 
 #' @author Julien Duvanel
 #' @export
+get_estimate_GCTA_dcor <- function(V, phi) {
+    
+    h <- estimate_heritability_dcor(V, phi)
+    
+    list(h = h$heritability)
+    
+}
+
+#' 
+#'
+#' @title 
+#' @param 
+#' @return 
+#' @author Julien Duvanel
+#' @export
+get_estimate_GCTA_dcor_lim <- function(V, phi) {
+    
+    h <- sqrt(mean(abs(dist(V, p = 1))) / (sqrt(ncol(phi)-1)*dcov(V,V)))
+    
+    list(h = h)
+    
+}
+#' 
+#'
+#' @title 
+#' @param 
+#' @return 
+#' @author Julien Duvanel
+#' @export
 get_estimate_GCTA_dcov_LN <- function(V, phi) {
     
     h <- estimate_heritability_dcov_LN(V, phi)
