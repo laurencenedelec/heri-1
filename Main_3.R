@@ -14,7 +14,8 @@
 ####
 ####**********************************************************************
 
-suppressPackageStartupMessages(library(devtools))
+
+suppressPackageStartupMessages(library(devtools)) 
 
 ### Clean workspace, set directory and load functions
 rm(list = ls())
@@ -33,52 +34,96 @@ Project <- SetupProject()
 ####################
 ### Comparison DCOR
 ####################
-
 param.list <- list()
 
-N_Estimation <- 100
-N_MAX <- 1000
-#param.list[[1]] <- list(N = rep(500, times = N_Estimation),
-#                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-#                        N_real_coeff = rep(0, times = N_Estimation),
-#                        b = c(2,2),
-#                        variable = "N_SNPS")                   
+n_Estimation <- 15
+n_MAX <- 2000
 
-#param.list[[2]] <- list(N = rep(500, times = N_Estimation),
-#                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-#                        N_real_coeff = rep(1, times = N_Estimation),
-#                        b = c(2,2),
-#                        variable = "N_SNPS")
+##########
+## Compare variation of importance of delta dom and epi in a specific setup
+##########
 
-#param.list[[3]] <- list(N = rep(500, times = N_Estimation),
-#                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-#                        N_real_coeff = rep(10, times = N_Estimation),
-#                        b = c(2,2),
-#                        variable = "N_SNPS")
+# number of snps
+# param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
+#                        s = floor(seq(from = 1, to = n_MAX, length.out = n_Estimation)),
+#                        u = rep(1, times = n_Estimation),
+#                        b = c(0),
+#                        noise.sd = rep(0, times = n_Estimation),
+#                        delta_add = rep(1, times = n_Estimation),
+#                        delta_dom = rep(0, times = n_Estimation),
+#                        delta_epi = rep(0, times = n_Estimation),
+#                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+#                        variable = c("s"))                   
 
-#param.list[[4]] <- list(N = rep(20, times = N_Estimation),
-#                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-#                        N_real_coeff = rep(10, times = N_Estimation),
-#                        b = c(2,2),
-#                        variable = "N_SNPS")
+param.list[[1]] <- list(n = rep(n_MAX, times = n_Estimation),
+                       s = floor(seq(from = 20, to = n_MAX, length.out = n_Estimation)),
+                       u = rep(20, times = n_Estimation),
+                       b = c(0),
+                       noise.sd = rep(0, times = n_Estimation),
+                       delta_add = rep(1, times = n_Estimation),
+                       delta_dom = rep(0, times = n_Estimation),
+                       delta_epi = rep(0, times = n_Estimation),
+                       snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                       variable = c("s"))
 
-param.list[[1]] <- list(N = rep(N_MAX, times = N_Estimation),
-                        N_SNPS = rep(N_MAX, times = N_Estimation),
-                        N_real_coeff = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        b = c(2,2),
-                        variable = "N_real_coeff")
+# noise
+# param.list[[3]] <- list(n = rep(n_MAX, times = n_Estimation),
+#                       s = rep(n_MAX, times = n_Estimation),
+#                       u = rep(1, times = n_Estimation),
+#                       b = c(0),
+#                       noise.sd = floor(seq(from = 0, to = 50, length.out = n_Estimation)),
+#                       delta_add = rep(1, times = n_Estimation),
+#                       delta_dom = rep(0, times = n_Estimation),
+#                       delta_epi = rep(0, times = n_Estimation),
+#                       snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+#                       variable = c("noise.sd"))    
 
-param.list[[2]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_SNPS = rep(20, times = N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
-                        b = c(2,2),
-                        variable = "N")
+param.list[[2]] <- list(n = rep(n_MAX, times = n_Estimation),
+                      s = rep(n_MAX, times = n_Estimation),
+                      u = rep(20, times = n_Estimation),
+                      b = c(0),
+                      noise.sd = floor(seq(from = 0, to = 50, length.out = n_Estimation)),
+                      delta_add = rep(1, times = n_Estimation),
+                      delta_dom = rep(0, times = n_Estimation),
+                      delta_epi = rep(0, times = n_Estimation),
+                      snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                      variable = c("noise.sd"))  
 
-param.list[[3]] <- list(N = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_SNPS = seq(from = 10, to = N_MAX, by = N_MAX/N_Estimation),
-                        N_real_coeff = rep(10, times = N_Estimation),
-                        b = c(2,2),
-                        variable = c("N", "N_SNPS"))
+#dom and epi part
+# param.list[[5]] <- list(n = rep(n_MAX, times = n_Estimation),
+#                        s = rep(n_MAX, times = n_Estimation),
+#                        u = rep(1, times = n_Estimation),
+#                        b = c(0),
+#                        noise.sd = rep(0, times = n_Estimation),
+#                        delta_add = rep(1, times = n_Estimation),
+#                        delta_dom = seq(from = 0, to = 0.2, length.out = n_Estimation),
+#                        delta_epi = seq(from = 0, to = 0.2, length.out = n_Estimation),   
+#                        snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+#                        variable = c("delta_dom", "delta_epi"))  
+
+param.list[[3]] <- list(n = rep(n_MAX, times = n_Estimation),
+                       s = rep(n_MAX, times = n_Estimation),
+                       u = rep(20, times = n_Estimation),
+                       b = c(0),
+                       noise.sd = rep(0, times = n_Estimation),
+                       delta_add = rep(1, times = n_Estimation),
+                       delta_dom = seq(from = 0, to = 0.2, length.out = n_Estimation),
+                       delta_epi = seq(from = 0, to = 0.2, length.out = n_Estimation),   
+                       snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                       variable = c("delta_dom", "delta_epi"))  
+
+# number of individuals
+param.list[[4]] <- list(n = floor(seq(from = 100, to = n_MAX, length.out = n_Estimation)),
+                       s = rep(n_MAX, times = n_Estimation),
+                       u = rep(20, times = n_Estimation),
+                       b = c(0),
+                       noise.sd = rep(0, times = n_Estimation),
+                       delta_add = rep(1, times = n_Estimation),
+                       delta_dom = rep(0, times = n_Estimation),
+                       delta_epi = rep(0, times = n_Estimation),
+                       snps_value = matrix(c(0,1,2), nrow = n_Estimation, ncol = 3, byrow = T),
+                       variable = c("n"))   
+
 
 res <- list()
 # Do estimation and generate parameters
@@ -86,23 +131,18 @@ for(i in 1:length(param.list)) {
     
     cat(paste0("= Param list: ", i, "/", length(param.list), "\n"))
     
-    res[[i]] <- compare_dcor(N = param.list[[i]]$N, 
-                        N_SNPS = param.list[[i]]$N_SNPS,
-                        N_real_coeff = param.list[[i]]$N_real_coeff, 
-                        get_snps_matrix = build_SNPs_matrix, 
-                        get_alpha = build_alpha_dominant,
-                        product_snps_alpha = product_snps_alpha_dominant,
-                        b = param.list[[i]]$b, 
-                        variable = param.list[[i]]$variable)
-    
-    res[[length(param.list) + i]] <- compare_dcor(N = param.list[[i]]$N, 
-                             N_SNPS = param.list[[i]]$N_SNPS,
-                             N_real_coeff = param.list[[i]]$N_real_coeff, 
-                             get_snps_matrix = build_SNPs_matrix, 
-                             get_alpha = build_alpha,
+    res[[i]] <- compare_dcor(n = param.list[[i]]$n, 
+                             s = param.list[[i]]$s,
+                             u = param.list[[i]]$u, 
                              b = param.list[[i]]$b, 
+                             noise.sd = param.list[[i]]$noise.sd,
+                             delta_add = param.list[[i]]$delta_add,
+                             delta_dom = param.list[[i]]$delta_dom,
+                             delta_epi = param.list[[i]]$delta_epi,
+                             snps_value = param.list[[i]]$snps_value,
                              variable = param.list[[i]]$variable)
     
     cat(paste0("= End of ", i, "/", length(param.list), "\n"))
                        
 }
+
