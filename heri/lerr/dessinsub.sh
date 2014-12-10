@@ -1,9 +1,0 @@
-## qsub -l mem_free=.2G ~/bin/r2job.sh ~/NFG/ler/dessinpv.R 1
- qsub -l mem_free=1K ~/bin/r2job.sh ~/NFG/ler/dessinpv.R 2
- qsub -l mem_free=1K ~/bin/r2job.sh  ~/NFG/ler/dessinpv.R 3
-## qsub -l mem_free=1G ~/bin/r2job.sh ~/NFG/ler/dessinpv.R 4
- qsub -l mem_free=1K ~/bin/r2job.sh ~/NFG/ler/dessinpv.R 5
- qsub -l mem_free=1K ~/bin/r2job.sh ~/NFG/ler/dessinpv.R 6
-## qsub -l mem_free=1K ~/bin/r2job.sh  ~/NFG/ler/dessinpv.R 7
- qsub -l mem_free=1K ~/bin/r2job.sh ~/NFG/ler/dessinpv.R  8
- qsub -l mem_free=1K ~/bin/r2job.sh ~/NFG/ler/dessinpv.R 9
