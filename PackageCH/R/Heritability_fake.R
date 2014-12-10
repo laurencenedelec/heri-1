@@ -139,7 +139,7 @@ compare_dcor <- function(n,
                        # dcor estimates
                        dcor_XX_GRM$dCor^0.5,
                        (dcor_XX_GRM$dCor^0.5 * dcor_XX_GRM$dVarX^0.25) / (dcor_XX_GRM$dVarY^0.25 * var(X.noise)),                       
-                       (1/2) * dcor_distX2_GRM$dCov / (dcor.perso(A_M, A_M)$dCov * dcor.perso(X.noise, X.noise)$dCov),
+                       (1/2) * abs(dcor_distX2_GRM$dCov)^0.5 / (abs(dcor.perso(A_M, A_M)$dCov)^0.5 * var(X.noise)),
                        abs(dcor.perso(as.matrix(dist_X), A_M)$dCor)^0.5,
                        
                        # lm estimates
