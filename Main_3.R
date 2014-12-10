@@ -37,7 +37,7 @@ Project <- SetupProject()
 param.list <- list()
 
 n_Estimation <- 15
-n_MAX <- 2000
+n_MAX <- 2500
 
 ##########
 ## Compare variation of importance of delta dom and epi in a specific setup
