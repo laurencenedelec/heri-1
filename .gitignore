@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /GIT-BUILD-OPTIONS
 /GIT-CFLAGS
 /GIT-LDFLAGS
@@ -246,3 +247,18 @@
 *.pdb
 /Debug/
 /Release/
+=======
+# History files
+.Rhistory
+
+# Example code in package build process
+*-Ex.R
+
+# R data files from past sessions
+.Rdata
+
+# RStudio files
+.Rproj.user/
+
+.Rproj.user
+>>>>>>> e937735e9893122849fc10cb28763c5d64d97eeb
