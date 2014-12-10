@@ -25,17 +25,20 @@ dcor.perso <- function (x, y, index = 1)
     dims <- c(n, ncol(x), ncol(y))
     Akl <- function(x) {
         d <- as.matrix(x)^index
-        m <- rowMeans(d)
+        rowM <- rowMeans(d)
+        colM <- colMeans(d)
         M <- mean(d)
-        a <- sweep(d, 1, m)
-        b <- sweep(a, 2, m)
+        
+        a <- sweep(d, 1, rowM)
+        b <- sweep(a, 2, colM)
+        
         return(b + M)
     }
     A <- Akl(x)
     B <- Akl(y)
-    dCov <- sqrt(mean(A * B))
-    dVarX <- sqrt(mean(A * A))
-    dVarY <- sqrt(mean(B * B))
+    dCov <- (mean(A * B))
+    dVarX <- (mean(A * A))
+    dVarY <- (mean(B * B))
     V <- sqrt(dVarX * dVarY)
     if (V > 0) 
         dCor <- dCov/V
@@ -126,6 +129,7 @@ compare_dcor <- function(n,
         dist_X.tri <- as.matrix(dist_X)[lower.tri(as.matrix(dist_X))]
         
         dcor_XX_GRM <- dcor.perso(Z, A_M)
+        dcor_distX2_GRM <- dcor.perso(as.matrix(dist_X)^2, A_M)
         
         # Do estimates
         res <- rbind(res, 
@@ -133,8 +137,11 @@ compare_dcor <- function(n,
                        sqrt(mean(abs(dist(X.noise, p = 1))) / (sqrt(n[i]-1)*dcov(X.noise,X.noise))),
 
                        # dcor estimates
-                       dcor_XX_GRM$dCor,
-                       (dcor_XX_GRM$dCor * sqrt(dcor_XX_GRM$dVarX)) / (sqrt(dcor_XX_GRM$dVarY) * var(X.noise)),                       
+                       dcor_XX_GRM$dCor^0.5,
+                       (dcor_XX_GRM$dCor^0.5 * dcor_XX_GRM$dVarX^0.25) / (dcor_XX_GRM$dVarY^0.25 * var(X.noise)),                       
+                       (1/2) * dcor_distX2_GRM$dCov / (dcor.perso(A_M, A_M)$dCov * dcor.perso(X.noise, X.noise)$dCov),
+                       abs(dcor.perso(as.matrix(dist_X), A_M)$dCor)^0.5,
+                       
                        # lm estimates
                        cor(as.vector(Z), as.vector(A_M)),
                        lm( Z.tri ~ A_M.tri )$coefficients[2] * sd(A_M.tri) / sd(Z.tri),
@@ -152,17 +159,21 @@ compare_dcor <- function(n,
                       
                       dcor_XX_GRM = res[,3],
                       dcor_H2 = res[,4],
+                      dcor_hdc_squared = res[,5],
+                      dcor_hdc_abs = res[,6],
                       
-                      cor_XX_GRM = res[,5],
-                      lm_cor_XX_GRM = res[,6],
-                      lm_H2 = res[,7],
+                      cor_XX_GRM = res[,7],
+                      lm_cor_XX_GRM = res[,8],
+                      lm_H2 = res[,9],
                       
-                      h2 = res[,8],
-                      H2 = res[,9])
+                      h2 = res[,10],
+                      H2 = res[,11])
     
     # melt data to be able plot group into ggplots
     data.melt <- melt(res, measure.vars = c("dcor_XX_GRM",
                                             "dcor_H2",
+                                            "dcor_LN_hdc",
+                                            "dcor_LN_gc",
                                             
                                             "cor_XX_GRM",
                                             "lm_cor_XX_GRM",
