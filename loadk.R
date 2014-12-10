@@ -6,11 +6,12 @@ names(tfam)<-c("SUBJID","x","y","t","z","w")
 
 K.ibs= read.table('~/NFG/result/NFGsimi.mibs', sep='')
 K.ibs.id=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
-#K.ibs<-1-K.ibs
-K.ibs$id<-K.ibs.id$V1
 colnames(K.ibs) <- paste(K.ibs.id$V1)
 rownames(K.ibs) <- paste(K.ibs.id$V1)
-print('K1')
+#K.ibs<-1-K.ibs
+write.table(K.ibs[1:10,1:10],file="~/NFG/raw/K.ibs", row.names = TRUE,
+            col.names = TRUE)
+print('K.ibs')
 
 ##Other K ibd compute from IBS there is one more individu ??
 pt=read.table("~/NFG/result/NFGredibsibd.genome" ,header=TRUE, sep='')
@@ -24,26 +25,29 @@ K.ibdg[pt$IID2[j],pt$IID1[j]]<-pt$DST[j]
 }
 K.ibsg<-K.ibsg[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
 K.ibdg<-K.ibdg[as.vector(tfam$SUBJID),as.vector(tfam$SUBJID)]
-write.table(Ki_pGC,file="~/NFG/raw/kpgc")
 colnames(K.ibsg) <- paste(tfam$SUBJID)
 rownames(K.ibsg) <- paste(tfam$SUBJID)
-colnames(K.ibsg) <- paste(tfam$SUBJID)
-rownames(K.ibsg) <- paste(tfam$SUBJID)
-for (j in 1:(nrow(tfam)+1))
+colnames(K.ibdg) <- paste(tfam$SUBJID)
+rownames(K.ibdg) <- paste(tfam$SUBJID)
+for (j in 1:(nrow(tfam)))
 {K.ibsg[j,j]<-0
 K.ibdg[j,j]<-1}
-K.ibsg<-(1-K.ibsg)
+#K.ibsg<-(1-K.ibsg)
+K.ibdg<-(1-K.ibdg)
 
-
-write.table(K.ibsg,file="~/NFG/raw/K.ibsg")
-write.table(K.ibdg,file="~/NFG/raw/K.ibdg")
+write.table(K.ibsg[1:10,1:10],file="~/NFG/raw/K.ibsg",row.names = TRUE,
+            col.names = TRUE)
+write.table(K.ibdg[1:10,1:10],file="~/NFG/raw/K.ibdg",row.names = TRUE,
+            col.names = TRUE)
 #kdisibs<-read.table("~/NFG/raw/K.ibsg")
 #kdisibd<-read.table("~/NFG/raw/K.ibdg")
 
-print('K23')
+print('K ibs ibd')
 
 ##same as K.ibs from plink
 #K.ibs.plink<-read.table("~/NFG/result/plinkdis.mdist")
+#colnames(K.ibs.plink) <- paste(tfam$SUBJID)
+#rownames(K.ibs.plink) <- paste(tfam$SUBJID)
 
 
 
@@ -84,32 +88,34 @@ ReadGRMBin=function(prefix, AllN=F, size=4){
   rownames(Ki_GCTA) <- paste(K_GCTA$id$V1)
 
 
-write.table(Ki_GCTA,file="~/NFG/raw/kgcta")
+write.table(Ki_GCTA[1:10,1:10],file="~/NFG/raw/kgcta",row.names = TRUE,
+            col.names = TRUE)
 
 #identical(K_GCTA$id$V1,tfam$SUBJID)
 print('Kgcta')
 
 ##GCTA avec plink 1.9
-Ki_pGC.id<- read.table('~/NFG/result/plinkdisex.mibs.id')
-Ki_pGC<- diag(length(Ki_pGC$id))
-#print(length(K_pGC$id))
-Ki_pGC_tri<- data.matrix( read.table('~/NFG/result/plinkdisex.mibs', fill=TRUE, col.names=paste("V", 1:length(nom$V1))))
+id<- read.table('~/NFG/result/plinkdisex.mibs.id')
+Ki_pGC<- diag(length(id$V1))
+Ki_pGC_tri<- data.matrix( read.table('~/NFG/result/plinkdisex.mibs', fill=TRUE, col.names=paste("V", 1:length(id$V1))))
 Ki_pGC[lower.tri(Ki_pGC, diag = T)] <- Ki_pGC_tri[lower.tri(Ki_pGC_tri,diag=T)]
 Ki_pGC <- Ki_pGC + t(Ki_pGC) - diag(diag(Ki_pGC))
-rownames(Ki_pGC) <- paste(Ki_pGC.id$V1)
-colnames(Ki_pGC) <- paste(Ki_pGC.id$V1)
-write.table(Ki_pGC,file="~/NFG/raw/kpgc")
-##all together
+rownames(Ki_pGC) <- paste(id$V1)
+colnames(Ki_pGC) <- paste(id$V1)
+Ki_pGC<-data.matrix(Ki_pGC)
+write.table(Ki_pGC[1:10,1:10],file="~/NFG/raw/kpgc",row.names = TRUE,
+            col.names = TRUE)
+print('KpGC')
 
 ##GCTA with plink -make-rel 
 K_ppGC.id<- read.table('~/NFG/result/plinkgcta.rel.id')
 K_ppGC<- data.matrix( read.table('~/NFG/result/plinkgcta.rel'))
 rownames(K_ppGC) <- paste(K_ppGC.id$V1)
 colnames(K_ppGC) <- paste(K_ppGC.id$V1)
-write.table(K_ppGC,file="~/NFG/raw/kppgc")
-print('last load')
-
-K.divers<-list(K_ibs=K.ibsg,K_ibd=K.ibsg,K_plink=K.ibs,K_gcta=Ki_pGC,K_ppGC=K_ppGC)
+write.table(K_ppGC[1:10,1:10],file="~/NFG/raw/kppgc", row.names = TRUE,
+            col.names = TRUE)
+print('KppGC')
+K.divers<-list(K_ibs=K.ibsg,K_ibd=K.ibdg,K_plink=K.ibs,K_gcta=Ki_pGC,K_ppGC=K_ppGC,K_GCTA=Ki_GCTA)
 return(K.divers)
 
 }
