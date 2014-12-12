@@ -1,0 +1,34 @@
+
+
+library(plyr)
+
+test<-0
+for (chr in c(1,4,19)) 
+
+
+{test1 = read.table(paste("~/NFG/result/Hdap",chr,"dcp-sin5",sep=""), header=T,sep='')
+test5 = read.table(paste("~/NFG/result/Hdap",chr,"pperm5",sep=""), header=T,sep='')
+test2 = read.table(paste("~/NFG/result/Hdap",chr,"pv5",sep=""), header=T,sep='')
+test3 = read.table(paste("~/NFG/result/Hdap",chr,"pv10",sep=""), header=T,sep='')
+test4 = read.table(paste("~/NFG/result/Hdapstand",chr,"pv",sep=""), header=T,sep='')
+test6 = read.table(paste("~/NFG/result/Hdap",chr,"dc-sin5",sep=""), header=T,sep='')
+test9 = read.table(paste("~/NFG/result/Hdap",chr,"dcper5",sep=""), header=T,sep='')
+test7 = read.table(paste("~/NFG/result/Hdap",chr,"dc5",sep=""), header=T,sep='')
+test8 = read.table(paste("~/NFG/result/Hdap",chr,"dc10",sep=""), header=T,sep='')
+
+
+testadd<-cbind(test1,test2[,c(3,4,5,6)],test3 [,c(3,4,5,6)],test4 [,c(3,4,5,6)],test5 [,c(3,4,5,6)],test6[,-c(1,2)],test7[,-c(1,2)],test8[,-c(1,2)],test9[,-c(1,2)]   )
+C<-rep(chr,nrow(testadd))
+testadd<-cbind(C,testadd)
+if (test==0)  test<-testadd else test<-rbind(test,testadd)
+}
+
+names(test)<-c("chr","snp","posi","KolH.dc.p.1","KolL.dc.p.1","Trigl.dc.p.1","BMI.dc.p.1","KolH.dc.p.5","KolL.dc.p.5","Trigl.dc.p.5","BMI.dc.p.5",
+"KolH.dc.p.10","KolL.dc.p.10","Trigl.dc.p.10","BMI.dc.p.10","KolH.univap.1","KolL.univap.1","Trigl.univap.1","BMI.univap.1","KolH.pper.1","KolL.pper.1","Trigl.pper.1","BMI.pper.1",
+"Hdcor1","Ldcor1","Tdcor1","BMIdcor1",   "Hdcor5","Ldcor5","Tdcor5","BMIdcor5","Hdcor10","Ldcor10","Tdcor10","BMIdcor10","Hdcper","Ldcper","Tdcper","BMIdcper")
+
+
+
+
+
+write.table(test,"NFG/result/pvdiversall")
