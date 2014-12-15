@@ -132,7 +132,7 @@ heri.dcov<-heri.dcov/norm
 #norm.dcov<-1
 
 ##the results
-herita<-c(j,i,heri.sans,pv.heri.sans,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov, Kdis.mean,)
+herita<-c(j,i,heri.sans,pv.heri.sans,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov, Kdis.mean)
 res<-rbind(res,herita)
 
 
