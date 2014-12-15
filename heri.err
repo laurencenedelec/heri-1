@@ -4,3 +4,8 @@ Warning messages:
   number of items read is not a multiple of the number of columns
 2: closing unused connection 4 (~/NFG/raw/Kcgta.grm.N.bin) 
 3: closing unused connection 3 (~/NFG/raw/Kcgta.grm.bin) 
+Error: unexpected 'in' in:
+"
+if (j in"
+Execution halted
+srun: error: sh-5-26: task 0: Exited with exit code 1
