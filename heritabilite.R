@@ -88,8 +88,8 @@ dia<-c(dia)
 Y.produit.sans<-Y.produit.list[-dia]
 ##compute the heritability-linear regression
 Kdis.list.sans<-Kdis.list[-dia]
-Kdis.list.sans<-as.numeric(as.vector(Kdis.list.sans[list]))
-Y.produit.list.sans<-as.numeric( as.vector( Y.produit.sans[list]))
+Kdis.list.sans<-as.numeric(as.vector(Kdis.list.sans ))
+Y.produit.list.sans<-as.numeric(as.vector(  Y.produit.sans))
 heri.lm.sans<-lm(Y.produit.list.sans~Kdis.list.sans)
 print(length(Kdis.list.sans))
 heri.sans<-summary(heri.lm.sans)$coef[2,1]
