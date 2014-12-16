@@ -182,7 +182,7 @@ res<-rbind(res,herita)
 }
 res<-data.matrix(res)
 colnames(res)<-c('method', 'pheno','sansdiag','pvsansdiag', 'lm.red','pv.lm.red', 'lm','pv.lm','heri.dcov','meanK')
-rownames(res)<-c('K.ibs','K.idb','K.ibs','K.cgta',"k ","kk",'H.ibs','H.idb','H.ibs','H.cgta',"h",'hh",'L.ibs','L.idb','L.ibs','L.cgta',"L",'ll','T.ibs','T.idb','T.ibs','T.cgta','T','tt')
+rownames(res)<-c('K.ibs','K.idb','K.ibs','K.cgta','k','kk','H.ibs','H.idb','H.ibs','H.cgta','h','hh','L.ibs','L.idb','L.ibs','L.cgta','L','ll','T.ibs','T.idb','T.ibs','T.cgta','T','tt')
 write.table(res,file="~/NFG/ler/res6.heri.RData", row.names=TRUE, col.names=TRUE)
 
 

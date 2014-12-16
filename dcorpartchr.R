@@ -12,8 +12,8 @@ library(plyr)
  testped = read.table(paste("~/NFG/raw/Hd",chr,"clA.raw",sep=""), header=T,sep='')
  testpheno= read.table('~/NFG/raw/Pheno', header=TRUE, sep='',skip=11)
  gsub("X","NA",testpheno)
- write.table(testpheno,'~/NFG/raw/pheno2')
- testpheno= read.table('~/NFG/raw/pheno2', header=T, sep='')
+# write.table(testpheno,'~/NFG/raw/pheno2')
+ #testpheno= read.table('~/NFG/raw/pheno2', header=T, sep='')
  testpheno<-data.matrix(testpheno)
  testfi<-merge(testpheno,testped, by.x=c('SUBJID'),by.y=c('IID'))
  testfn<-testfi
@@ -71,6 +71,9 @@ Ttdv=matrix(rep(0,ndonne),ncol=4)
 dcsin=matrix(rep(0,ndonne),ncol=4)
 dcpsin=matrix(rep(0,ndonne),ncol=4)
 dcb=matrix(rep(0,ndonne),ncol=4)
+
+##for all pheno
+
 for (j in 14:(ncol(testfrm)-pas) )
      {  	
     ## tempcor<-dcor.ttest(testfrm[,4],testfrm[,j:(j+pas)],distance=FALSE)
