@@ -97,8 +97,8 @@ pv.heri.sans<-summary(heri.lm.sans)$coef[2,4]
 Kdis.mean<-mean(Kdis.list.sans)
 if (j==1)    red<- Kdis.list.sans<(1.2)*Kdis.mean  
 if (j==2)    red<- Kdis.list.sans< (10000)* Kdis.mean
-if (j==4)    red<- Kdis.list.sans<(1.2)*(1-Kdis.mean)
-if (j==3)    red<- Kdis.list.sans<4*(1-Kdis.mean)
+if (j==4)    red<- Kdis.list.sans<(1.2)*Kdis.mean
+if (j==3)    red<- Kdis.list.sans<(1.5)*Kdis.mean
 if (j==5)    red<- Kdis.list.sans<(1.5)*Kdis.mean
 if (j==6)    red<- Kdis.list.sans<(1.5)*Kdis.mean
 
@@ -141,7 +141,7 @@ res<-rbind(res,herita)
 res<-data.matrix(res)
 colnames(res)<-c('method', 'pheno','sansdiag','pvsansdiag', 'lm.red','pv.lm.red', 'lm','pv.lm','heri.dcov','meanK')
 rownames(res)<-c('K.ibs','K.idb','K.ibs','K.cgta',"k ","kk",'H.ibs','H.idb','H.ibs','H.cgta',"h",'hh",'L.ibs','L.idb','L.ibs','L.cgta',"L",'ll','T.ibs','T.idb','T.ibs','T.cgta','T','tt')
-write.table(res,file="~/NFG/ler/res5.heri.RData", row.names=TRUE, col.names=TRUE)
+write.table(res,file="~/NFG/ler/res6.heri.RData", row.names=TRUE, col.names=TRUE)
 
 
 

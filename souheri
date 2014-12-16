@@ -7,8 +7,8 @@
 #SBATCH --qos=normal                                                                             
 #SBATCH --job-name=heri                                                                       
 #SBATCH --time=4:30:00                                                                           
-#SBATCH --output=heri.out                                                                        
-#SBATCH --error=heri2.err                                                                          
+#SBATCH --output=heri3.out                                                                        
+#SBATCH --error=heri3.err                                                                          
 #SBATCH --cpus-per-task=16                                                                       
 #SBATCH --mem=64000                                                                               
 module load R                                                                                    

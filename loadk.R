@@ -2,16 +2,19 @@ load_K <- function() {
 
 tfam<-read.table("~/NFG/raw/NFBC_transpose.tfam")
 names(tfam)<-c("SUBJID","x","y","t","z","w")
-## pourcentage of allele share between two indiv IBS  square matrix
 
+## pourcentage of allele share between two indiv IBS  square matrix
 K.ibs= read.table('~/NFG/result/NFGsimi.mibs', sep='')
 K.ibs.id=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
 colnames(K.ibs) <- paste(K.ibs.id$V1)
 rownames(K.ibs) <- paste(K.ibs.id$V1)
-#K.ibs<-1-K.ibs
+K.ibs<-1-K.ibs
 write.table(K.ibs[1:10,1:10],file="~/NFG/raw/K.ibs", row.names = TRUE,
             col.names = TRUE)
 print('K.ibs')
+
+
+
 
 ##Other K ibd compute from IBS there is one more individu ??
 pt=read.table("~/NFG/result/NFGredibsibd.genome" ,header=TRUE, sep='')
@@ -80,13 +83,12 @@ ReadGRMBin=function(prefix, AllN=F, size=4){
   # Create the matrix Ki_GCTA from the data
   # Data come as a lower triangular matrix
   Ki_GCTA<- diag(nrow(K_GCTA$id))
-  diag(Ki_GCTA) <- K_GCTA$diag
+  diag(Ki_GCTA) <-1- K_GCTA$diag
   Ki_GCTA[lower.tri(Ki_GCTA, diag = F)] <- K_GCTA$off
   Ki_GCTA <- Ki_GCTA + t(Ki_GCTA) - diag(diag(Ki_GCTA))
   # Give the correct col/row names (this information is used later on to filter data)
   colnames(Ki_GCTA) <- paste(K_GCTA$id$V1)
   rownames(Ki_GCTA) <- paste(K_GCTA$id$V1)
-
 
 write.table(Ki_GCTA[1:10,1:10],file="~/NFG/raw/kgcta",row.names = TRUE,
             col.names = TRUE)
@@ -103,6 +105,7 @@ Ki_pGC <- Ki_pGC + t(Ki_pGC) - diag(diag(Ki_pGC))
 rownames(Ki_pGC) <- paste(id$V1)
 colnames(Ki_pGC) <- paste(id$V1)
 Ki_pGC<-data.matrix(Ki_pGC)
+Ki_pGC<-1-Ki_pGC
 write.table(Ki_pGC[1:10,1:10],file="~/NFG/raw/kpgc",row.names = TRUE,
             col.names = TRUE)
 print('KpGC')
@@ -114,7 +117,9 @@ rownames(K_ppGC) <- paste(K_ppGC.id$V1)
 colnames(K_ppGC) <- paste(K_ppGC.id$V1)
 write.table(K_ppGC[1:10,1:10],file="~/NFG/raw/kppgc", row.names = TRUE,
             col.names = TRUE)
+diag(K_ppGC)<-1-diag(K_ppGC)
 print('KppGC')
+
 K.divers<-list(K_ibs=K.ibsg,K_ibd=K.ibdg,K_plink=K.ibs,K_gcta=Ki_pGC,K_ppGC=K_ppGC,K_GCTA=Ki_GCTA)
 return(K.divers)
 
