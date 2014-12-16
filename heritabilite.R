@@ -166,22 +166,22 @@ heri.dcov<-dcov_mc(Y.produit,Kdis,1)
 heri.dcov<-heri.dcov/norm
 
 #ne marche pas
-norm.dcov.energy<-dcov.perso(as.dist(Kdis),as.dist(Kdis),1)$dCov
-heri.dcov.energy<-dcov.perso(as.dist(Y.produit),as.dist(Kdis),1)$dCov
+norm.dcov.energy<-dcor.perso(as.dist(Kdis),as.dist(Kdis),1)$dCov
+heri.dcov.energy<-dcor.perso(as.dist(Y.produit),as.dist(Kdis),1)$dCov
 heri.dcov.energy<-heri.dcov.energy/norm.dcov.energy
 
 #heri.dcov.energy<-1
 #norm.dcov<-1
 
 ##the results
-herita<-c(j,i,heri.sans,pv.heri.sans,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov, Kdis.mean)
+herita<-c(j,i,heri.sans,pv.heri.sans,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov,heri.dcov.energy, Kdis.mean)
 res<-rbind(res,herita)
 
 
 }
 }
 res<-data.matrix(res)
-colnames(res)<-c('method', 'pheno','sansdiag','pvsansdiag', 'lm.red','pv.lm.red', 'lm','pv.lm','heri.dcov','meanK')
+colnames(res)<-c('method', 'pheno','sansdiag','pvsansdiag', 'lm.red','pv.lm.red', 'lm','pv.lm','heri.dcov','heri.dcov.energy','meanK')
 rownames(res)<-c('K.ibs','K.idb','K.ibs','K.cgta','k','kk','H.ibs','H.idb','H.ibs','H.cgta','h','hh','L.ibs','L.idb','L.ibs','L.cgta','L','ll','T.ibs','T.idb','T.ibs','T.cgta','T','tt')
 write.table(res,file="~/NFG/ler/res6.heri.RData", row.names=TRUE, col.names=TRUE)
 
