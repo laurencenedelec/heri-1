@@ -162,12 +162,13 @@ pv.heri.all<-summary(heri.lm.all)$coef[2,4]
 #ny<-length(Y)
 #Ydis2<- matrix(rep(Y^2,ny),ncol=ny)+t(matrix(rep(Y^2,ny),ncol=ny))-2*Yp
 
+norm.dcov<-dcov_mc(Kdis,Kdis,1)
 heri.dcov<-dcov_mc(Y.produit,Kdis,1)
-heri.dcov<-heri.dcov/norm
+heri.dcov<-heri.dcov/norm.dcov
 
 #ne marche pas
-norm.dcov.energy<-dcor.perso(as.dist(Kdis),as.dist(Kdis),1)$dCov
-heri.dcov.energy<-dcor.perso(as.dist(Y.produit),as.dist(Kdis),1)$dCov
+norm.dcov.energy<-dcor.perso(Kdis,Kdis,1)$dCov
+heri.dcov.energy<-dcor.perso(Y.produit,Kdis,1)$dCov
 heri.dcov.energy<-heri.dcov.energy/norm.dcov.energy
 
 #heri.dcov.energy<-1
