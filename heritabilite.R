@@ -98,7 +98,7 @@ Kdis.mean<-mean(Kdis.list.sans)
 if (j==1)    red<- Kdis.list.sans<(1.2)*Kdis.mean  
 if (j==2)    red<- Kdis.list.sans< (10000)* Kdis.mean
 if (j==4)    red<- Kdis.list.sans<(1.2)*(1-Kdis.mean)
-if (j==3)    red<- Kdis.list.sans<(1.2)*(1-Kdis.mean)
+if (j==3)    red<- Kdis.list.sans<4*(1-Kdis.mean)
 if (j==5)    red<- Kdis.list.sans<(1.5)*Kdis.mean
 if (j==6)    red<- Kdis.list.sans<(1.5)*Kdis.mean
 
