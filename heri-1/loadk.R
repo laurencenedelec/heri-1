@@ -9,6 +9,7 @@ K.ibs.id=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
 colnames(K.ibs) <- paste(K.ibs.id$V1)
 rownames(K.ibs) <- paste(K.ibs.id$V1)
 K.ibs<-1-K.ibs
+diag(K.ibs)<-1
 write.table(K.ibs[1:10,1:10],file="~/NFG/raw/K.ibs", row.names = TRUE,
             col.names = TRUE)
 print('K.ibs')
@@ -33,8 +34,8 @@ rownames(K.ibsg) <- paste(tfam$SUBJID)
 colnames(K.ibdg) <- paste(tfam$SUBJID)
 rownames(K.ibdg) <- paste(tfam$SUBJID)
 for (j in 1:(nrow(tfam)))
-{K.ibsg[j,j]<-0
-K.ibdg[j,j]<-1}
+{K.ibsg[j,j]<-1
+K.ibdg[j,j]<-0}
 #K.ibsg<-(1-K.ibsg)
 K.ibdg<-(1-K.ibdg)
 
@@ -83,7 +84,7 @@ ReadGRMBin=function(prefix, AllN=F, size=4){
   # Create the matrix Ki_GCTA from the data
   # Data come as a lower triangular matrix
   Ki_GCTA<- diag(nrow(K_GCTA$id))
-  diag(Ki_GCTA) <-1- K_GCTA$diag
+  diag(Ki_GCTA) <-K_GCTA$diag
   Ki_GCTA[lower.tri(Ki_GCTA, diag = F)] <- K_GCTA$off
   Ki_GCTA <- Ki_GCTA + t(Ki_GCTA) - diag(diag(Ki_GCTA))
   # Give the correct col/row names (this information is used later on to filter data)
@@ -102,6 +103,7 @@ Ki_pGC<- diag(length(id$V1))
 Ki_pGC_tri<- data.matrix( read.table('~/NFG/result/plinkdisex.mibs', fill=TRUE, col.names=paste("V", 1:length(id$V1))))
 Ki_pGC[lower.tri(Ki_pGC, diag = T)] <- Ki_pGC_tri[lower.tri(Ki_pGC_tri,diag=T)]
 Ki_pGC <- Ki_pGC + t(Ki_pGC) - diag(diag(Ki_pGC))
+diag(Ki_pGC)<-0
 rownames(Ki_pGC) <- paste(id$V1)
 colnames(Ki_pGC) <- paste(id$V1)
 Ki_pGC<-data.matrix(Ki_pGC)
