@@ -6,7 +6,7 @@
 #SBATCH --mail-type=ALL                                                                          
 #SBATCH --qos=normal                                                                             
 #SBATCH --job-name=heri                                                                       
-#SBATCH --time=4:30:00                                                                           
+#SBATCH --time=6:30:00                                                                           
 #SBATCH --output=heri3.out                                                                        
 #SBATCH --error=heri3.err                                                                          
 #SBATCH --cpus-per-task=16                                                                       

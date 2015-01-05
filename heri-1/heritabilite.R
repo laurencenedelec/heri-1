@@ -56,6 +56,8 @@ testpheno= read.table('~/NFG/raw/pheno2', header=T, sep='')
 pheno<-testpheno[,c(-3,-4,-5,-6,-7,-8)]                                       
 pheno.order<-join(tfam[,c(1,2)],pheno[,c(2,3,4,5,6)],"SUBJID")   
 rownames(pheno.order) <- paste(tfam$SUBJID)
+#write.table(pheno.order[1:10,],file="~/NFG/raw/pheno.data", row.names = TRUE,col.names = TRUE)
+
 ##for those pheno add the individu id 3=K 4=H 5=L 6=T
 
 
@@ -68,7 +70,7 @@ pheno.sd<-colSds(pheno)
 pheno.t<-t(pheno)*(1/pheno.sd)
 pheno<-t(pheno.t)
 
-#write.table(pheno,file="~/NFG/raw/pheno.normal")
+write.table(pheno,file="~/NFG/raw/pheno.normal")
 #V=read.table("~/NFG/raw/pheno.normal")
 
 source("~/NFG/ler/loadk.R")
@@ -105,16 +107,16 @@ Kdis.na<-na.omit(Kdis)
 for (l in 1:ncol(Kdis)) {ok <- !is.na(Kdis[,l])
                                Kdis[!ok,l]<- mean(Kdis[ok,l])  }
 Kdis<-Kdis[as.vector(id),as.vector(id)]
-norm<-dcov_mc(Kdis,Kdis,1)
+#norm<-dcov_mc(Kdis,Kdis,1)
 Kdis.list<-as.numeric(c(Kdis))
 
 
-print(norm)
+#print(norm)
 #print(Kdis.mean)
 #for all pheno 
-for (i in 1:4) 
-{print(i)
-  Y<-pheno[,i]
+for (ki in 1:4) 
+{print(ki)
+  Y<-pheno[,ki]
   names(Y) <- paste(tfam$SUBJID)
   
 ## filter the pheno with the K$id
@@ -162,28 +164,28 @@ pv.heri.all<-summary(heri.lm.all)$coef[2,4]
 #ny<-length(Y)
 #Ydis2<- matrix(rep(Y^2,ny),ncol=ny)+t(matrix(rep(Y^2,ny),ncol=ny))-2*Yp
 
-norm.dcov<-dcov_mc(Kdis,Kdis,1)
-heri.dcov<-dcov_mc(Y.produit,Kdis,1)
-heri.dcov<-heri.dcov/norm.dcov
+#norm.dcov<-dcov_mc(Kdis,Kdis,1)
+#heri.dcov<-dcov_mc(Y.produit,Kdis,1)
+#heri.dcov<-heri.dcov/norm.dcov
 
-#ne marche pas
-norm.dcov.energy<-dcor.perso(Kdis,Kdis,1)$dCov
-heri.dcov.energy<-dcor.perso(Y.produit,Kdis,1)$dCov
+norm.dcov.energy<-dcor.perso((1-Kdis),(1-Kdis),1)$dCov
+heri.dcov.energy<-dcor.perso(Y.produit,(1-Kdis),1)$dCov
 heri.dcov.energy<-heri.dcov.energy/norm.dcov.energy
 
-#heri.dcov.energy<-1
-#norm.dcov<-1
 
+norm.dcov<-1
+heri.dcov<-1
 ##the results
-herita<-c(j,i,heri.sans,pv.heri.sans,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov, Kdis.mean)
+herita<-c(j,ki,heri.sans,pv.heri.sans,heri.red,pv.heri.red,heri.all,pv.heri.all,heri.dcov.energy,norm.dcov.energy, Kdis.mean)
 res<-rbind(res,herita)
 
 
 }
 }
 res<-data.matrix(res)
-colnames(res)<-c('method', 'pheno','sansdiag','pvsansdiag', 'lm.red','pv.lm.red', 'lm','pv.lm','heri.dcov','meanK')
-rownames(res)<-c('K.ibs','K.idb','K.ibs','K.cgta','k','kk','H.ibs','H.idb','H.ibs','H.cgta','h','hh','L.ibs','L.idb','L.ibs','L.cgta','L','ll','T.ibs','T.idb','T.ibs','T.cgta','T','tt')
+colnames(res)<-c('method', 'pheno','sansdiag','pvsansdiag', 'lm.red','pv.lm.red', 'lm','pv.lm','heri.dcov.energy','dnorm','meanK')
+rownames(res)<-c('K.ibs','H.idb','L.ibs','T.cgta','k','h','L.ibs','T.idb','K.ibs','H.cgta','l','t','K.ibs','H.idb','L.ibs','T.cgta','K','hh','l','T.idb',
+'K.ibs','hhh','ll','tt')
 write.table(res,file="~/NFG/ler/res6.heri.RData", row.names=TRUE, col.names=TRUE)
 
 
