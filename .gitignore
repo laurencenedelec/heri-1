@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /GIT-BUILD-OPTIONS
 /GIT-CFLAGS
 /GIT-LDFLAGS
@@ -268,3 +269,8 @@
 .Rhistory
 .RData
 >>>>>>> f4571afcc1e66d7daca52f46b7137556374e7018
+=======
+.Rproj.user
+.Rhistory
+.RData
+>>>>>>> 453450c6b9191d1efe4c229f75bbd10402571850
