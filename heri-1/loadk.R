@@ -9,7 +9,7 @@ K.ibs.id=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
 colnames(K.ibs) <- paste(K.ibs.id$V1)
 rownames(K.ibs) <- paste(K.ibs.id$V1)
 K.ibs<-1-K.ibs
-diag(K.ibs)<-1
+#diag(K.ibs)<-1
 write.table(K.ibs[1:10,1:10],file="~/NFG/raw/K.ibs", row.names = TRUE,
             col.names = TRUE)
 print('K.ibs')
@@ -122,7 +122,7 @@ write.table(K_ppGC[1:10,1:10],file="~/NFG/raw/kppgc", row.names = TRUE,
 diag(K_ppGC)<-1-diag(K_ppGC)
 print('KppGC')
 
-K.divers<-list(K_ibs=K.ibsg,K_ibd=K.ibdg,K_plink=K.ibs,K_gcta=Ki_pGC,K_ppGC=K_ppGC,K_GCTA=Ki_GCTA)
+K.divers<-list(K_plink=K.ibs,K_gcta=Ki_pGC,K_ppGC=K_ppGC,K_GCTA=Ki_GCTA,K_ibs=K.ibsg,K_ibd=K.ibdg)
 return(K.divers)
 
 }
