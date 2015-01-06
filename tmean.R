@@ -7,6 +7,48 @@ dcov_m=function(X,Y) {
     Y<-t(t(Y)-colMeans(Y))-rowMeans(Y)+mean(Y)
     dcov<- mean(X*Y)
     return(dcov)}
+dcor.perso <- function (x, y, index = 1) 
+{
+  #     if (!(class(x) == "dist")) 
+  #         x <- dist(x)
+  #     if (!(class(y) == "dist")) 
+  #         y <- dist(y)
+  #     x <- as.matrix(x)
+  #     y <- as.matrix(y)
+  n <- nrow(x)
+  m <- nrow(y)
+  if (n != m) 
+    stop("Sample sizes must agree")
+  if (!(all(is.finite(c(x, y))))) 
+    stop("Data contains missing or infinite values")
+  if (index < 0 || index > 2) {
+    warning("index must be in [0,2), using default index=1")
+    index = 1
+  }
+  stat <- 0
+  dims <- c(n, ncol(x), ncol(y))
+  Akl <- function(x) {
+    d <- as.matrix(x)^index
+    rowM <- rowMeans(d)
+    colM <- colMeans(d)
+    M <- mean(d)
+    
+    a <- sweep(d, 1, rowM)
+    b <- sweep(a, 2, colM)
+    
+    return(b + M)
+  }
+  A <- Akl(x)
+  B <- Akl(y)
+  dCov <- (mean(A * B))
+  dVarX <- (mean(A * A))
+  dVarY <- (mean(B * B))
+  V <- sqrt(dVarX * dVarY)
+  if (V > 0) 
+    dCor <- dCov/V
+  else dCor <- 0
+  return(list(dCov = dCov, dCor = dCor, dVarX = dVarX, dVarY = dVarY))
+}
 
 covn=function(X,Y){
     return( mean(c(X)*c(Y))) }
@@ -133,5 +175,6 @@ ylab("C effect")+
 scale_y_continuous(limits= c(.6,1))+
 GetCustomGgplotTheme()
 ggsave(plot = p,filename ="effectkin.d.pdf",width = 11, height = 7)
+
 
 
