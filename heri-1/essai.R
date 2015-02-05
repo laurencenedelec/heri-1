@@ -1,13 +1,34 @@
+<<<<<<< HEAD
 pas<-0
 chr<-4
+=======
+#!/usr/bin/env  Rscript
+##association pas chr=index
+index <- as.numeric(commandArgs(trailingOnly=TRUE))
+para <- read.csv("~/NFG/ler/para.csv", header=TRUE, as.is=TRUE)
+## dataFile <- paste("~/NFG/ler/raw", para$dataFile[index], sep="/")
+##pas <- para$pas[index]
+pas<-15
+#pas<-20
+chr<-para$chr[index]
+## chr<-4
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 # Repli<-1500
 setwd("~/NFG/ler")
 
 # Load libraries and source helper functions --------------------------------------
 source("mondcov.R")
+<<<<<<< HEAD
 library(energy)
 library(plyr)
 
+=======
+
+
+library(energy)
+library(plyr)
+print("essai")
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 
 # Setup for parallel loop with 20 cores
 library(foreach)
@@ -47,6 +68,7 @@ ipheno<-2
 #ptdv[1:(ncol(testfrm)-pas-13),ipheno] <- rlist[1:(ncol(testfrm)-pas-13),1]  
 
 ## list<-foreach(j=14:(ncol(testfrm)-pas),.combine='rbind') %dopar% pcov(testfrm[,pheno],testfrm[,j]) 
+<<<<<<< HEAD
 ## pcv[1:(ncol(testfrm)-13),ipheno] <- list[1:(ncol(testfrm)-13),1]
 
 list<-foreach(j=14:(ncol(testfrm)-pas),.combine='rbind') %dopar% dcor.perso(testfrm[,pheno],testfrm[,j:(j+pas)],1)$dCor
@@ -56,6 +78,16 @@ dc[1:(ncol(testfrm)-pas-13),ipheno] <- list[1:(ncol(testfrm)-pas-13),1]
 
 #rlist<- foreach(j = 14:(ncol(testfrm)-pas),.combine='rbind') %dopar% pcov_vvdim(testfrm[,pheno],testfrm[,j:(j+pas)])
 #pcvpas[1:(ncol(testfrm)-pas-13),ipheno] <- rlist[1:(ncol(testfrm)-pas-13),1]
+=======
+## pcv[1:(ncol(testfrm)-pas-13),ipheno] <- list[1:(ncol(testfrm)-pas-13),1]
+
+##list<-foreach(j=14:(ncol(testfrm)-pas),.combine='rbind') %dopar% dcor(testfrm[,pheno],testfrm[,j:(j+pas)],1)
+##dc[1:(ncol(testfrm)-pas-13),ipheno] <- list[1:(ncol(testfrm)-pas-13),1]
+
+
+rlist<- foreach(j = 14:(ncol(testfrm)-pas),.combine='rbind') %dopar% pcov_vvdim(testfrm[,pheno],testfrm[,j:(j+pas)]) 
+pcvpas[1:(ncol(testfrm)-pas-13),ipheno] <- rlist[1:(ncol(testfrm)-pas-13),1]
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 
 
 
@@ -66,7 +98,12 @@ ptdv<-cbind(snpnamesous,ptdv)
 pcv<-cbind(snpnamesous,pcv)
 dc<-cbind(snpnamesous,dc)
 pcvpas<-cbind(snpnamesous,pcvpas)
+<<<<<<< HEAD
 
+=======
+dcallele<-cbind(snpnamesous,dcallele)
+names(dcallele)<-c("snp","KolH","KolL","Trigl","BMI")
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 names(dc)<-c("snp","KolH","KolL","Trigl","BMI")
 names(pcvpas)<-c("snp","KolH","KolL","Trigl","BMI")
 names(ptdv)<-c("snp","KolH","KolL","Trigl","BMI")
@@ -76,12 +113,23 @@ dc<-join(snpposi[,c(2,4)],dc, 'snp',type='right')
 ptdv<-join(snpposi[,c(2,4)],ptdv, 'snp',type='right')
 pcv<-join(snpposi[,c(2,4)],pcv,'snp', type='right')
 pcvpas<-join(snpposi[,c(2,4)],pcvpas,'snp', type='right')
+<<<<<<< HEAD
 dcallele<-join(snpposi[,c(2,4)],dcallele, 'snp',type='right')
 #write.table(ptdv,file=paste("~/NFG/result/allessaiHdap",chr,"pR","repli=",Repli,"pas=",pas,sep=""))
 #write.table(pcv,file=paste("~/NFG/result/allessaiHdap",chr,"pcvsecond",pas,sep=""))
 # write.table(pcvpas,file=paste("~/NFG/result/allessaiHdap",chr,"pdrmoi",pas,sep=""))
 #write.table(dc,file=paste("~/NFG/result/allessaiHdap",chr,"dr",pas,sep=""))
  write.table(ptdv,file=paste("~/NFG/result/allessaiHdap",chr,"pttest","pas=",pas,sep=""))
+=======
+dcallele<-join(snpposi[,c(2,4)],dc, 'snp',type='right')
+## write.table(ptdv,file=paste("~/NFG/result/allessaiHdap",chr,"pR","repli=",Repli,"pas=",pas,sep=""))
+#write.table(pcv,file=paste("~/NFG/result/allessaiHdap",chr,"pcvsecond",pas,sep=""))
+ write.table(pcvpas,file=paste("~/NFG/result/allessaiHdap",chr,"pdrmoi",pas,sep=""))
+##write.table(dc,file=paste("~/NFG/result/allessaiHdap",chr,"dr",pas,sep=""))
+#write.table(out,file=paste("~/NFG/result/allessaiHdap",chr,"drallele",sep=""))
+#write.table(dcallele,file=paste("~/NFG/result/allessaiHdap",chr,"drallele",sep=""))
+# write.table(ptdv,file=paste("~/NFG/result/allessaiHdap",chr,"pttest","pas=",pas,sep=""))
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 
 
 

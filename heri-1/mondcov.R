@@ -1,5 +1,4 @@
 
-
 dcor.perso <- function (x, y, index = 1)
 {
     #     if (!(class(x) == "dist"))
@@ -43,6 +42,8 @@ dcor.perso <- function (x, y, index = 1)
 
 
 
+=======
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 ##function to compute the  dcov  matrices form
 dcov_m=function(xdis,ydis,index) {
 X<-xdis^index

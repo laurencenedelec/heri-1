@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 pas<-
 chr<-4
 pheno<-5
 ipheno<-2
+=======
+#!/usr/bin/env  Rscript
+##ttest for pas full geno 
+index <- as.numeric(commandArgs(trailingOnly=TRUE))
+para <- read.csv("~/NFG/ler/para.csv", header=TRUE, as.is=TRUE)
+## dataFile <- paste("~/NFG/ler/raw", para$dataFile[index], sep="/")
+pas <- para$pas[index]
+##pas<-15
+
+chr<-para$chr[index]
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 ## chr<-4
 # Repli<-1500
 setwd("~/NFG/ler")
@@ -31,6 +43,7 @@ testfrm=read.table(paste("~/NFG/raw/leHd",chr,"fullcl",sep=''))
 ndonne<-(ncol(testfrm)-13)*4
 ptdv=matrix(rep(0,ndonne),ncol=4)
 
+<<<<<<< HEAD
 
 
  rlist1<- foreach(j = 14:2000, .combine='rbind') %dopar% dcor.ttest(testfrm[,pheno],testfrm[,j:(j+pas)])$p.value
@@ -38,6 +51,15 @@ ptdv[1:(2000-13),ipheno] <- rlist1[1:(ncol(testfrm)-pas-13),1]
 
  rlist2<- foreach(j = 20001:(ncol(testfrm)-pas), .combine='rbind') %dopar% dcor.ttest(testfrm[,pheno],testfrm[,j:(j+pas)])$p.value
 ptdv[(2001-13):(ncol(testfrm)-pas-13),ipheno] <- rlist2[1:(ncol(testfrm)-pas-13),1]
+=======
+pheno<-5
+
+ rlist1<- foreach(j = 14:2000, .combine='rbind') %dopar% dcor.ttest(testfrm[,pheno],testfrm[,j:(j+pas)])$p.value
+ptdv[1:(2000-13),ipheno] <- rlist[1:(ncol(testfrm)-pas-13),1]  
+
+ rlist2<- foreach(j = 20001:(ncol(testfrm)-pas), .combine='rbind') %dopar% dcor.ttest(testfrm[,pheno],testfrm[,j:(j+pas)])$p.value
+ptdv[(2001-13):(ncol(testfrm)-pas-13),ipheno] <- rlist[1:(ncol(testfrm)-pas-13),1]
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 
 snpposi=read.table('~/NFG/raw/snpposi.bim', header=F , sep='')
 names(snpposi)<-c("x","snp","y","posi","z","w")

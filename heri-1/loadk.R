@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 load_K <- function() {
+=======
+load_K <- function() {
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 
 tfam<-read.table("~/NFG/raw/NFBC_transpose.tfam")
 names(tfam)<-c("SUBJID","x","y","t","z","w")
@@ -8,8 +12,13 @@ K.ibs= read.table('~/NFG/result/NFGsimi.mibs', sep='')
 K.ibs.id=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
 colnames(K.ibs) <- paste(K.ibs.id$V1)
 rownames(K.ibs) <- paste(K.ibs.id$V1)
+<<<<<<< HEAD
 diag(K.ibs)<-1
 K.ibs<-1-K.ibs
+=======
+K.ibs<-1-K.ibs
+#diag(K.ibs)<-1
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 write.table(K.ibs[1:10,1:10],file="~/NFG/raw/K.ibs", row.names = TRUE,
             col.names = TRUE)
 print('K.ibs')
@@ -35,8 +44,13 @@ colnames(K.ibdg) <- paste(tfam$SUBJID)
 rownames(K.ibdg) <- paste(tfam$SUBJID)
 for (j in 1:(nrow(tfam)))
 {K.ibsg[j,j]<-1
+<<<<<<< HEAD
 K.ibdg[j,j]<-1}
 K.ibsg<-(1-K.ibsg)
+=======
+K.ibdg[j,j]<-0}
+#K.ibsg<-(1-K.ibsg)
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 K.ibdg<-(1-K.ibdg)
 
 write.table(K.ibsg[1:10,1:10],file="~/NFG/raw/K.ibsg",row.names = TRUE,
@@ -120,7 +134,10 @@ colnames(K_ppGC) <- paste(K_ppGC.id$V1)
 write.table(K_ppGC[1:10,1:10],file="~/NFG/raw/kppgc", row.names = TRUE,
             col.names = TRUE)
 diag(K_ppGC)<-1-diag(K_ppGC)
+<<<<<<< HEAD
 #Ki_pGC<-1-Ki_pGC
+=======
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 print('KppGC')
 
 K.divers<-list(K_plink=K.ibs,K_gcta=Ki_pGC,K_ppGC=K_ppGC,K_GCTA=Ki_GCTA,K_ibs=K.ibsg,K_ibd=K.ibdg)

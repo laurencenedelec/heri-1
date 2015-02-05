@@ -20,7 +20,11 @@ testfrm<-testfrm[,-souslist]
 soussnp=grep("cnv",snpname[,1])
 snpnamesous<-snpname[-soussnp,]
 
+<<<<<<< HEAD
 # 4=H 5=L 6=T
+=======
+
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 
 ptdv1=rep(0, (ncol(testfrm)-13) )
 for (j in 1: (ncol(testfrm)-13) )

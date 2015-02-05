@@ -28,6 +28,10 @@ b<-4
 ##title(xlab=paste("Chr",chr, "position(Mb) by dcov-pas=",pas,"pheno=",names(ptdv)[b],"repli=",500,sep=""), col.lab=rgb(0,0.5,0))
 ##title(ylab=paste(names(ptdv)[b],":-log10(p-vlue)",sep=""),col.lab=rgb(.5,0,0))
 ##dev.off()
+<<<<<<< HEAD
+=======
+
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 pvalue=read.table(paste("~/NFG/resultv/Hdap",chr,"pstand",sep=""),header=T,sep=" ")
 pdf(file= paste("~/NFG/result/toutH1", names(pvalue)[b],"-ch",chr,".pdf",sep=""))
 #par(mfrow=c(3,2), mar=c(1.1,4.1,3.5,2.1))
@@ -37,7 +41,11 @@ plot(pvalue[,2]/1000000,-log(pvalue[, b],10) ,col="red",pch=18,xlim=c(40,90),yli
 sel5=read.table(paste("~/NFG/result/allessaiHdap",chr,"pR","repli=",Repli,"pas=",5,"select",sep=""))
 points(sel5[,3]/1000000,-log(sel5[,8],10) ,col="blue",pch=19)
 if (!chr==4) {sel10=read.table(paste("~/NFG/result/allessaiHdap",chr,"pR","repli=",Repli,"pas=",10,"select",sep=""))
+<<<<<<< HEAD
     points(sel10[,3]/1000000,-log(sel10[,8],10) ,col="green",pch=18)   }
+=======
+points(sel10[,3]/1000000,-log(sel10[,8],10) ,col="green",pch=18)   }
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 title(xlab=paste("Chr",chr,"pheno=",b,"position (MB)by stand and p-repli-dcor 5 10",sep=""), col.lab=rgb(0,0.5,0))
 title(ylab=paste(names(pvalue)[b],":-log10(p-vlue) stand",sep=""),col.lab=rgb(.5,0,0))
 
@@ -71,7 +79,10 @@ title(ylab="dcor pas 10",col.lab=rgb(.5,0,0))
 
 dev.off()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 pdf(file= paste("~/NFG/result/toutH2", names(pvalue)[b],"-ch",chr,".pdf",sep=""))
 #par(mfrow=c(3,2), mar=c(1.1,4.1,3.5,2.1))
 if (chr==4) {par(mfrow=c(3,1))} else {par(mfrow=c(2,1))}
@@ -95,6 +106,11 @@ title(xlab=paste("Chr=",chr," pas=20"," pheno=",names(dcor)[b]," position (MB) p
 title(ylab="pttest",col.lab=rgb(.5,0,0))
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
 dev.off()
 
 if (chr==19) {
