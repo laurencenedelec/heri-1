@@ -1,8 +1,0 @@
-âÆmatrixStats v0.10.0 (2014-06-07) successfully loaded. See ?matrixStats for help.
-Warning messages:
-1: closing unused connection 4 (~/NFG/raw/Kcgta.grm.N.bin) 
-2: closing unused connection 3 (~/NFG/raw/Kcgta.grm.bin) 
-Error in colMeans(Y) : 'x' must be an array of at least two dimensions
-Calls: dcov_m -> t -> colMeans
-Execution halted
-srun: error: sh-1-2: task 0: Exited with exit code 1
