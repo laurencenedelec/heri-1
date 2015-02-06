@@ -13,6 +13,7 @@ K.ibs.id=read.table('~/NFG/result/NFGsimi.mibs.id', sep='')
 colnames(K.ibs) <- paste(K.ibs.id$V1)
 rownames(K.ibs) <- paste(K.ibs.id$V1)
 <<<<<<< HEAD:heri-1/loadk.R
+<<<<<<< HEAD:heri-1/loadk.R
 <<<<<<< HEAD
 diag(K.ibs)<-1
 K.ibs<-1-K.ibs
@@ -20,6 +21,10 @@ K.ibs<-1-K.ibs
 K.ibs<-1-K.ibs
 #diag(K.ibs)<-1
 >>>>>>> d0baed1871cc41ba96847d223cfc63499a75bec3
+=======
+K.ibs<-1-K.ibs
+#diag(K.ibs)<-1
+>>>>>>> 653b62bbeb1b02b0a94f97b6b7bb745a291fa58c:heri-1/loadk.R
 =======
 K.ibs<-1-K.ibs
 #diag(K.ibs)<-1
